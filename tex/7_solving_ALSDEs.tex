@@ -1,0 +1,452 @@
+% !TeX root = ../dissertation.tex
+
+\section{Motivation}
+\footnotetextonly{This chapter previously appeared in the following open-access article: \fullcite{KuoShresthaSinhaSundar2022}.}
+
+In this chapter, we fix \( t ∈ [0, 1] \). Our goal is to find the solution of the linear stochastic differential equation
+\begin{equation}  \label{eqn:SDE_drift}
+    \left\{
+    \begin{aligned}
+        \dif Z(t)  & =  f\br{∫_0^1 γ(s) \dif W_s} ~ Z(t) \dif t + σ_t ~ Z(t) \dif W_t  \\
+             Z(0)  & =  ξ ,
+    \end{aligned}
+    \right.
+\end{equation}
+under reasonable conditions on \( γ \), \( σ \), \( f \), and \( ξ \). Note that the anticipation comes from the drift. We shall explore finding the solution using: (1) Ayed–Kuo theory by formulating an ansatz, and (2) Skorokhod integral and a novel braiding technique. We shall see that the Ayed–Kuo theory gives us a much simpler method to find the solution, albeit at the cost of requiring us to guess the form of the solution first. On the other hand, the braiding technique is constructive and is amenable to solving other types of equations. Both the methods yield identical solution under the same constraints.
+
+
+
+\section{The Ayed–Kuo solution}  \label{sec:SDE_drift_Ayed–Kuo}
+
+\begin{theorem}  \label{thm:SDE_drift_Ayed–Kuo}  \index{stochastic differential equation!existence}
+    Suppose \( σ ∈ L^2_\text{ad}([0, 1] × Ω) \), \( γ ∈ L^2[0, 1] \), and \( ξ \) be a random variable independent of the Wiener process \( W \). Moreover, suppose \( f ∈ C^2(ℝ) \) along with \( f, f', f'' ∈ L^1(ℝ) \). Then the solution of \cref{eqn:SDE_drift} in the Ayed–Kuo theory is given by
+    \begin{equation}  \label{eqn:SDE_drift_solution_Ayed–Kuo}
+        Z(t) = ξ \exp\bs{ ∫_0^t σ_s \dif W_s - \frac12 ∫_0^t σ_s^2 \dif s + ∫_0^t f\br{ ∫_0^1 γ(u) \dif W_u - ∫_s^t γ(u) ~ σ_u \dif u } \dif s } .
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    We show that \cref{eqn:SDE_drift_solution_Ayed–Kuo} solves \cref{eqn:SDE_drift}. The initial condition is trivially verified.
+
+    Note that \cref{eqn:SDE_drift_solution_Ayed–Kuo} can be written as
+    \begin{align*}
+        Z(t)  =
+        &  ξ \exp\left[ ∫_0^t σ_s \dif W_s - \frac12 ∫_0^t σ_s^2 \dif s \right.  \\
+        &  \qquad \qquad  \left. + ∫_0^t f\br{ ∫_0^t γ(u) \dif W_u + ∫_t^1 γ(u) \dif W_u - ∫_s^t γ(u) ~ σ_u \dif u } \dif s \right] .
+    \end{align*}
+    Motivated by this, we define
+    \begin{equation*}
+        θ(t, x_1, x_2, y) =  ξ \exp\bs{ x_1 - \frac12 ∫_0^t σ_s^2 \dif s + ∫_0^t f\br{ x_2 + y - ∫_s^t γ(u) ~ σ_u \dif u } \dif s } .
+    \end{equation*}
+    Moreover, let
+    \begin{align*}
+                X^{(1)}_t  & =  ∫_0^t σ_s  \dif W_s  &&  (\text{so } \dif X^{(1)}_t  =  σ_t  \dif W_t)  ,  \\
+                X^{(2)}_t  & =  ∫_0^t γ(s) \dif W_s  &&  (\text{so } \dif X^{(2)}_t  =  γ(t) \dif W_t)  ,  \\
+        \text{ and }  Y^t  & =  ∫_t^1 γ(s) \dif W_s  &&  (\text{so }       \dif Y^t  = -γ(t) \dif W_t) .
+    \end{align*}
+    Then we can write \( Z(t) = θ\br{t, X^{(1)}_t, X^{(2)}_t, Y^t} \).
+
+    For conciseness, we denote \( F = f\br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \), and similarly the derivatives \( F' = f' \br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \) and \( F'' = f'' \br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \). Note that for the derivatives of \( θ \), we have
+    \begin{align*}
+        θ_{x_1}  & =  θ_{x_1 x_1}  =  θ , \\
+        θ_{x_2}  & =  θ_{x_1 x_2}  =  θ_y  =  θ ⋅ ∫_0^t F' \dif s , \\
+        θ_{x_2 x_2}  & =  θ_{y y}  =  θ ⋅ \br{∫_0^t F' \dif s}^2 + θ ⋅ ∫_0^t F''\dif s , \text{ and} \\
+        θ_t  & =  -\frac12 θ σ_t^2 + θ f(x_2 + y) - γ(t) σ_t θ_y ,
+    \end{align*}
+    where we used the Leibniz integral rule and the second line for the last identity.
+
+    Since \( ξ \) is independent of the Wiener process, by \cref{thm:Ayed–Kuo_differential_formula}\index{differential formula!Ayed–Kuo}, we get
+    \begin{align*}
+        \dif θ =
+        &  θ_t \dif t + θ_{x_1} \dif X^{(1)}_t + θ_{x_2} \dif X^{(2)}_t + θ_{y} \dif Y^t  \\
+        &  + \frac12 θ_{x_1 x_1} \br{\dif X^{(1)}_t}^2 + \frac12 θ_{x_2 x_2} \br{\dif X^{(2)}_t}^2 + θ_{x_1 x_2} \dif X^{(1)}_t \dif X^{(2)}_t - \frac12 θ_{y y} (\dif Y^t)^2 .
+    \end{align*}
+    Using the relationships between the derivatives of \( θ \) and its differential form, we get
+    \begin{align*}
+        \dif θ
+        & =  θ_t \dif t + θ σ_t \dif W_t + \bcancel{θ_y γ(t) \dif W_t} - \bcancel{θ γ(t) \dif W_t}  \\
+        & \quad + \frac12 θ σ_t^2 \dif t + \cancel{\frac12 θ_{y y} γ(t)^2 \dif t} + θ_y γ(t) σ_t \dif t - \cancel{\frac12 θ_{y y} γ(t)^2 \dif t}  \\
+        & = \br{θ_t + \frac12 θ σ_t^2 + θ_y γ(t) σ_t} \dif t + θ σ_t \dif W_t .
+    \end{align*}
+    Now,
+    \begin{equation*}
+        θ_t + \frac12 θ σ_t^2 + θ_y γ(t) σ_t
+        =  \br{ -\bcancel{\frac12 θ σ_t^2} + θ f(x_2 + y) - \cancel{θ_y γ(t) σ_t} } + \bcancel{\frac12 θ σ_t^2} + \cancel{θ_y γ(t) σ_t}
+        =  θ f(x_2 + y) ,
+    \end{equation*}
+    and so
+    \[ \dif θ  =  f(x_2 + y) θ \dif t + σ_t θ \dif W_t . \]
+    Since \( Z(t) = θ\br{t, X^{(1)}_t, X^{(2)}_t, Y^t} \), we get
+    \[ \dif Z(t) = f\br{∫_0^1 γ(s) \dif W_s} Z(t) \dif t + σ_t ~ Z(t) \dif W_t , \]
+    which is exactly \cref{eqn:SDE_drift}.
+\end{proof}
+
+The differential formula (\Cref{thm:Ayed–Kuo_differential_formula}) is an indispensable tool for analyzing anticipating processes. We show another example by finding the stochastic differential equation corresponding to the square of the above solution.
+
+\begin{theorem}  \label{thm:SDE_drift_solution_squared}
+    Under the condition of \cref{thm:SDE_drift_Ayed–Kuo}, the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif V(t)
+            & =  \bs{ σ_t^2 + f\br{∫_0^1 γ(s) \dif W_s} + 2 γ(t) ~ σ_t ∫_0^t f'\br{∫_0^1 γ(u) \dif W_u - ∫_s^t γ(u) ~ σ_u \dif u} \dif s } V(t) \dif t  \\
+            & \quad  + 2 σ_t ~ V(t) \dif W_t , \\
+            V(0)  & =  ξ^2
+        \end{aligned}
+        \right.
+    \end{equation*}
+    is solved by \( Z(t)^2 \), where \( Z \) is given by \cref{eqn:SDE_drift_solution_Ayed–Kuo}.
+\end{theorem}
+
+\begin{remark}
+    An interesting feature is that the derivative of \( f \) appears in the stochastic differential equation.
+\end{remark}
+
+\begin{proof}
+    We follow the exact same strategy as the proof of \cref{thm:SDE_drift_Ayed–Kuo}. The initial condition is trivially true. Let \( V(t) = Z(t)^2 \).
+
+    Taking the square of both sides of \cref{eqn:SDE_drift_solution_Ayed–Kuo}, we get
+    \begin{align*}
+        V(t) = ξ^2 \exp\bs{ ∫_0^t 2 σ_s \dif W_s - ∫_0^t σ_s^2 \dif s + ∫_0^t 2 f\br{ ∫_0^1 γ(u) \dif W_u - ∫_s^t γ(u) ~ σ_u \dif u } \dif s }
+    \end{align*}
+    We have \( V(t) = θ\br{t, X^{(1)}_t, X^{(2)}_t, Y^t} \), where
+    \begin{align*}
+        θ(t, x_1 , x_2 , y) = ξ^2 \exp\bs{ x_1  - ∫_0^t σ_s^2 \dif s + ∫_0^t 2 f\br{ x_2 + y - ∫_s^t γ(u) ~ σ_u \dif u } \dif s } ,
+    \end{align*}
+    and
+    \begin{align*}
+                X^{(1)}_t  & =  ∫_0^t 2 σ_s \dif W_s  &&  (\text{so } \dif X^{(1)}_t  =  2 σ_t \dif W_t)  ,  \\
+                X^{(2)}_t  & =  ∫_0^t γ(s) \dif W_s    &&  (\text{so } \dif X^{(2)}_t  =  γ(t) \dif W_t)  ,  \\
+        \text{ and }  Y^t  & =  ∫_t^1 γ(s) \dif W_s    &&  (\text{so }       \dif Y^t  = -γ(t) \dif W_t) .
+    \end{align*}
+    As before, writing \( F = f\br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \), \( F' = f'\br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \), and \( F'' = f''\br{∫_0^1 γ(t) \dif W_t - ∫_s^t γ(u) ~ σ_u \dif u} \), we get
+    \begin{align*}
+        θ_{x_1}  & =  θ_{x_1 x_1}  =  θ , \\
+        θ_{x_2}  & =  θ_{x_1 x_2}  =  θ_y  =  2 θ ⋅ ∫_0^t F' \dif s , \\
+        θ_{x_2 x_2}  & =  θ_{y y}  =  θ ⋅ \br{∫_0^t F' \dif s}^2 + θ ⋅ ∫_0^t F''\dif s , \text{ and} \\
+        θ_t  & =  -θ σ_t^2 + 2 θ f(x_2 + y) - γ(t) σ_t θ_y .
+    \end{align*}
+
+    Using the above in \cref{thm:Ayed–Kuo_differential_formula}, we get
+    \begin{align*}
+        \dif θ
+        = &  θ_t \dif t + θ_{x_1} \dif X^{(1)}_t + θ_{x_2} \dif X^{(2)}_t + θ_{y} \dif Y^t  \\
+          &  + \frac12 θ_{x_1 x_1} \br{\dif X^{(1)}_t}^2 + \frac12 θ_{x_2 x_2} \br{\dif X^{(2)}_t}^2 + θ_{x_1 x_2} \dif X^{(1)}_t \dif X^{(2)}_t - \frac12 θ_{y y} (\dif Y^t)^2  \\
+        = &  θ_t \dif t + 2 θ σ_t \dif W_t + \bcancel{θ_{x_2} γ(t) \dif W_t} - \bcancel{θ γ(t) \dif W_t}  \\
+          &  + 2 θ σ_t^2 \dif t + \cancel{\frac12 θ_{x_2 x_2} γ(t)^2 \dif t} + 2 θ_y γ(t) σ_t \dif t - \cancel{\frac12 θ_{y y} γ(t)^2 \dif t}  \\
+        = &  \br{θ_t + 2 θ σ_t^2 + 2 θ_y γ(t) σ_t} \dif t + 2 θ σ_t \dif W_t  \\
+        = &  \bs{θ σ_t + 2 θ f(x_2 + y) + 2 γ(t) σ_t θ ∫_0^t F' \dif s} \dif t + 2 θ σ_t \dif W_t .
+    \end{align*}
+    Finally, using \( V(t) = θ\br{t, X^{(1)}_t, X^{(2)}_t, Y^t} \), we get the stochastic differential equation.
+\end{proof}
+
+
+
+\section{Solution in the Skorokhod sense}  \label{sec:SDE_drift_Skorokhod}  \index{Malliavin calculus}  \index{integral!Skorokhod}  \index{stochastic differential equation!existence}  \index{stochastic differential equation!uniqueness}
+In the prior section, we showed the existence of the solution via the Ayed–Kuo differential formula. However, the procedure started with intelligently guessing an ansatz for the solution and applying the differential formula to it. Can a solution be found without this \textquote{guessing}? In this section, we use elementary ideas from Malliavin calculus to interpret the stochastic differential equation in the Skorokhod sense. Then we introduce an iterative \textquote{braiding} technique\index{braiding technique} in the spirit of Trotter's product formula\index{Trotter's product formula}\cite{Trotter1959} that allows us to construct the solution without needing to know the form of the solution. Note that we expect to arrive at the same solution as in \cref{sec:SDE_drift_Ayed–Kuo} since under the definition of the Ayed–Kuo integral using \( L^2(Ω) \) convergence, the Hitsuda–Skorokhod integral and the Ayed–Kuo integrals are equivalent, as shown in \cite[theorem 2.3]{PeterParczewski2017}.
+
+In this section, we use subscripts throughout for time. First, fix the family of translation \( A_t : 𝒞_0 → 𝒞_0 \) in the Cameron–Martin direction given by
+\begin{equation*}
+    (A_t(ω))_s  =  ω_s - ∫_0^{t ∧ s} σ(u) \dif u
+    \qquad  \text{ and }  \qquad
+    (T_t(ω))_s  =  ω_s + ∫_0^{t ∧ s} σ(u) \dif u .
+\end{equation*}
+
+We look at an existence result for stochastic differential equations in the Skorokhod sense.
+\begin{lemma}  \label{thm:SDE_Skorokhod_base}
+    Suppose \( σ ∈ L^2[0, 1] \) and \( ξ ∈ L^p(Ω) \) for some \( p > 2 \).
+    Then the stochastic differential equation
+    \begin{equation}  \label{eqn:SDE_Skorokhod_base}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  σ(t) ~ Z(t) \dif W_t  \\
+            Z(0)  & =  ξ ,
+        \end{aligned}
+        \right.
+    \end{equation}
+    has the unique solution given by
+    \begin{equation}  \label{eqn:SDE_Skorokhod_base_solution}
+        Z(t) =  (ξ ∘ A_t) ~ ℰ_t .
+    \end{equation}
+\end{lemma}
+\begin{proof}
+   It is clear that the family \( \bc{ (ξ ∘ A_t) ℰ_t \given t ∈ [0, 1] } \) is \( L^r(Ω) \)-bounded for all \( r < p \) by Girsanov's theorem\index{Girsanov's theorem} and Hölder 's inequality\index{Hölder's inequality}. Let \( G \) be any smooth random variable. Multiply both sides of \cref{eqn:SDE_Skorokhod_base} by \( G \). With the process \( X \) given by \cref{eqn:SDE_Skorokhod_base_solution},
+   \begin{align*}
+       \E\br{G∫_0^t σ(s) ~ Z(s) \dif W_s}
+       & =  \E\br{∫_0^t σ(s) ~ Z(s) \Dif_s G \dif s}  \\
+       & =  \E\br{ξ ∫_0^t σ(s) ~ (\Dif_s G)(T_s) \dif s}  \qquad  \text{(using Girsanov theorem)}  \\
+       & =  \E\br{ξ ∫_0^t \frac{\dif}{\dif s} G(T_s) \dif s}  \\
+       & =  \E\br{ξ(G(T_t) - G)}  \\
+       & =  \E\br{ξ(A_t) ~ ℰ_t ~ G}  - \E\br{ξ ~ G}  \qquad  \text{(again by Girsanov theorem)}  \\
+       & =  \E\br{Z(t) ~ G} - \E\br{ξ ~ G} .
+   \end{align*}
+   Thus, a solution of the stochastic equation \cref{eqn:SDE_Skorokhod_base} is explicitly given by \cref{eqn:SDE_Skorokhod_base_solution}. Uniqueness follows since the solution of \cref{eqn:SDE_Skorokhod_base} started at \( ξ ≡ 0 \) is identically zero at all times.
+\end{proof}
+
+Now we introduce the braiding technique to generalize this to equations of the type \cref{eqn:SDE_drift}, where \( γ ∈ L^2[0, 1] \) and \( f: ℝ → ℝ \). First, to simplify notation, define
+\begin{align*}
+    I_γ  & =  ∫_0^1 γ_s \dif W_s , \\
+    A_u^v(ω_⋅)  & =  ω_⋅ - ∫_u^{(⋅ ∧ v) ∨ u} σ(s) \dif s , \\
+    E_u^v  & =  \exp\bs{∫_u^v σ(s) \dif W_s - \frac12 ∫_u^v σ(s)^2 \dif s} , \text{ and} \\
+    g_u^v  & =  \exp\bs{f(I_γ) ~ (v - u)} .
+\end{align*}
+Directly from the definitions above, for any \( u < v < w \), we get the compositions
+\begin{align*}
+    A_v^w ∘ A_u^v  & =  A_u^w , \\
+    E_u^v ∘ A_v^w  & =  E_u^v , \\
+    g_u^v ∘ A_v^w  & =  \exp\bs{f(I_γ ∘ A_v^w) ~ (v - u)} ,
+\end{align*}
+and the products
+\begin{align*}
+    E_u^v ⋅ E_v^w  & =  E_u^w , \text{ and} \\
+    g_u^v ⋅ g_v^w  & =  g_u^w .
+\end{align*}
+We suppress the dependence on \( ω \) for notational convenience.
+
+Fix \( t ∈ [0, 1] \), and consider a sequence of partitions \( Π_n = \bc{0 = t_0 < t_1 < \dotsb < t_n = t} \) of \( [0, t] \) such that \( \norm{Π_n} = \sup\bc{t_i - t_{i-1} \given i ∈ [n]} → 0 \). On each subinterval, we
+\begin{enumerate}
+    \item  \label{itm:diffusion_step}  solve the equation having only the diffusion with the initial condition as the solution of the previous step, and
+    \item  \label{itm:drift_step}  use the solution obtained in step \ref{itm:diffusion_step} as the initial condition and solve the equation having only the drift.
+\end{enumerate}
+For the first subinterval, the initial condition of step \ref{itm:diffusion_step} is taken to be \( ξ \). For a visual representation of the idea, see \cref{fig:braiding}.
+
+\begin{figure}
+    \centering
+    \begin{tikzpicture}[
+        decoration={markings,
+        mark=at position 0.6 with {\arrow{latex}}}
+    ]
+        % Main timeline
+        \draw [->, very thick, color=gray] (-0.5,0) -- (10.5,0) node[below] {\( t \)};
+        \foreach \x/\xtext in {0/t_0=0, 2/t_1, 4/t_{2}, 7/t_{n-1}, 9/t_n=t, 10/1}
+            \draw [ultra thick] (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\xtext$};
+
+        % Guide lines
+        % i = 1
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (1.9,1) -- (0,2);
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (1.9,2) -- (2.1,1);
+        % i = 2
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (3.9,1) -- (2.1,2);
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (3.9,2) -- (4.1,1);
+        % i = k
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (4.9,1.5) -- (4.1,2);
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (6.9,1) -- (6,1.5);
+        % i = n
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (6.9,2) -- (7.1,1);
+        \draw [very thick, densely dotted, color=Thistle, postaction={decorate}] (8.9,1) -- (7.1,2);
+
+        % X1
+        \draw [very thick, color=Orchid, postaction={decorate}] (0,1) -- (1.9,1);
+        \draw [color=Orchid] (1,0.7) node {\( Y^{(1)} \)};
+        \draw [fill=Orchid] (1.9,1) circle (1.5pt);
+        \draw [fill=DeepPink] (0,1) circle (3pt);
+        \draw [color=DeepPink] (-0.3,1) node {\( ξ \)};
+
+        % Y1
+        \draw [very thick, color=DarkGoldenrod, postaction={decorate}] (0,2) -- (1.9,2);
+        \draw [color=DarkGoldenrod] (1,2.3) node {\( X^{(1)} \)};
+        \draw [fill=DarkGoldenrod] (0,2) circle (1.5pt);
+        \draw [fill=DarkGoldenrod] (1.9,2) circle (1.5pt);
+
+        % X2
+        \draw [very thick, color=Orchid, postaction={decorate}] (2.1,1) -- (3.9,1);
+        \draw [color=Orchid] (3,0.7) node {\( Y^{(2)} \)};
+        \draw [fill=Orchid] (2.1,1) circle (1.5pt);
+        \draw [fill=Orchid] (3.9,1) circle (1.5pt);
+
+        % Y2
+        \draw [very thick, color=DarkGoldenrod, postaction={decorate}] (2.1,2) -- (3.9,2);
+        \draw [color=DarkGoldenrod] (3,2.3) node {\( X^{(2)} \)};
+        \draw [fill=DarkGoldenrod] (2.1,2) circle (1.5pt);
+        \draw [fill=DarkGoldenrod] (3.9,2) circle (1.5pt);
+
+        % Forward time
+        \draw [fill=Orchid] (4.1,1) circle (1.5pt);
+        \draw [very thick, color=Orchid, postaction={decorate}] (4.1,1) -- (5,1);
+        \draw [very thick, color=DarkGoldenrod,  postaction={decorate}] (4.1,2) -- (5,2);
+        \draw [fill=DarkGoldenrod] (4.1,2) circle (1.5pt);
+
+        % Backward time
+        \draw [very thick, color=Orchid, postaction={decorate}] (6,1) -- (6.9,1);
+        \draw [very thick, color=DarkGoldenrod, postaction={decorate}] (6,2) -- (6.9,2);
+        \draw [fill=DarkGoldenrod] (6.9,2) circle (1.5pt);
+        \draw [fill=Orchid] (6.9,1) circle (1.5pt);
+
+        % Yn
+        \draw [very thick, color=Orchid, postaction={decorate}] (7.1,1) -- (8.9,1);
+        \draw [color=Orchid] (8,0.7) node {\( Y^{(n)} \)};
+        \draw [fill=Orchid] (7.1,1) circle (1.5pt);
+        \draw [fill=Orchid] (8.9,1) circle (1.5pt);
+
+        % Xn
+        \draw [very thick, color=DarkGoldenrod, postaction={decorate}] (7.1,2) -- (8.9,2);
+        \draw [color=DarkGoldenrod] (8,2.3) node {\( X^{(n)} \)};
+        \draw [fill=DarkGoldenrod] (7.1,2) circle (1.5pt);
+        \draw [fill=DeepPink] (8.9,2) circle (3pt);
+        \draw [color=DeepPink] (9.3,2) node {\( Z \)};
+
+        \draw[color=Black] (5.5,1.5) node  {\( \dotsb \)};
+        % Setup and bounding box
+        % \clip(-2,-1) rectangle (9,3);
+        % \draw (current bounding box.north east) rectangle (current bounding box.south west);
+    \end{tikzpicture}
+    \caption{A graphical representation of the braiding technique.}
+    \label{fig:braiding}
+\end{figure}
+
+We explicitly demonstrate the process for the first two subintervals. An index \( (i) \) in the superscript refers to the \( i \)th subinterval.
+
+\paragraph{First subinterval.}
+\begin{enumerate}
+    \item  The stochastic differential equation that we want to solve is
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Y^{(1)}_u  & =  σ(u) Y^{(1)}_u \dif W_u ,  \quad  u ∈ [0, t_1] , \\
+                 Y^{(1)}_0  & =  ξ .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    \Cref{thm:SDE_Skorokhod_base} gave us the almost sure unique solution \( Y^{(1)}_u = (ξ ∘ A_0^u) ~ E_0^u \), so
+    \[ Y^{(1)}_{t_1} = (ξ ∘ A_0^{t_1}) ~ E_0^{t_1} \]
+    on a set \( Ω_1 \), where \( \Pr\br{Ω_1} = 1 \).
+
+    \item  For each \( ω ∈ Ω_1 \), we want to solve the ordinary differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X^{(1)}_u  & =  f(I_γ) ~ X^{(1)}_u \dif u ,  \quad  u ∈ [0, t_1] , \\
+                 X^{(1)}_0  & =  Y^{(1)}_{t_1} .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    By the existence and uniqueness theorem of ordinary differential equations, the unique solution is given by \( X^{(1)}_u  =  Y^{(1)}_{t_1} ~ g_0^u  =  (ξ ∘ A_0^{t_1}) ~ E_0^{t_1} ~ g_0^u \), and so
+    \[ X^{(1)}_{t_1}  =  (ξ ∘ A_0^{t_1}) ~ E_0^{t_1} ~ g_0^{t_1}  . \]
+\end{enumerate}
+
+\paragraph{Second subinterval.}
+\begin{enumerate}
+    \item  The stochastic differential equation that we want to solve is
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Y^{(2)}_u  & =  σ(u) ~ Y^{(2)}_u \dif W_u ,  \quad  u ∈ [t_1, t_2] , \\
+                 Y^{(2)}_{t_1}  & =  X^{(1)}_{t_1} .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    \Cref{thm:SDE_Skorokhod_base} gives us the almost sure unique solution \( Y^{(2)}_u = (X^{(1)}_{t_1} ∘ A_{t_1}^u) ~ E_{t_1}^u \). Now,
+    \begin{align*}
+        Y^{(2)}_u
+        & =  \bs{\br{(ξ ∘ A_0^{t_1}) ~ E_0^{t_1} ~ g_0^{t_1}} ∘ A_{t_1}^u} ~ E_{t_1}^u  \\
+        & =  (ξ ∘ A_0^{t_1} ∘ A_{t_1}^u) ~ E_0^{t_1} ~ E_{t_1}^u ~ (g_0^{t_1} ∘ A_{t_1}^u)  \\
+        & =  (ξ ∘ A_0^u) ~ E_0^u ~ (g_0^{t_1} ∘ A_{t_1}^u) ,
+    \end{align*}
+    where we used the fact that \( E_0^{t_1} \) is invariant under \( A_{t_1}^u \). This is because, by definition,
+    \[ A_{t_1}^u(ω_⋅)  =  ω_⋅ - ∫_{t_1}^{(⋅ ∧ u) ∨ t_1} σ(s) \dif s . \]
+    Now, for \( E_0^{t_1} \), we have \( t ∈ [0, t_1] \). Therefore,
+    \[ A_{t_1}^u(ω_t)  =  ω_t - ∫_{t_1}^{t_1} σ(s) \dif s = ω_t , \]
+    showing the invariance. This gives the motivation behind why we define \( A \) as such, and is a key trick in the method.
+
+    Continuing, we get
+    \[ Y^{(2)}_{t_2} = (ξ ∘ A_0^{t_2}) ~ E_0^{t_2} ~ (g_0^{t_1} ∘ A_{t_1}^{t_2}) \]
+    on a set \( Ω_2 ⊆ Ω_1 \), where \( \Pr\br{Ω_2} = 1 \).
+
+    \item  For each \( ω ∈ Ω_2 \), we have the ordinary differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X^{(2)}_u  & =  f(I_γ) ~ X^{(2)}_u \dif u ,  \quad  u ∈ [t_1, t_2] , \\
+                 X^{(2)}_{t_1}  & =  Y^{(2)}_{t_1} .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    The unique solution is given by \( X^{(2)}_u  =  Y^{(2)}_{t_1} ~ g_{t_1}^u \). Using the definition of \( Y^{(2)}_{t_1} \) and the fact that \( A_{t_2}^{t_2} \) is the identity function,
+    \begin{align*}
+        X^{(2)}_{t_2}
+        & =  \bs{(ξ ∘ A_0^{t_2}) ~ E_0^{t_2} ~ (g_0^{t_1} ∘ A_{t_1}^{t_2})} ~ (g_{t_1}^{t_2} ∘ A_{t_2}^{t_2})  \\
+        & =  (ξ ∘ A_0^{t_2}) ~ E_0^{t_2} ~ ∏_{i = 1}^2 (g_{t_1}^{t_2} ∘ A_{t_2}^{t_2})
+    \end{align*}
+\end{enumerate}
+
+It should now become obvious what the pattern is. We prove this using induction in the following lemma.
+
+\begin{lemma}  \label{thm:braiding}
+    Let \( ξ ∈ L^p(Ω) \) for some \( p > 2 \). Consider the \( k \)th subinterval \( u ∈ [t_{k-1}, t_k] \) for any \( k ∈ [n] \), and define
+    \begin{enumerate}
+        \item  the stochastic differential equation
+        \begin{equation*}
+            \left\{
+            \begin{aligned}
+                   \dif Y^{(k)}_u  & =  σ(u) ~ Y^{(k)}_u \dif W_u ,  \quad  u ∈ [t_{k-1}, t_k] , \\
+                Y^{(k)}_{t_{k-1}}  & =  X^{({k-1})}_{t_{k-1}} , \text{ and}
+            \end{aligned}
+            \right.
+        \end{equation*}
+
+        \item  the ordinary differential equation
+        \begin{equation*}
+            \left\{
+            \begin{aligned}
+                   \dif X^{(k)}_u  & =  f(I_γ) ~ X^{(k)}_u \dif u ,  \quad  u ∈ [t_{k-1}, t_k] , \\
+                X^{(k)}_{t_{k-1}}  & =  Y^{(k)}_{t_k} .
+            \end{aligned}
+            \right.
+        \end{equation*}
+    \end{enumerate}
+    Then there exists a set \( Ω_k ⊆ Ω \) with \( \Pr\br{Ω_k} = 1 \) such that on \( Ω_k \), we have
+    \[ X^{(k)}_{t_k} =  (ξ ∘ A_0^{t_k}) ~ E_0^{t_k} ~ ∏_{i = 1}^k (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^{t_k}) . \]
+\end{lemma}
+
+\begin{proof}
+    \emph{Base cases.} This is true for \( k = 1 \) and \( k = 2 \) as shown in the computations above.
+
+    \emph{Induction step.} Assume that the result holds for \( k = m-1 \). This means that there exists \( Ω_{m-1} \) with \( \Pr\br{Ω_{m-1}} = 1 \) such that on \( Ω_{m-1} \), we have
+    \[ X^{(m-1)}_{t_{m-1}} =  (ξ ∘ A_0^{t_{m-1}}) ~ E_0^{t_{m-1}} ⋅ ∏_{i = 1}^{m-1} (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^{t_{m-1}}) . \]
+
+    Using the ideas of computations on the second subinterval, we get that there exists \( Ω_m \) with \( \Pr\br{Ω_m} = 1 \) such that on \( Ω_m \), we have
+    \[ Y^{(m)}_{t_m} = (ξ ∘ A_0^{t_m}) ~ E_0^{t_m} ~ ∏_{i = 1}^{m-1} (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^{t_m}) . \]
+    Since \( A_{t_m}^{t_m} \) is the identity function, on \( Ω_m \), we have
+    \begin{align*}
+        X^{(m)}_{t_m}
+        & =  Y^{(m)}_{t_{m-1}} ~ g_{t_{m-1}}^{t_m}  \\
+        & = (ξ ∘ A_0^{t_m}) ~ E_0^{t_m} ~ ∏_{i = 1}^m (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^{t_m}) .
+    \end{align*}
+
+    The proof is now complete by mathematical induction.
+\end{proof}
+
+We are now able to derive a closed form solution of \cref{eqn:SDE_drift} in the Skorokhod sense. This is the main theorem of the section.
+
+\begin{theorem}  \label{thm:SDE_drift_Skorokhod}
+    Suppose \( σ, γ ∈ L^2[0, 1] \), \( f: ℝ → ℝ \), and \( ξ ∈ L^p(Ω) \) for some \( p > 2 \). Then the unique solution of \cref{eqn:SDE_drift} in the Skorokhod sense is given by
+    \begin{align*}  \label{eqn:SDE_drift_solution_Skorokhod}
+        Z(t)  =  (ξ ∘ A_0^t) \exp
+        &  \left[ ∫_0^t σ(s) \dif W_s - \frac12 ∫_0^t σ(s)^2 \dif s \right.  \\
+        &  \left. + ∫_0^t f\br{ ∫_0^1 γ(u) \dif W_u - ∫_s^t γ(u) ~ σ(u) \dif u } \dif s \right] .
+    \end{align*}
+\end{theorem}
+
+\begin{remark}
+    Note that \( ξ \) may depend on the Wiener process.
+\end{remark}
+
+\begin{proof}
+    Using \cref{thm:braiding}, for any \( t ∈ [0, 1] \), we have
+    \[ X^{(n)}_t =  (ξ ∘ A_0^t) ~ E_0^t ~ ∏_{i = 1}^k (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^t) . \]
+    Now,
+    \begin{align*}
+        ∏_{i = 1}^k (g_{t_{i-1}}^{t_i} ∘ A_{t_i}^t)
+        & =  ∏_{i = 1}^k \exp\bs{f(I_γ ∘ A_{t_i}^t) ~ (t_i - t_{i-1})}  \\
+        & =  \exp\bs{∑_{i = 1}^k f\br{∫_0^1 γ(u) \dif W_u - ∫_0^t γ(u) ~ σ(u) \dif u} \Del t_i} .
+    \end{align*}
+    Finally, taking \( n → ∞ \), we get
+    \begin{align*}
+        Z(t)
+        & =  \lim_{n → ∞} X^{(n)}_t  \\
+        & =  (ξ ∘ A_0^t) ~ E_0^t ~ \exp\bs{∫_0^t f\br{∫_0^1 γ(u) \dif W_u - ∫_0^t γ(u) ~ σ(u) \dif u} \dif s} ,
+    \end{align*}
+    which exactly equals the proposed solution.
+
+    The solution exists almost surely, due to the continuity of the measure. Moreover, the solution is unique. For if not, there are two solutions which disagree for the first time on a particular interval, say the \( k \)th interval. Recall that the solutions obtained using Malliavin calculus and also for ordinary differential equations are unique for each interval of time. Therefore, such a disagreement would violate these uniqueness results.
+\end{proof}

@@ -1,0 +1,624 @@
+% !TeX root = ../dissertation.tex
+
+\section{The definition of the integral}
+\footnotetextonly{Parts of \cref{sec:LSDEs_ICs} previously appeared in the following open-access journal articles:
+\begin{enumerate}
+    \item  \fullcite{KuoSinhaZhai2018}
+    \item  \fullcite{KuoShresthaSinha2021conditional}
+\end{enumerate}
+}
+We first define processes that can be thought of as purely anticipating in nature.
+\begin{definition}
+    A stochastic process \( Y \) is called \emph{instantly-independent}\index{instantly-independent} with respect to the filtration \( ℱ \) if the random variable \( Y^t \) and the σ-algebra \( ℱ_t \) are independent for each \( t \).
+\end{definition}
+
+\begin{remark}
+    To denote time for adapted processes, we use subscripts, for example \( X_t \). For instantly-independent processes, we use superscripts, like \( Y^t \). For deterministic functions or general processes, we use parenthesis, for example \( Z(t) \).
+\end{remark}
+
+The \emph{Ayed–Kuo integral}\index{integral!Ayed–Kuo} of a stochastic process \( Z(t) \) introduced in \cite{AyedKuo2008} is defined in the following two steps. In the entire process, we assume \( \br{Π_n}_{n = 1}^∞ \) is a sequence of partitions of \( [a, b] \) such that \( \norm{Π_n} → 0 \) as \( n → ∞ \). We also assume that the reader is familiar with modes of convergence of random variables.
+
+\paragraph{Step 1}
+Suppose \( X \) is an \( ℱ \)-adapted continuous stochastic process and \( Y \) be an continuous stochastic processes that is instantly-independent with respect to \( ℱ \). Then the stochastic integral of the product \( X Y \) is defined by the limit in probability
+\begin{equation*}
+    ∫_a^b X_t ~ Y^t \dif W_t = \lim_{n → ∞} ∑_{j = 1}^n X_{t_{j - 1}} Y^{t_j} \Del W_{t_j} ,
+\end{equation*}
+provided that the limit exists in probability.
+
+For a process of the form \( Z(t) = ∑_{i = 1}^m X^{(i)}_t Y_{(i)}^t \), the stochastic integral is defined by
+\begin{equation}  \label{eqn:Ayed–Kuo_integral_step1}
+    ∫_a^b Z(t) \dif W_t = ∑_{i = 1}^m ∫_a^b X^{(i)}_t Y_{(i)}^t \dif W_t.
+\end{equation}
+
+\begin{example}[{\cite[equation 1.6]{AyedKuo2008}}]  \label{eg:integral_Wb}
+    We first decompose the integrand into adapted and instantly-independent parts as \( W_b = W_t + (W_b - W_t) \). Using the definition of the integral under \( L^2 \)-limits, we get
+
+    \begin{align*}
+        ∫_a^b W_b \dif W_t
+        & =  ∫_a^b \bs{W_t + (W_b - W_t)} \dif W_t  \\
+        & =  \lim_{n → ∞} ∑_{i = 1}^n \bs{W_{t_{i-1}} + (W_b - W_{t_i})} \Del W_i  \\
+        & =  \lim_{n → ∞} ∑_{i = 1}^n \br{W_b - \Del W_i} \Del W_i  \\
+        & =  W_b ⋅ \lim_{n → ∞} ∑_{i = 1}^n \Del W_i - \lim_{n → ∞} ∑_{i = 1}^n (\Del W_i)^2  \\
+        & =  W_b (W_b - W_a) - (b - a) .
+    \end{align*}
+\end{example}
+
+\begin{example}[{\cite[equation 1.6]{AyedKuo2008}}]  \label{eg:integral_Wb_t_definition}
+    Following the exact same procedure as in \cref{eg:integral_Wb}, we get
+    \begin{equation*}
+        ∫_a^t W_b \dif W_s  =  W_b (W_t - W_a) - (t - a) .
+    \end{equation*}
+    We give another way of computing this integral later in \cref{eg:integral_Wb_t_linearity}.
+\end{example}
+
+
+\paragraph{Step 2}
+Let \( Z \) be a stochastic process such that there is a sequence \( \br{Z_n(t)}_{n = 1}^∞ \) of stochastic processes each of the form in \cref{eqn:Ayed–Kuo_integral_step1} satisfying
+\begin{enumerate}
+    \item  \( ∫_a^b \abs{Z_n(t) - Z(t)}^2 \dif t → 0 \) as \( n → ∞ \) almost surely, and
+    \item  \( ∫_a^b Z_n(t) \dif W_t \) converges in probability as \( n → ∞ \).
+\end{enumerate}
+Then the stochastic integral of \( Z \) is defined by
+\begin{equation*}
+    ∫_a^b Z(t) \dif W_t = \lim_{n → ∞}  ∫_a^b Z_n(t) \dif W_t \quad \text{in } \Pr .
+\end{equation*}
+
+In this document, we assume the stronger condition of convergence in \( L^2(Ω) \) instead of convergence in probability, since the former implies the latter and is easier to work with.
+
+Let us look at a few more examples of Ayed–Kuo integrals.
+
+\begin{example}[{\cite[example 2.1]{HwangKuoSaitô2019}}]  \label{eg:integral_Ws_W_b-W_s}
+    Using \( L^2 \)-limits,
+    \begin{align*}
+        ∫_a^t W_s (W_b - W_s) \dif W_s
+        & =  \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}} (W_b - W_{t_i}) \Del W_i  \\
+        & =  \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}} (W_b - \Del W_i - W_{t_{i-1}}) \Del W_i  \\
+        & =  W_b \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}} \Del W_i
+            - \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}} (\Del W_i)^2
+            - \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}}^2 \Del W_i  \\
+        & = W_b ∫_a^t W_s \dif W_s
+            - \lim_{n → ∞} ∑_{i = 1}^n W_{t_{i-1}} (\Del t_i)
+            - ∫_a^t W_s^2 \dif W_s  \\
+        & =  W_b ∫_a^t W_s \dif W_s - ∫_a^t W_s \dif s - ∫_a^t W_s^2 \dif W_s .
+    \end{align*}
+    From Itô's theory, we know
+    \begin{align*}
+        ∫_a^t W_s \dif W_s  & =  \frac12 \br{(W_t^2 - W_a^2) - (t - a)} , \text{ and}  \\
+        ∫_a^t W_s^2 \dif W_s  & =  \frac13 \br{(W_t^3 - W_a^3) - ∫_a^t W_s \dif s} .
+    \end{align*}
+    Putting these together, we get
+    \begin{equation*}
+        ∫_a^t W_s (W_b - W_s) \dif W_s  =  \frac12 W_b \br{(W_t^2 - W_a^2) - (t - a)} - \frac13 \br{W_t^3 - W_a^3} .
+    \end{equation*}
+\end{example}
+
+
+\begin{proposition}  \label{eg:Ayed–Kuo_integral_W_b^p}
+    For \( p ∈ ℕ \), we have \( ∫_a^t W_b^p \dif W_t = W_b^p \br{W_t - W_a} - p W_b^{p-1} (t - a) \).
+\end{proposition}
+\begin{proof}
+    Taking \( L^2 \) limits,
+    \begin{align*}
+        ∫_a^t W_T^p \dif W_s
+        & =  ∫_a^t \br{W_s + (W_T - W_u)}^p \dif W_s  \\
+        & =  \lim_{n → 0} ∑_{i = 1}^n \br{W_{t_{i-1}} + \br{W_T - W_{t_i}}}^p \br{\Del W_i}  \\
+        & =  \lim_{n → 0} ∑_{i = 1}^n \br{W_T - \Del W_i}^p \br{\Del W_i}  \\
+        & =  \lim_{n → 0} ∑_{i = 1}^n ∑_{k = 0}^p \binom{p}{k} (-1)^k W_T^{p-k} \br{\Del W_i}^{k+1}  \\
+        & =  ∑_{k = 0}^p \bs{ \binom{p}{k} (-1)^k W_T^{p-k} ⋅ \lim_{n → 0} ∑_{i = 1}^n \br{\Del W_i}^{k+1} } .
+    \end{align*}
+    Since \( \br{\Del W_i}^{k + 1} → 0 \) in \( L^2 \) as \( n → ∞ \) for all \( k ≥ 2 \), we have only have the \( k = 0 \) and \( k = 1 \) terms remaining. Moreover, \( \br{\Del W_i}^2 → \Del t_i \) in \( L^2 \) as \( n → ∞ \). Therefore,
+    \begin{align*}
+        ∫_0^t W_T^p \dif W_s
+        & =  W_T^p ⋅ \lim_{n → 0} ∑_{i = 1}^n \Del W_i - p W_T^{p-1} ⋅ \lim_{n → 0} ∑_{i = 1}^n \Del t_i  \\
+        & =  W_T^p \br{W_t - W_a} - p W_T^{p-1} (t - a) .
+    \end{align*}
+\end{proof}
+
+
+
+\section{Differential formula}  \index{differential formula!Ayed–Kuo}
+Recall that Itô's formula (\cref{thm:Itô_lemma}) allowed us to create new Itô processes from old ones. Here we look at an extension of Itô's formula that can also account for instantly-independent processes. Let \( X \) and \( Y \) be stochastic processes of the form
+\begin{align}
+    X_t  & =  X_a + ∫_a^t m_s \dif s + ∫_a^t σ_s \dif W_s , \qquad \text{and} \label{eqn:differential-processes-adapted}  \\
+    Y^t  & =  Y^b + ∫_t^b η^s \dif s + ∫_t^b ξ^s \dif W_s ,  \label{eqn:differential-processes-independent}
+\end{align}
+where \( σ \) and \( m \) are adapted (so \( X \) is an Itô process), and \( ξ \) and \( η \) are instantly-independent such that \( Y \) is also instantly-independent.
+
+\begin{theorem}[{\cite[theorem 3.2]{HwangKuoSaitôZhai2016}}]  \label{thm:Ayed–Kuo_differential_formula}
+    Suppose \( \br{ X^{(i)}_⋅ }_{i = 1}^n \) and \( \br{ Y^⋅_{(j)} }_{j = 1}^m \) are stochastic processes of the form given by equations \cref{eqn:differential-processes-adapted} and \cref{eqn:differential-processes-independent}, respectively. Suppose \( θ(t, x_1, \dotsc, x_n, y_1, \dotsc, y_m) \) is a real-valued function that is \( C^1 \) in \( t \) and \( C^2 \) in other variables. Then the stochastic differential of \( θ(t, X^{(1)}_t, \dotsc, X^{(n)}_t, Y_1^{(t)}, \dotsc, Y^t_{(m)}) \) is given by
+    \begin{align*}
+        & \dif θ\br{t, X^{(1)}_t, \dotsc, X^{(n)}_t, Y^t_{(1)}, \dotsc, Y^t_{(m)}}  \\
+        & = θ_t \dif t
+        + ∑_{i = 1}^n θ_{x_i} \dif X^{(i)}_t
+        + ∑_{j = 1}^m θ_{y_j} \dif Y_{(j)}^t  \\
+        & \quad + \frac12 ∑_{i, k = 1}^n θ_{x_i x_k} \dif X^{(i)}_t \dif X^{(k)}_t
+        - \frac12 ∑_{j, l = 1}^m θ_{y_j y_l} \dif Y_{(j)}^t \dif Y_{(l)}^t.
+    \end{align*}
+\end{theorem}
+
+\begin{corollary}[{\cite[corollary 2.11]{HwangKuoSaitô2019}}]  \label{thm:Ayed–Kuo_differential_formula_Wb}
+    Suppose \( X_t \) is an Itô process and \( ψ(t, x, z) \) is a
+    real-valued function that is \( C^1 \) in in t and \( C^2 \) in \( x \) and \( z \). Then the stochastic differential of \( ψ(t, X_t, W_b \) is given by
+    \begin{equation*}
+        ψ(t, X_t, W_b)
+        = ψ_t \dif t
+        + ψ_{x} \dif X_t
+        + \frac12 ψ_{xx} (\dif X_t)^2
+        + ψ_{xz} \dif X_t \dif W_t .
+    \end{equation*}
+\end{corollary}
+\begin{proof}
+    Since \( W_b = W_t + (W_b - W_t) \) for any \( t \), define a function \( θ(t, x_1, x_2, y) = ψ(t, x_1, x_2 + y) \) and set \( X^{(1)}_t = X_t \), \( X^{(2)}_t = W_t \), and \( Y^t = W_b - W_t \). Applying \cref{thm:Ayed–Kuo_differential_formula} gives us the required result.
+\end{proof}
+
+\begin{example}
+    It is much simpler to calculate the result of \cref{eg:Ayed–Kuo_integral_W_b^p} using \cref{thm:Ayed–Kuo_differential_formula_Wb}. We guess the solution of the integral to be of the form \( W_b^p W_t \). Therefore, let \( ψ(x, z) = z^p x \). So \( ψ_x(x, z) = z^p \) and \( ψ_{xz}(x, z) = p z^{p-1} \), all other terms being zero. Putting this together and using \( \br{\dif W_t}^2 = \dif t \) we get
+    \begin{equation*}
+        \dif \br{W_b^p W_t}
+        =  \dif ψ\br{W_t, W_b^p}
+        =  W_b^p \dif W_t + p W_b^{p-1} \dif t .
+    \end{equation*}
+    Therefore,
+    \begin{equation*}
+        ∫_a^t W_b^p \dif W_s  =  W_b^p \br{W_t - W_a} - p W_b^{p-1} (t - a).
+    \end{equation*}
+\end{example}
+
+
+Just as in Itô's theory, the differential formula  plays a very important role in the study of anticipating stochastic differential equations in the Ayed–Kuo theory. However, our experience of stochastic differential equations from Itô's theory does not translate over completely; the solutions of anticipating stochastic differential equations has quite a few surprises in store. In the following two sections, we focus on building examples that demonstrate this non-trivial nature. We follow up the examples with theorems that generalize the examples.
+
+
+
+\section{LSDEs with anticipating coefficients}
+In this section and the next, we fix \( t ∈ [0, 1] \) unless stated otherwise.
+
+In the following examples, we progressively increase the complexity of the diffusion coefficient of the stochastic differential equation and see its effect on the solution. This will help us to develop our intuition about the non-trivial nature of the results related to anticipating coefficients. The first three examples follow directly from \cref{rem:exponential_SDE}.
+
+\begin{example}
+    Let \( σ \) be a constant. The process
+    \[ ℰ^{(σ)}_t = \exp \bs{σ W_t - \frac12 σ^2 t} \]
+    is a solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            d ℰ^{(σ)}_t  & =  σ ~ ℰ^{(σ)}_t \dif W_t , \\
+            \quad ℰ^{(σ)}_0  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{example}
+
+\begin{example}
+    Suppose \( σ(t) \) is a deterministic function. The process
+    \[ ℰ^{(σ)}_t = \exp \bs{∫_0^t σ(s) \dif W_s - \frac12 ∫_0^t σ(s)^2 \dif s } \]
+    is a solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            d ℰ^{(σ)}_t  & =  σ_t ~ ℰ^{(σ)}_t \dif W_t , \\
+            \quad ℰ^{(σ)}_0  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{example}
+
+\begin{example}
+    Consider the adapted coefficient \( σ_t = W_t \). The process
+    \[ X_t = \exp \bs{\frac12 \br{W_t^2 - t - ∫_0^t W_s^2 \dif s }} \]
+    is a solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  W_t ~ X_t \dif W_t , \\
+            \quad X_0  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    %The proof of the result is a direct application of the Itô formula.
+\end{example}
+
+From the above examples and \cref{eg:integral_Wb}, one might guess that the process
+\begin{align*}
+    Z(t)
+    & =  \exp \bs{∫_0^t W_1 \dif W_s - \frac12 ∫_0^t W_1^2 \dif s }  \\
+    & =  \exp \bs{W_1 ~ W_t - t - \frac12 W_1^2 ~ t}
+\end{align*}
+is a solution of the stochastic differential equation
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        \dif Z(t)  & =  W_1 ~ Z(t) \dif W_t , \\
+             Z(0)  & =  1 .
+    \end{aligned}
+    \right.
+\end{equation*}
+But this is not true. In fact, we can apply the generalized Itô formula to derive the following result.
+\begin{theorem}[{\cite[theorem 3.3]{HwangKuoSaitô2019}}]
+    The stochastic process
+    \begin{equation*}
+        Z(t)  =  \exp \bs{W_1 ~ W_t - t - \frac12 W_1^2 ~ t}
+    \end{equation*}
+    is a solution of
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  W_1 ~ Z(t) \dif W_t + W_1 ~ (W_t - t W_1) ~ Z(t) \dif t , \\
+                 Z(0)  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{theorem}
+
+Then what is the solution of the following stochastic differential equation?
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        \dif Z(t)  & =  W_1 ~ Z(t) \dif W_t , \\
+             Z(0)  & =  1 .
+    \end{aligned}
+    \right.
+\end{equation*}
+The answer is given by the following theorem.
+
+\begin{theorem}[{\cite[theorem 3.1]{HwangKuoSaitô2019}}]
+    The process
+    \begin{equation*}
+        Z(t) = \exp \bs{W_1 ∫_0^t e^{-(t - s)} \dif W_s  - t - \frac14 W_1^2 ~ (1 - e^{-2 t})}
+    \end{equation*}
+    is a solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  W_1 ~ Z(t) \dif W_t , \\
+                 Z(0)  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{theorem}
+
+Therefore, we see that solutions of stochastic differential equations with anticipating coefficients are quite non-trivial.
+
+
+
+\section{LSDEs with anticipating initial conditions}  \label{sec:LSDEs_ICs}
+
+We start our discussion on stochastic differential equations with anticipating initial conditions with the following example. We assume \( t ∈ [0, 1] \) in this section.
+
+\begin{example}[{\cite[examples 4.1–3]{AyedKuo2008}}]
+    \begin{equation}  \label{SDE_anticipating_IC_simple0}
+        \left\{
+        \begin{aligned}
+            \dif X_t & =  X_t \dif W_t , \\
+                X_0  & =  x ∈ ℝ.
+        \end{aligned}
+        \right.
+    \end{equation}
+    It is well known that the solution to \cref{SDE_anticipating_IC_simple0} is
+    \begin{equation*}
+        X_t = x e^{W_t - \frac12 t} .
+    \end{equation*}
+
+    However, if we take this solution and replace \( x \) with \( W_1 \) and apply the generalized Itô formula to the resultant expression, we obtain a different stochastic differential equation. In particular,
+    \begin{equation}  \label{SDE_anticipating_IC_simple1_solution}
+        Y_t = W_1 e^{W_t - \frac12 t}
+    \end{equation}
+    is a solution of
+    \begin{equation}  \label{SDE_anticipating_IC_simple1}
+        \left\{
+        \begin{aligned}
+            \dif Y_t & =  Y_t \dif W_t + \frac{1}{W_1} Y_t \dif t , \\
+                Y_0  & =  W_1.
+        \end{aligned}
+    \right.
+    \end{equation}
+
+    Here, the initial condition is outside the classical theory of Itô calculus since \( W_1 \) is not \( ℱ_0 \)-measurable. We can use the generalized Itô formula along with the Picard iteration method
+    to show that \( Y_t \) is indeed the unique solution.
+
+    On the other hand,
+    if we replace all the \( W_1 \) terms in \cref{SDE_anticipating_IC_simple1} with \( x ∈ ℝ \) then we obtain the following stochastic differential equation
+    \begin{equation*}  \label{SDE_anticipating_IC_simple2}
+        \left\{
+        \begin{aligned}
+            \dif Z_t & =  Z_t \dif W_t + \frac1x Z_t \dif t , \\
+                Z_0  & = x ∈ ℝ.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    with its solution
+    \begin{equation*}  \label{SDE_anticipating_IC_simple2_solution}
+        \displaystyle Z_t = x e^{W_t - \frac12 t + \frac1x t} .
+    \end{equation*}
+\end{example}
+
+The differences in \cref{SDE_anticipating_IC_simple0} and \cref{SDE_anticipating_IC_simple1} demonstrates that replacing the non anticipating term in the solution with an anticipating term yields an extra drift term in the SDE. Furthermore, by replacing all the anticipating terms in \cref{SDE_anticipating_IC_simple1} with a real number, we obtained an extra drift factor in \cref{SDE_anticipating_IC_simple1_solution}. These examples highlights some of the differences and interesting patterns between adapted linear stochastic differential equations and non-adapted ones.
+\begin{example}[{\cite[section 3]{KhalifaKuoOuerdianeSzozda2013}}]
+    Consider the following motivational example:
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t & =  X_t \dif W_t , \\
+            X_0  & =  W_1.
+        \end{aligned}
+        \right.
+    \end{equation*}
+
+    \Cref{SDE_anticipating_IC_simple0} would suggest that our solution would be \cref{SDE_anticipating_IC_simple1_solution}. However, that is not the case. We have an extra drift term as demonstrated by  \cref{SDE_anticipating_IC_simple1}. With that in mind, we \textquote{guess} that the solution has the form
+    \begin{equation*}
+        \displaystyle X_t = \br{W_1 - ξ_t} e^{W_t - \frac12 t}
+    \end{equation*}
+    with \( ξ \) being a deterministic function that needs to be determined. Via a simple application of the generalized Itô formula to the function \( θ(t,x,y) = (y - ξ_t) e^{x-\frac12 t} \), we get that
+    \begin{equation*}
+        \dif X_t = (W_1 - ξ_t) e^{W_t - \frac12 t} \dif W_t + \br{e^{W_t - \frac12 t} - ξ_t' e^{W_t - \frac12 t}} \dif t.
+    \end{equation*}
+
+    The \( \dif t \) term in the above equation must be zero for \( X_t \) to be a solution. Therefore, by solving the following ordinary differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            ξ'(t) & =  1 ,  \\
+            ξ(0)  & =  0 ,
+        \end{aligned}
+        \right.
+    \end{equation*}
+    we get our solution
+    \begin{equation*}
+        X_t = (W_1 - t) ~ e^{W_t - \frac12 t} .
+    \end{equation*}
+\end{example}
+
+Motivated by the above results, we proved the following theorem in 2018 that provides solutions for a class of stochastic differential equations with anticipating initial conditions. Note that in this case, the coefficients \( α \) and \( β \) are deterministic.
+
+\begin{theorem}[{\cite[theorem 5.1]{KuoSinhaZhai2018}}]  \label{thm:SDE_IC_deterministic}
+    Let \( α, h ∈ L^2[0, 1] \), \( β ∈ L^1[0, 1] \) and \( ψ ∈ C^2(ℝ) \). Then the solution of the stochastic differential equation
+    \begin{equation}  \label{eqn:SDE_IC_deterministic}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  α(t) Z(t) \dif W_t + β(t) Z(t) \dif t , \\
+                 Z(0)  & =  ψ\Big( ∫_0^1 h(s) \dif W_s \Big) ,
+        \end{aligned}
+        \right.
+    \end{equation}
+    is given by
+    \[ Z(t) = ψ\Big( ∫_0^1 h(s) \dif W_s - ∫_0^t α(s) h(s) \dif s \Big) ~ ℰ^{(α, β)}_t . \]
+\end{theorem}
+
+\begin{proof}
+Suppose \( Z(t) = ψ\big( ∫_0^1 h(s) \dif W_s - u(t) \big) ℰ^{(α, β)}_t \) is our ansatz solution, where the unknown function \( u(t) \) has to be determined. In order to apply \cref{thm:Ayed–Kuo_differential_formula}, we write
+\begin{equation}  \label{eqn:SDE_IC_deterministic_solution_guess}
+    Z(t) = ψ\Big( ∫_0^t h(s) \dif W_s + ∫_t^1 h(s) \dif W_s - u(t) \Big) ℰ^{(α, β)}_t .
+\end{equation}
+
+Motivated by this, we define
+\begin{align}  \label{eqn:def_x1_x2_y}
+    \left\{ \begin{aligned}
+        X^{(1)}_t  & =  ∫_0^t h(s) \dif W_s ,  \\
+        X^{(2)}_t  & =  ℰ^{(α, β)}_t ,  \\
+        Y^t  & =  ∫_t^1 h(s) \dif W_s ,  \text{ and}
+    \end{aligned} \right.  \\
+    θ(t, x_1, x_2, y) = ψ(x_1 + y - u(t)) x_2 , \notag
+\end{align}
+so that \( Z(t) = θ(t, X^{(1)}_t, X^{(2)}_t, Y^t) \). From the definition of \( θ \), we get the partial derivatives
+\begin{align*}
+       θ_t  & =  - ψ' u'(t) x_2 ,
+    &  θ_{x_1}  & =  ψ' x_2 ,
+    &  θ_{x_2}  & =  ψ , \\
+       θ_{x_1 x_1}  & =  ψ'' x_2 ,
+    &  θ_{x_2 x_2}  & =  0 ,
+    &  θ_{x_1 x_2}  & =  ψ' , \\
+       θ_y  & = ψ' x_2 ,  &
+       θ_{y y}  & =  ψ'' x_2 .
+\end{align*}
+
+From the definitions in \cref{eqn:def_x1_x2_y}, we have
+\begin{align*}
+       \dif X^{(1)}_t  & =  h(t) \dif W_t ,
+    &  \dif X^{(2)}_t  & =  α(t) ℰ^{(α, β)}_t \dif W_t + β(t) ℰ^{(α, β)}_t \dif t , \\
+      \br{\dif X^{(1)}_t}^2  & =  h(t)^2 \dif t ,
+    & \br{\dif X^{(2)}_t}^2  & =  α(t)^2 \br{ℰ^{(α, β)}_t}^2 \dif t , \\
+       \dif X^{(1)}_t \dif X^{(2)}_t  & =  h(t) α(t) ℰ^{(α, β)}_t \dif t , \\
+       \dif Y^t  & =  - h(t) \dif W_t ,
+    & \br{\dif Y^t}^2  & =  h(t)^2 \dif t .
+\end{align*}
+
+Applying the differential formula\index{differential formula!Ayed–Kuo} and putting everything together, we have
+\begin{align*}
+    \dif Z(t)  & =  \dif θ(t, X^{(1)}_t, X^{(2)}_t, Y^t)  \\
+      & =  θ_t \dif t
+        + θ_{x_1} h(t) \dif W_t
+        + θ_{x_2} \dif X^{(2)}_t  \\
+      & \quad  + \frac12 θ_{x_1 x_1} (\dif X^{(1)}_t)^2
+        + \frac12 θ_{x_2 x_2} (\dif X^{(2)}_t)^2
+        + θ_{x_1 x_2} (\dif X^{(1)}_t)(\dif X^{(1)}_t)  \\
+      & \quad  + θ_{y} \dif Y^t
+        -  \frac12 θ_{y y} \dif Y^t  \\
+      & =  - ψ' u'(t) X^{(2)}_t \dif t
+        + \cancel{ψ' X^{(2)}_t h(t)} \dif W_t
+        + ψ\! ⋅\! \big[ α(t) ℰ^{(α, β)}_t \dif W_t + β(t) ℰ^{(α, β)}_t \dif t \big]  \\
+      & \quad  + \bcancel{\frac12 ~ ψ'' ~ X^{(2)}_t ~ h(t)^2} \dif t
+        + \frac12 ⋅ 0 ⋅ \big\{ α(t)^2 ~ \br{ℰ^{(α, β)}_t}^2  \dif t \big\}
+        + ψ' ~ h(t) ~ α(t) ~ ℰ^{(α, β)}_t  \dif t  \\
+      & \quad  - \cancel{ψ' ~ X^{(2)}_t ~ h(t)} \dif W_t
+        -  \bcancel{\frac12 ψ'' ~ X^{(2)}_t ~ h(t)^2} \dif t  \\
+      & =  - ψ' ~ u'(t) ~ X^{(2)}_t  \dif t
+        + α(t) Z(t) \dif W_t  +  β(t) Z(t)  \dif t
+        + ψ' ~ h(t) ~ α(t) ~ ℰ^{(α, β)}_t  \dif t  \\
+      & =  α(t) Z(t) \dif W_t + β(t) ~ Z(t) \dif t + \big( α(t) ~ h(t) - u'(t) \big) ψ' ℰ^{(α, β)}_t \dif t ,
+\end{align*}
+where in the fourth equality we used \( Z(t) = ψ ⋅ ℰ^{(α, β)}_t \).
+
+Therefore, in order for \( Z(t) \) to be the solution of \cref{eqn:SDE_IC_deterministic}, we need the condition \( u'(t)  =  α(t) h(t) \). On the other hand, if we put \( t = 0 \) in \cref{eqn:SDE_IC_deterministic_solution_guess}, we get \( X_0 = ψ\bigl( ∫_0^1 h(s) \dif W_s - u(0) \bigr) \). Since \( Z(t) \) is the solution of \cref{eqn:SDE_IC_deterministic}, comparing this with the initial condition gives us \( u(0) = 0 \). Thus we have the following ordinary differential equation for \( t ∈ [0, 1] \)
+\begin{equation*}
+    \left\{
+    \begin{aligned}
+        u'(t)  & =  α(t) h(t) , \\
+        u(0)  & =  0 ,
+    \end{aligned}
+    \right.
+\end{equation*}
+whose solution is \( u(t)  =  ∫_0^t α(s) h(s) \dif s \). Therefore
+\[ Z(t) = ψ\Big( ∫_0^1 h(s) \dif W_s - ∫_0^t α(s) h(s) \dif s \Big) ℰ^{(α, β)}_t . \]
+\end{proof}
+
+\begin{example}[{\cite[example 5.2]{KuoSinhaZhai2018}}]  \label{eg:SDE_Wiener_IC}
+Consider the stochastic differential equation
+\begin{equation*}  \label{eqn:SDE_IC_deterministic_simple}
+    \left\{
+    \begin{aligned}
+        \dif Z(t)  & =  Z(t) \dif W_t , \\
+        Z_0  & =  ∫_0^1 W_s \dif s .
+    \end{aligned}
+    \right.
+\end{equation*}
+To solve this, we reformulate the initial condition as
+\[ ∫_0^1 W_s \dif s  =  - W_s (1 - s) \Big|_0^1 + ∫_0^1 (1 - s) \dif W_s  =  ∫_0^1 (1 - s) \dif W_s . \]
+Thus we have a special case of Theorem \ref{thm:SDE_IC_deterministic} with \( α(t) ≡ 1 \), \( β ≡ 0 \), \( h(t) = 1 - t \), and \( ψ(x) = x \). Therefore, the solution is given by
+\[ Z(t) = \biggl( ∫_0^1 W_s \dif s - \Bigl(t - \frac12 t^2 \Bigr) \biggr) e^{W_t - \frac12 t} . \]
+\end{example}
+
+
+Thus we have solutions for a class of linear stochastic differential equations with deterministic coefficients.
+
+In 2021, we generalized \cref{thm:SDE_IC_deterministic} to allow for adapted processes as coefficients.
+
+\begin{theorem}[{\cite[theorem 4.2]{KuoShresthaSinha2021conditional}}]  \label{thm:general_SDE_IC}
+    Let \( α ∈ L^2_\text{ad}([a, b] × Ω) \), \( β ∈ L^1_\text{ad}([a, b] × Ω) \) be stochastic processes. Suppose \( h ∈ L^2[a, b] \) and \( ψ ∈ C^2(ℝ) \) are deterministic functions. Then the solution of the stochastic differential equation
+    \begin{equation} \label{eqn:general_SDE_IC}
+    \left\{
+    \begin{aligned}
+        \dif Z(t)  & =  α_t ~ Z(t) \dif W_t + β_t ~ Z(t) \dif t ,  \\
+        Z(a)  & =  ψ\Big( ∫_a^b h(s) \dif W_s \Big) ,
+    \end{aligned}
+    \right.
+    \end{equation}
+    is given by
+    \begin{equation}  \label{eqn:general_SDE_IC_solution}
+        Z(t) = ψ\Big( ∫_a^b h(s) \dif W_s - ∫_a^t h(s) ~ α_s \dif s \Big) ~ ℰ^{(α, β)}_t .
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Suppose \( Z(t) = ψ\big( ∫_a^b h(s) \dif W_s - U_t \big) ℰ^{(α, β)}_t \) is our ansatz solution. We need to determine the unknown Itô process \( U_t \) with \( U_a = 0 \). In order to apply \cref{thm:Ayed–Kuo_differential_formula}, we write
+    \begin{equation} \label{eqn:general_SDE_IC_solution_guess}
+    Z(t) = ψ\Big( ∫_a^t h(s) \dif W_s - U_t + ∫_t^b h(s) \dif W_s \Big) ~ ℰ^{(α, β)}_t .
+    \end{equation}
+
+    Define the instantly-independent process \( Y^t = ∫_t^b h(s) \dif W_s \) and the adapted processes
+    \begin{equation*}
+        X^{(1)}_t  =  ℰ^{(α, β)}_t  \quad  \text{and}  \quad
+        X^{(2)}_t  =  ∫_a^t h(s) \dif W_s - U_t .
+    \end{equation*}
+    From the definitions of \( X^{(1)}_t \), \( X^{(2)}_t \), and \( Y^t \) above, we get the differentials
+    \begin{align*}
+        \dif X^{(1)}_t  & =  α_t X^{(1)}_t \dif W_t + β_t X^{(1)}_t \dif t , \\
+        \dif X^{(2)}_t  & =  h(t) \dif W_t - \dif U_t , \\
+        (\dif X^{(1)}_t)^2  & =  α_t^2 (X^{(1)}_t)^2 \dif t , \\
+        (\dif X^{(2)}_t)^2  & =  h(t)^2 \dif t - 2 h(t) \dif W_t \dif U_t + (\dif U_t)^2 , \\
+        \dif X^{(1)}_t \dif X^{(2)}_t  & =  h(t) α_t X^{(1)}_t \dif t - α_t X^{(1)}_t \dif W_t \dif U_t , \\
+        \dif Y^t  & =  - h(t) \dif W_t , \\
+        (\dif Y^t)^2  & =  h(t)^2 \dif t . \\
+    \end{align*}
+
+    Now, define \( θ(x_1, x_2, y) = ψ(x_2 + y) x_1 \), so that \( Z(t) = θ \br{X^{(1)}_t, X^{(2)}_t, Y^t} \). From this, we get the partial derivatives
+    \begin{align*}
+        θ_{x_1}  & =  ψ ,
+        & θ_{x_1 x_1}  & =  0 ,  \\
+        θ_{x_2}  & =  ψ' x_1 ,
+        & θ_{x_2 x_2}  & =  ψ'' x_1 ,  \\
+        θ_y  & =  ψ' x_1 ,
+        & θ_{x_1 x_2}  & =  ψ' ,  \\
+        θ_{yy}  & =  ψ'' x_1 .
+    \end{align*}
+
+    Applying \cref{thm:Ayed–Kuo_differential_formula}\index{differential formula!Ayed–Kuo} and putting everything together, we can easily find the stochastic differential of \( Z(t) \):
+    \begin{align*}
+        \dif Z(t)
+        & =  \dif θ(X^{(1)}_t, X^{(2)}_t, Y^t)  \\
+        & =  θ_{x_1} \dif X^{(1)}_t
+        + θ_{x_2} \dif X^{(2)}_t  \\
+        & \quad  + \frac12 θ_{x_1 x_1} (\dif X^{(1)}_t)^2
+        + \frac12 θ_{x_2 x_2} (\dif X^{(2)}_t)^2  \\
+        & \quad  + θ_{x_1 x_2} (\dif X^{(1)}_t) (\dif X^{(2)}_t)  \\
+        & \quad  + θ_{y} \, \dif Y^t
+        -  \frac12 θ_{y y} (\dif Y^t)^2  \\
+        & =  ψ ⋅ \br{α_t X^{(1)}_t \dif W_t + β_t X^{(1)}_t \dif t}
+        + ψ' ⋅ X^{(1)}_t \br{\bcancel{h(t) \dif W_t} - \dif U_t}  \\
+        & \quad  + 0
+        + \frac12 ψ'' ⋅ X^{(1)}_t \br{\cancel{h(t)^2 \dif t} - 2 h(t) \dif W_t \dif U_t + (\dif U_t)^2}  \\
+        & \quad  + ψ' \br{h(t) α_t X^{(1)}_t \dif t - α_t X^{(1)}_t \dif W_t \dif U_t}  \\
+        & \quad  - \bcancel{ψ' ⋅ X^{(1)}_t h(t) \dif W_t}
+        -  \cancel{\frac12 ψ'' ⋅ X^{(1)}_t h(t)^2 \dif t}  \\
+        & =  ψ ⋅ \br{α_t X^{(1)}_t \dif W_t + β_t X^{(1)}_t \dif t}  \\
+        & \quad  + ψ' ⋅ X^{(1)}_t ⋅ \br{- \dif U_t + h(t) α_t \dif t - α_t \dif W_t \dif U_t}  \\
+        & \quad  + \frac12 ψ'' ⋅ X^{(1)}_t ⋅ \br{- 2 h(t) \dif W_t \dif U_t + (\dif U_t)^2} .
+    \end{align*}
+
+    Therefore, in order for \( Z(t) \) to be the solution of \cref{eqn:general_SDE_IC}, we need to satisfy the following conditions
+    \begin{align}
+        \dif U_t  & =  h(t) α_t \dif t - α_t \dif W_t \dif U_t   \label{eqn:dQ}  \\
+        (\dif U_t)^2  & =  2 h(t) \dif W_t \dif U_t  \label{eqn:dQ2}
+    \end{align}
+
+    From \cref{eqn:dQ}, we see that if \( \dif U_t \) contains only a \( \dif t \) term (no \( \dif W_t \) term), then \( \dif U_t \dif W_t = 0 \). On the other hand, if \( \dif U_t \) contains a \( \dif W_t \) term, then \( \dif U_t \dif W_t = γ_t \dif t \) for some \( γ_t \). Then we have \( \dif U_t = (h(t) - γ_t) α_t \dif t \), which again gives \( \dif U_t \dif W_t = 0 \). Therefore, in either case, \( \dif U_t  =  h(t) α_t \dif t \). Note that this also agrees with \cref{eqn:dQ2}.
+
+    Imposing the initial condition \( U_a = 0 \), we get that \( U_t = ∫_a^t h(s) ~ α_s \dif s \). Putting this in the assumed form of the solution, we get our result.
+\end{proof}
+
+
+Now we look at a specific case of \cref{thm:general_SDE_IC} where \( h(t) ≡ 1 \).
+\begin{corollary}[{\cite[corollary 4.3]{KuoShresthaSinha2021conditional}}]  \label{thm:general_SDE_IC_specific}
+    Under the same assumptions for \( α_t \), \( β_t \) and \( ψ \) as in \cref{thm:general_SDE_IC}, the solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  α_t Z(t) \dif W_t + β_t Z(t) \dif t ,  &  t ∈ [a, b],  \\
+            Z(a)  & =  ψ\Big( W_b - W_a \Big) ,
+        \end{aligned}
+        \right.
+    \end{equation*}
+    is given by
+    \[ Z(t) = ψ\Big( W_b - W_a - ∫_a^t α_s \dif s \Big) ℰ^{(α, β)}_t . \]
+\end{corollary}
+
+\begin{remark}
+    \Cref{thm:general_SDE_IC_specific} extends \cite[theorem 4.1]{KhalifaKuoOuerdianeSzozda2013} to include adapted coefficients for the anticipating stochastic differential equation.
+\end{remark}
+
+We apply these new results to obtain solutions for some examples of stochastic differential equations with anticipating initial conditions and adapted coefficients. In the first example, the diffusion and drift terms are adapted while the anticipation comes from \( X_0 = W_1 \). The second example demonstrates a case where the initial condition is a Riemann integral of a Brownian motion.
+
+\begin{example}[{\cite[example 4.5]{KuoShresthaSinha2021conditional}}]
+    Consider the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X(t)  & =  W_t ~ X(t) \dif W_t + X(t) \dif t,  &  t ∈ [0, 1],  \\
+            X_0  & =  W_1.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    Here \( α_t = W_t \), \( β_t ≡ 1 \), \( h(t) ≡ 1 \), and \( ψ(x) = x \).
+    Thus, by \cref{thm:general_SDE_IC_specific}, we have the solution
+    \begin{equation*}
+        \displaystyle X(t) = \br{W_1 - ∫_0^t W_s \dif s} \exp\bs{ \frac12 \br{W_t^2 + t - ∫_0^t W_s^2 \dif s} } .
+    \end{equation*}
+\end{example}
+
+\begin{example}[{\cite[example 4.6]{KuoShresthaSinha2021conditional}}]
+    Consider the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X(t) & =  W_t ~ X(t) \dif W_t ,  &  t ∈ [0, 1],  \\
+            X_0  & =  ∫_0^1 W_s \dif s .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    As in \cref{eg:SDE_Wiener_IC}, we use stochastic integration by parts to modify the initial condition. Namely,
+    \begin{equation*}
+        ∫_0^1 W_s \dif s = ∫_0^1 (1 - s) \dif W_s .
+    \end{equation*}
+    Hence with \( α_t = W_t \) , \( β_t ≡ 0 \), \( h(t) = 1 - t \), and \( ψ(x) = x \) in \cref{thm:general_SDE_IC}, we have the solution
+    \begin{equation*}
+        X(t) = \br{∫_0^1 W_s \dif s - ∫_0^t (1-s) W_s \dif s} \exp\bs{ \frac12 \br{W_t^2 - t - ∫_0^t W_s^2 \dif s} } .
+    \end{equation*}
+\end{example}

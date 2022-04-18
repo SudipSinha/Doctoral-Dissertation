@@ -1,0 +1,316 @@
+% !TeX program = LuaLaTeX
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
+
+\documentclass[singlespacing]{lsuthesis}
+% \documentclass[singlespacing,twoside,openright]{lsuthesis}  % Book printing
+%% To experiment with using a different document class, such as the ``book'' class, comment-out the prior line and uncomment the next line.
+%\documentclass[10pt,oneside]{book}
+\hfuzz=0.25pt    % suppresses `Overfull \hbox` warnings
+
+%% Specify additional LaTeX packages you need.
+\usepackage[english]{babel}	   % English hyphenation
+\usepackage{csquotes}    % Multilingual quotes
+\usepackage[
+    protrusion=true,
+    expansion=true,
+    final,
+    babel,
+]{microtype}    % Better typography
+\usepackage{booktabs}    % Better tables
+\usepackage[shortlabels]{enumitem}    % Better lists
+\setlist{nosep}    % No separation between list items
+
+% Graphics
+\usepackage[
+    svgnames,
+    table,
+    hyperref,
+]{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{cd}    % Commutative diagrams
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.markings}
+
+\usepackage{hyperxmp}    % eXtensible Metadata Platform
+\usepackage{hyperref}
+\hypersetup{%
+    pdftitle = {Anticipating Stochastic Integrals and Related Linear Stochastic Differential Equations},
+    pdfsubtitle={Doctoral Dissertation},
+    pdfauthor={Sudip Sinha},
+    pdfdate={2022-04-15},
+    pdfcopyright={© 2022, Sudip Sinha},
+    pdfsubject={anticipating stochastic calculus},
+    pdfkeywords={dissertation, thesis, doctorate, PhD, anticipating stochastic calculus, anticipating stochastic integral, Ayed–Kuo integral, extension of Itô's isometry, near-martingale, optional stopping theorem, linear stochastic differential equation, conditioned process, large deviation principle},
+    pdfcontactcountry={United States of America},
+    pdfcontactphone={+1 754 666 0099},
+    pdfcontactemail={sudipsinha@protonmail.com},
+    pdfcontacturl={https://sites.google.com/view/sudip-sinha},
+    pdflang={en-US},
+    pdfmetalang={en-US},
+    pdfpublication={LSU Doctoral Dissertations},
+    pdfpublisher={Louisiana State University},
+    pdfpubtype={book},
+    pdfurl={https://digitalcommons.lsu.edu/cgi/viewcontent.cgi?article=6912\&context=gradschool\_dissertations},
+    baseurl={https://digitalcommons.lsu.edu/gradschool_dissertations/5816/},
+    pdffitwindow=true,    % resize document window to fit document size
+    pdfstartview=FitBH,    % fits width of the page bounding box to the window - replace by FitH
+    pdfpagelayout=OneColumn,    % one column; continuous scrolling
+    colorlinks=true,
+    linktoc=all,
+    breaklinks=true,				% so long urls are correctly broken across lines
+    linkcolor=Navy,
+    urlcolor=IndianRed,
+    citecolor=DarkSlateBlue,
+}
+\usepackage{pdfpages}
+\usepackage[bottom]{footmisc}    % puts the footnote at the bottom of the page
+
+% Indexing
+\usepackage[symbols]{glossaries-extra}
+\usepackage{makeidx}
+\makeindex
+
+% Reference management
+\usepackage[
+    style=alphabetic,
+    sorting=nyt,
+    backend=biber,
+    maxnames=4,
+]{biblatex}
+\addbibresource{references/mypublications.bib}
+\addbibresource{references/stochastics.bib}
+\addbibresource{references/Wiener.bib}
+\addbibresource{references/Kuo-integral.bib}
+\addbibresource{references/Itô-integral.bib}
+\addbibresource{references/large-deviations.bib}
+
+% Unmarked footnotes for citations to published articles.
+\makeatletter
+\newcommand\footnotetextonly{\gdef\@thefnmark{}\@footnotetext}
+\makeatother
+% Alternative: No warnings, but weird spacing and no hyperlinks.
+% \newcommand\footnotetextonly[1]{%
+%   \begin{NoHyper}
+%   \renewcommand\thefootnote{}\footnote{#1}%
+%   \addtocounter{footnote}{-1}%
+%   \end{NoHyper}
+% }
+
+
+\usepackage[parfill]{parskip}
+% Single-spaced TOC
+\usepackage[titles]{tocloft}    % `titles' start ToC at the top of the page
+\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}    % Puts dots even for chapters
+\renewcommand{\cftchapfont}{\rmfamily}    % Make chapter names not bold in Contents
+\renewcommand{\cftchappagefont}{\rmfamily}    % Make chapter pages not bold in Contents
+
+
+% Math
+\usepackage[
+    math-style=ISO,
+    bold-style=ISO,
+    ]{unicode-math}
+\usepackage{amsthm}
+% https://tex.stackexchange.com/questions/353266/dot-swap-numbers
+% \usepackage{xpatch}
+% \xpatchcmd\swappedhead{~}{.~}{}{}
+% \swapnumbers    % `1 Theorem` instead of `Theorem 1`
+\usepackage{cancel}    % Cancel in a oblique manner
+
+% Fonts
+\setmainfont{Stix Two Text}    % {Stix Two Text, XITS, GFSArtemisia}
+\setmathfont{Stix Two Math}    % {Stix Two Math, XITS Math, texgyrepagella-math.otf}
+
+% Referencing
+\usepackage[noabbrev]{cleveref}    % Must be loaded last.
+
+% Functions
+\newcommand*{\floor}[1]{\ensuremath{\left\lfloor #1 \right\rfloor}}
+\newcommand*{\ceil}[1]{\ensuremath{\left\lceil #1 \right\rceil}}
+\newcommand*{\abs}[1]{\ensuremath{\left\lvert #1 \right\rvert}}
+\newcommand*{\norm}[1]{\ensuremath{\left\lVert #1 \right\rVert}}
+% Brackets
+\newcommand*{\br}[1]{\ensuremath{\left( #1 \right)}}
+\newcommand*{\bc}[1]{\ensuremath{\left\{ #1 \right\}}}
+\newcommand*{\bs}[1]{\ensuremath{\left[ #1 \right]}}
+\newcommand*{\ba}[1]{\ensuremath{\left\langle #1 \right\rangle}}
+% Differentials
+% \newcommand*{\dif}{\,\ensuremath{d}}
+% \newcommand*{\Dif}{\,\ensuremath{D}}
+% \newcommand*{\Del}{\,\ensuremath{Δ}}
+\newcommand*{\dif}[1][]{\ensuremath{\operatorname{d}_{#1}\!}}
+\newcommand*{\Dif}[1][]{\ensuremath{\operatorname{D}_{#1}\!}}
+\newcommand*{\Del}[1][]{\ensuremath{\operatorname{Δ}_{#1}\!}}
+% Miscellaneous
+\renewcommand*{\Pr}{\ensuremath{ℙ\!}}
+\newcommand*{\E}{\ensuremath{\operatorname{\mathbb{E}}\!}}
+\newcommand*{\V}{\ensuremath{\operatorname{\mathbb{V}}\!}}
+\newcommand*{\given}{\ensuremath{\; \middle| \;}}
+\newcommand*{\inv}[1]{\ensuremath{{#1}^{-1}}}
+
+% Environments
+\numberwithin{equation}{section}
+
+\theoremstyle{plain}
+\newtheorem{theorem}[equation]{Theorem}
+\newtheorem{lemma}[equation]{Lemma}
+\newtheorem{proposition}[equation]{Proposition}
+\newtheorem{corollary}[equation]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[equation]{Definition}
+\newtheorem{hypothesis}[equation]{Hypothesis}
+\newtheorem{example}[equation]{Example}
+
+\theoremstyle{remark}
+\newtheorem{remark}[equation]{Remark}
+\newtheorem{question}[equation]{Question}
+
+
+
+\usepackage{lsutitle}
+\title{Anticipating Stochastic Integrals\\
+and Related\\
+Linear Stochastic Differential Equations}
+% On capitalization, see Section 2.1.2 of https://www.ams.org/publications/authors/AMS-StyleGuide-online.pdf
+\thesistype{Dissertation}
+\department{The Department of Mathematics}
+\soughtdegree{Doctor of Philosophy}
+\author{Sudip Sinha}
+\degrees{
+    Bachelor of Engineering, Birla Institute of Technology and Science, Pilani, 2012\\
+    Master of Science, MathMods, 2015\\
+    Master of Science, Louisiana State University, 2018
+}
+\graduationdate{May 2022}
+
+
+
+\begin{document}
+
+%% The command ``\frontmatter'' switches to lowercase roman page numbers and unnumbered chapter headings without the word ``Chapter''.
+\frontmatter
+
+\maketitle
+
+
+%% The following ``Copyright'' page is optional. You have inherent copyright on anything you create, even if you choose not to include a copyright notice. But if you choose to also formally register your copyright with the Library of Congress, then a centered copyright notice should follow the title page.
+\begin{centeredpage}
+© 2022\\
+Sudip Sinha
+\end{centeredpage}
+
+
+%% The following ``Dedication'' page is optional.
+\begin{centeredpage}
+    % This dissertation is dedicated to Professor Fabio Antonelli, for if I had not met him, I would probably not have taken up research in mathematics.
+    This dissertation is dedicated to Professor Fabio Antonelli. He is instrumental in leading me into the intriguing universe of mathematics. Had I not met him, I would probably not have taken up research in this discipline.
+\end{centeredpage}
+
+
+%% The following ``Epigraph'' page is optional.
+\setlength{\epigraphwidth}{0.67\textwidth}
+\begin{centeredpage}
+    \epigraph{In precisely built mathematical structures, mathematicians find the same sort of beauty others find in enchanting pieces of music, or in magnificent architecture. There is, however, one great difference between the beauty of mathematical structures and that of great art. Music by Mozart, for instance, impresses greatly even those who do not know musical theory; the cathedral in Cologne overwhelms spectators even if they know nothing about Christianity. The beauty in mathematical structures, however, cannot be appreciated without understanding of a group of numerical formulae that express laws of logic. Only mathematicians can read \textquote{musical scores} containing many numerical formulae, and play that \textquote{music} in their hearts. Accordingly, I once believed that without numerical formulae, I could never communicate the sweet melody played in my heart. Stochastic differential equations, called \textquote{Itô Formula}, are currently in wide use for describing phenomena of random fluctuations over time. When I first set forth stochastic differential equations, however, my paper did not attract attention. It was over ten years after my paper that other mathematicians began reading my \textquote{musical scores} and playing my \textquote{music} with their \textquote{instruments}. By developing my \textquote{original musical scores} into more elaborate \textquote{music}, these researchers have contributed greatly to developing \textquote{Itô Formula}. In recent years, I find that my \textquote{music} is played in various fields, in addition to mathematics. Never did I expect that my \textquote{music} would be found in such various fields, its echo benefiting the practical world, as well as adding abstract beauty to the field of mathematics.}{— Kiyosi Itô \hspace*{16.75em} \\
+    \textit{My Sixty Years along the Path of Probability Theory}}
+\end{centeredpage}
+    
+
+\chapter{Acknowledgments}
+\input{tex/0_acknowledgments.tex}
+
+% The `group` creates a local environment for link colors.
+\begingroup
+\hypersetup{linkcolor=black}
+\tableofcontents
+\endgroup
+
+% % The list of tables is optional. Remove the following line if you don't have tables, don't have many tables, or simply don't wish to have a list of tables.
+% \listoftables
+
+% % The list of figures is optional. Remove the following line if you don't have figures, don't have many figures, or simply don't wish to have a list of figures.
+% \listoffigures
+
+% \chapter{Nomenclature, Symbols, Acronyms}
+% The ``nomenclature, symbols, acronyms'' page is optional.
+
+\chapter{Abstract}
+\input{tex/0_abstract.tex}
+
+
+
+%% The command ``\mainmatter'' switches to regular page numbers and chapter headings that include the word ``Chapter''.
+\mainmatter
+
+\chapter{Introduction}
+\label{chp:introduction}
+\input{tex/1_introduction.tex}
+
+\chapter{Towards a General Theory of Stochastic Integration}
+\label{chp:extensions}
+\input{tex/2_extensions.tex}
+
+\chapter{The Ayed–Kuo Integral}
+\label{chp:Ayed–Kuo_integral}
+\input{tex/3_Ayed-Kuo_integral.tex}
+
+\chapter{Extension of Itô's Isometry}
+\label{chp:isometry}
+\input{tex/4_isometry.tex}
+
+\chapter{Near-martingales}
+\label{chp:near-martingales}
+\input{tex/5_near-martingales.tex}
+
+\chapter{Conditionals of LSDEs}
+\label{chp:conditional}
+\input{tex/6_conditional.tex}
+
+\chapter{Solving a Class of LSDEs}
+\label{chp:solving_ALSDEs}
+\input{tex/7_solving_ALSDEs.tex}
+
+\chapter{Probabilistic Behavior of a Class of LSDEs}
+\label{chp:probabilistic_behavior}
+\input{tex/8_probabilistic_behavior.tex}
+
+\chapter{Future Research Directions}
+\label{chp:epilogue}
+\input{tex/9_epilogue.tex}
+
+
+
+%% The command ``\appendix'' switches into appendix-mode, meaning that subsequent ``\chapter'' commands will instead produce appendices.
+\appendix
+% https://tex.stackexchange.com/questions/21317/appendix-without-sections
+
+% \chapter{Modes of convergence}
+% \label{app:convergence}
+% \input{tex/A_convergence.tex}
+
+
+% \chapter{IRB Approval}
+% The ``IRB approval form'' must be reproduced here if the nature of this work
+% requires such an approval. If included, then it should be the second-to-last
+% appendix.
+
+% Copyright Information
+% Add to ToC and use a unnumbered chapter to remove `Appendix A`.
+\includepdf[scale=0.875, offset=0 -4em, pages=-, pagecommand={\chapter*{Appendix. Copyright Information} \addcontentsline{toc}{chapter}{Appendix. Copyright Information} \section*{Copyright information for \fullcite{KuoShresthaSinhaSundar2022} used in \cref{chp:near-martingales,chp:solving_ALSDEs,chp:probabilistic_behavior}.}}]{misc/KuoShresthaSinhaSundar2022_p1.pdf}
+\includepdf[scale=1, offset=0 -4em, pages=-, pagecommand={\section*{Copyright information for \fullcite{KuoShresthaSinha2021isometry} used in \cref{chp:isometry}.}}]{misc/KuoShresthaSinha2021isometry_p1.pdf}
+\includepdf[scale=1, offset=0 -4em, pages=-, pagecommand={\section*{Copyright information for \fullcite{KuoShresthaSinha2021conditional} used in \cref{chp:Ayed–Kuo_integral,chp:conditional}.}}]{misc/KuoShresthaSinha2021conditional_p1.pdf}
+\includepdf[scale=1, offset=0 -4em, pages=-, pagecommand={\section*{Copyright information for \fullcite{KuoSinhaZhai2018} used in \cref{chp:Ayed–Kuo_integral}.}}]{misc/KuoSinhaZhai2018_p1.pdf}
+
+
+%% After ``\backmatter'', subsequent \chapter commands produce unnumbered headings.
+\backmatter
+
+% \printindex
+
+\printbibliography[heading=bibintoc]
+
+\chapter{Vita}
+\input{tex/A_vita.tex}
+
+\end{document}

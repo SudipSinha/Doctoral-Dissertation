@@ -1,0 +1,289 @@
+% !TeX root = ../dissertation.tex
+
+\section{Motivation}
+Itô's calculus, even though being very useful, cannot handle anticipating integrands. We motivate this issue with a few examples.
+
+\begin{example}
+    For \( t ∈ [0, 1] \), consider
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  Z(t) \dif W_t  \\
+                Z(0)  & =  W_1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    This is a stochastic differential equation with \emph{anticipating} initial condition. If we try to apply the Picard iteration method to obtain a solution of this stochastic integral equation, we quickly run into the issue of having to assign a meaning to the expression \( ∫_0^t W_1 \dif W_s \), which has no meaning within Itô's theory.
+\end{example}
+
+\begin{example}
+    Instead of the initial condition being anticipating, we can also consider the diffusion coefficient to be anticipating.
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  W_1 Z(t) \dif W_t  \\
+                Z(0)  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    We run into the exact same issue in this case.
+\end{example}
+
+We face the same problem when trying to define iterated Itô integrals. For example, note that
+\begin{equation*}  \label{eqn:double_integral_1}
+    ∫_0^1 ∫_0^1 1 \dif W_v \dif W_u = ∫_0^1 W_1 \dif W_u ,
+\end{equation*}
+which is outside the realm of Itô's theory. What is the way forward?
+
+
+
+\section{Multiple Wiener–Itô integrals}  \label{sec:multiple_Wiener–Itô_integral}
+A naive approach would be to treat \( W_1 \) as a constant. Then we can pull it out of the integral and we would obtain
+\begin{equation*}
+    X_t ≜ ∫_0^t ∫_0^t 1 \dif W_t \dif W_u = W_t ∫_0^t \dif W_u = W_t ⋅ W_t = W_t^2 .
+\end{equation*}
+In fact, Itô himself posed a similar question in 1976 at the International Symposium on Stochastic Differential Equations in Kyoto. However, there is a drawback of this approach.
+
+Recall that we emphasized a key aspect of Itô's integrals — their martingale nature. So we naturally ask, is the process associated with such an iterated integral a martingale? We know that the process \( W_t^2 \) is not a martingale. On the other hand, \( W_t^2 - t \) is a martingale. Can we modify the definition of the integral so that we get this martingale as the result? For deterministic integrands, the answer is yes. We detail this below.
+
+Under \( L^2(Ω) \)-limits, we expect that
+\[ X_t = \lim_{n → ∞} ∑_{i = 1}^n ∑_{j = 1}^n 1 \Del W_j \Del W_i . \]
+Let \( S_n = ∑_{i = 1}^n ∑_{j = 1}^n 1 \Del W_j \Del W_i \). Then breaking up \( S_n \) into off-diagonal and diagonal parts, we get
+\begin{equation*}
+    S_n
+    =  ∑_{i = 1}^n ∑_{j = 1}^{i-1} 1 \Del W_j \Del W_i
+    +  ∑_{i = 1}^n ∑_{j=i+1}^n 1 \Del W_j \Del W_i
+    +  ∑_{i = 1}^n 1 \br{\Del W_i}^2 .
+\end{equation*}
+Since \( 1 \) is symmetric about \( u \) and \( v \) (and therefore with respect to \( i \) and \( j \)), we simplify this to
+\begin{align*}
+    S_n
+    =  2 ∑_{i = 1}^n ∑_{j = 1}^{i-1} \Del W_j \Del W_i
+        +  ∑_{i = 1}^n \br{\Del W_i}^2
+    =  2 ∑_{i = 1}^n W_{t_{i-1}} \Del W_i
+        +  ∑_{i = 1}^n \br{\Del W_i}^2 .
+\end{align*}
+Taking \( L^2 \)-limits, and recalling that \( \br{\dif W_t}^2 → \dif t \), we get
+\begin{equation*}
+    X_t
+    =  2 ∫_0^t W_u \dif W_u  +  ∫_0^t \dif u
+    =  \br{W_t^2 - t}  +  t ,
+\end{equation*}
+where the first integral is within Itô's theory (see \cref{eg:integral_Wt}).
+
+There are some key takeaways from the above computation.
+\begin{enumerate}
+    \item  We explicitly used the symmetry of the integrand to convert the inside integral into an adapted process.
+    \item  The symmetrization introduced a multiplicative factor of \( 2! \).
+    \item  The off-diagonal terms gave rise to an Itô integral, which is a martingale and is exactly what we want the result of our iterated integral to be.
+    \item  The diagonal terms gave rise to a function that kills the martingale nature of the Itô integral. This is due to the quadratic variation of Wiener processes.
+\end{enumerate}
+
+This motivated Itô to define multiple integrals by first symmetrizing the function and then removing the diagonal terms\cite{Itô1951MWI}. We define \emph{multiple Wiener–Itô integrals}\index{integral!multiple Wiener–Itô} in two steps.
+
+\begin{enumerate}
+    \item  An \emph{off-diagonal step function}\index{step function!off-diagonal} is a function of the form
+    \[ f = ∑_{1 ≤ i_1, \dotsc, i_n ≤ k} a_{i_1, \dotsc, i_n} 𝟙_{[t_{i_1-1}, t_{i_1}) × \dotsb × [t_{i_n-1}, t_{i_n})} , \]
+    where \( a = t_0 < \dotsb < t_k = b \) and
+    \[ a_{i_1, \dotsc, i_n} = 0 \text{ if } i_p = i_q \text{ for some } p ≠ q . \]
+    For an off-diagonal step function \( f \) as above, define
+    \[ I_n(f) = ∑_{1 ≤ i_1, \dotsc, i_n ≤ k} a_{i_1, \dotsc, i_n} \Del W_{i_1} \dotsb \Del W_{i_n} . \]
+
+    \item  For any \( f ∈ L^2\br{[a, b]^n} \), there exists a sequence of off-diagonal step functions \( \br{f_k}_{k=1}^∞ \) such that \( f_k → f \) in \( L^2\br{[a, b]^n} \) (see \cite[lemma 9.6.4]{Kuo2006}). Then we define the multiple Wiener–Itô integral of \( f \) as the \( L^2(Ω) \)-limit
+    \[ I_n(f) = \lim_{k → ∞} I_n(f_k) . \]
+\end{enumerate}
+
+For \( f ∈ L^2\br{[a, b]^n} \), define the \emph{symmetrization}\index{symmetrization} \( \hat{f} \) of \( f \) by
+\[ \widehat{f}\br{t_1, \dotsc, t_n}  =  \frac{1}{n!} ∑_σ f\br{t_{σ(1)}, \dotsc, t_{σ(n)}} , \]
+where the summation is over all permutations \( σ \) of the set \( [n] = \bc{1, 2, \dotsc, n} \). Let \( L^2_{sym}\br{[a, b]^n} \) be the Hilbert space of all square integrable functions. Then we have the following results.
+\begin{theorem}[{\cite[theorem 9.6.6]{Kuo2006}}]
+    If \( f ∈ L^2\br{[a, b]^n} \), then
+    \begin{enumerate}
+        \item  \( I_n(f) = I_n\br{\widehat{f}} \),
+        \item  \( \E\br{I_n(f)} = 0 \), and
+        \item  \( \E\br{I_n(f)^2} = n! \norm{\widehat{f}}^2 \).
+    \end{enumerate}
+\end{theorem}
+
+Therefore, we can expect to recover the integral from the symmetrization. This is the content of the following theorem.
+\begin{theorem}[{\cite[theorem 9.6.7]{Kuo2006}}]
+    We can define the multiple Wiener–Itô integral of \( f ∈ L^2\br{[a, b]^n} \) for \( n ≥ 2 \) as
+    \[ I_n(f) = n! ∫_a^b \dotsb ∫_a^{t_{n-2}} \br{∫_a^{t_{n-1}} \widehat{f}\br{t_1, \dotsc, t_n} \dif W_{t_n} } \dif W_{t_{n-1}} \dotsb \dif W_{t_1} . \]
+\end{theorem}
+
+
+
+\section{Homogeneous chaos}
+Recall that scaled Hermite polynomials\index{Hermite polynomials} form an orthonormal basis for the space \( L^2(ℝ, γ) \), where \( γ \) is the Gaussian measure with mean \( 0 \) and variance \( t \). Therefore, for any function \( f ∈ L^2(ℝ, γ) \), we have
+\[ f(x) = ∑_{n = 0}^∞ a_n \frac{H_n(x; t)}{\sqrt{n! t}} , \]
+where the coefficients \( a_n \) are given by
+\[ a_n = \frac{1}{\sqrt{n! t^n}} ∫_{-∞}^∞ f(x) H_n(x; t) γ(\dif x) . \]
+
+Let \( ℱ^W = σ\br{W_t \given t ∈ [a, b]} \). Denote the Hilbert space of \( \Pr \)-square integrable functionals that are \( ℱ^W \)-measurable — called square-integrable \emph{Wiener functionals}\index{Wiener functionals} — by \( L_W^2(Ω) \). Can we obtain an orthogonal decomposition for the space \( L_W^2(Ω) \) similar to that of \( L^2(ℝ, γ) \)? Wiener came across this question when he wanted to develop the theory of Fourier analysis\index{Fourier analysis} on Wiener functionals. In his work\cite{Wiener1938}, Wiener showed that there exists an orthogonal decomposition of the space \( L_W^2(Ω) \). These orthogonal subspaces are called \emph{homogeneous chaos}es\index{homogeneous chaos} and denoted by \( K_n \) with \( K_0 = ℝ \). That is,
+\[ L_W^2(Ω) = ⨁_{n = 0}^∞ K_n . \]
+Therefore, any \( ϕ ∈ L_W^2(Ω) \) can be uniquely expressed as
+\[ ϕ = ∑_{n = 0}^∞ ϕ_n , \]
+where \( ϕ_n ∈ K_n \), and
+\[ \norm{ϕ}^2 = ∑_{n = 0}^∞ \norm{ϕ_n}^2 . \]
+Homogeneous chaoses or different orders are orthogonal. In particular, any homogeneous chaos of order \( n ≥ 1 \) has expectation zero. Note that \( K_1 \) is exactly the set of Wiener integrals (which are also martingales). Homogeneous chaoses can be thought of as extensions of the idea of martingales generated from Wiener integrals.
+
+Wiener did not give a probabilistic interpretation of the homogeneous chaoses. Itô questioned whether such an interpretation is possible. This motivated him to define the multiple Wiener–Itô integrals \( I_n(f) \) that we detailed in \cref{sec:multiple_Wiener–Itô_integral}. In fact, he showed the following relation between Hermite polynomials of Wiener integrals and multiple Wiener–Itô integrals.
+\begin{theorem}[{\cite[theorem 9.6.9]{Kuo2006}}]
+    For any \( f ∈ L^2[a, b] \), define the tensor product \( f^{⊗n}\br{t_1, \dotsc, t_n} = f(t_1) \dotsb f(t_n) \). Then
+    \[ I_n\br{f^{⊗n}} = H_n\br{I(f), \norm{f}^2} . \]
+\end{theorem}
+
+The last theorem, along with the orthogonality of \( \br{I_n(f)}_{n = 0}^∞ \), gives us the result that \( K_n \) is exactly the set of multiple Wiener–Itô integrals of order \( n \).
+\begin{theorem}[{\cite[theorem 9.7.1]{Kuo2006}}]
+    If \( f ∈ L^2\br{[a, b]^n} \), then \( I_n(f) ∈ K_n \). Conversely, any \( ϕ ∈ K_n \) has a unique representation \( ϕ = I_n(f) \), where \( f ∈ L^2_{sym}\br{[a, b]^n} \).
+\end{theorem}
+This implies that \( K_n = \bc{I_n(f) \given f ∈ L^2_{sym}\br{[a, b]^n}} \).
+
+All of the above culminates in the decomposition theorem for \( L_W^2(Ω) \).
+\begin{theorem}[Wiener–Itô {\cite[theorem 9.7.3]{Kuo2006}}]
+    The space \( L_W^2(Ω) \) can be decomposed into the orthogonal direct sum
+    \[ L_W^2(Ω) = ⨁_{n = 0}^∞ K_n , \]
+    where \( K_n \) is the set of multiple Wiener–Itô integrals of order \( n \). Therefore, any function in \( ϕ ∈ L_W^2(Ω) \) can be represented by
+    \[ ϕ = ∑_{n = 0}^∞ I_n(f_n) ,  \quad f_n ∈ L^2_{sym}\br{[a, b]^n} , \]
+    along with the equality
+    \[ \norm{ϕ}^2 = ∑_{n = 0}^∞ n! \norm{f_n}^2 . \]
+\end{theorem}
+
+The Wiener–Itô decomposition theorem provides a deep connection between infinite-dimensional analysis and stochastic analysis. However, we still have not been able to define multiple integrals for stochastic processes. There is also the question of how to define the derivative of a random variable with respect to \( ω \). This gave rise to some theories, which we look at briefly in the following sections.
+
+
+
+\section{Itô's idea of enlargement of filtration}
+At the 1976 Kyoto International Symposium, Itô\cite{Itô1978} proposed enlarging the filtration to include \( W_1 \), that is,
+\[ \tilde{ℱ}_t = σ\br{W_s, W_1 \given s ∈ [0, t]} \]
+However, \( W \) is not a Wiener process with respect to \( \tilde{ℱ} \). Therefore, he decomposed the Wiener process as \( W = M + A \), where
+\begin{align*}
+    M_t  & =  W_1 - ∫_0^t \frac{W_1 - W_u}{1 - u} \dif u , \text{ and} \\
+    A_t  & =  ∫_0^t \frac{W_1 - W_u}{1 - u} \dif u .
+\end{align*}
+Here \( M \) is a quasimartingale. Using this method, \( W_1 \) becomes \( \tilde{ℱ} \)-measurable, and for any \( t ∈ [0, 1] \), we have
+\[ ∫_0^t W_1 \dif W_s = W_1 W_t . \]
+\begin{align*}
+    ∫_0^t W_1 \dif W_s
+    & =  ∫_0^t W_1 \dif M_u + ∫_0^t W_1 \dif A_u  \\
+    & =  W_1 (M_t - M_0) + W_1 (A_t - A_0)  \\
+    & =  W_1 (W_t - W_0)  \\
+    & =  W_1 W_t .
+\end{align*}
+
+However, note that by the quadratic variation of Wiener process and the independence of increments, we have
+\[ \E\br{W_1 W_t} = \E\br{(W_1 - W_t) W_t + W_t^2} = 0 + t  ≠  0 . \]
+Therefore, the integral is not a martingale, which is undesirable.
+
+
+
+\section{Malliavin calculus and Hitsuda–Skorokhod integral}  \label{sec:Malliavin_calculus}
+The original motivation of \emph{Malliavin calculus}\index{Malliavin calculus} was to study Wiener functionals. In particular, its goals were to study the solutions of stochastic differential equations driven by Brownian noise. The presentation follows \cite[sections 1.2–1.3]{Nualart2006}.
+
+Let \( 𝒞_0 \) denote the space of continuous functions \( f: [0, 1] → ℝ \) such that \( f(0) = 0 \). Recall that \( \br{𝒞_0, \norm{⋅}_∞} \) is a Banach space, where \( \norm{⋅}_∞ \) is the supremum norm. Define
+\[ ℋ^1 = \bc{f ∈ 𝒞_0 \given f' \text{ exists and } f' ∈ L^2[0, 1]} . \]
+Clearly, \( ℋ^1 ⊂ 𝒞_0 \). Embedded with the inner product given by
+\[ \ba{f, g}_{ℋ^1} =  ∫_0^1 f'(t) ~ g'(t) \dif t , \]
+\( ℋ^1 \) is a Hilbert space, and is known as the \emph{Cameron–Martin space}\index{Cameron–Martin space}.
+\( ℋ^1 \) is densely embedded in \( 𝒞_0 \) with the canonical injection \( i: ℋ^1 → 𝒞_0 \).
+
+We consider \( Ω = 𝒞_0 \) and \( Σ \) to be the Borel σ-algebra generated by the topology induced by the norm. This σ-algebra coincides with the σ-algebra generated by the cylinder sets. The measurable space \( (Ω, Σ) \) is induced with the \emph{Wiener measure}\index{Wiener measure} defined on the cylinder sets by
+\begin{equation*}
+    γ\bc{W_{t_1} ∈ E_1, \dotsc, W_{t_n} ∈ E_n}
+    =  ∫_{E_1 × \dotsb × E_n} ∏_{i = 1}^n \br{ \frac{1}{\sqrt{2π \Del t_i}} \exp\bs{-\frac{\br{\Del u_i}^2}{2 \Del t_i}} } \dif u_1 \dotsb \dif u_n ,
+\end{equation*}
+where \( \Del u_i = u_i - u_{i-1} \), \( \Del t_i = t_i - t_{i-1} \), \( t_0 = 0 \) and \( u_0 = 0 \). The measure space \( (𝒞_0, γ) \) is called the \emph{Wiener space}\index{Wiener space} because we can regard each path \( t ↦ W_t(ω) \) of the Wiener process \( W \) as an element \( ω ∈ 𝒞_0 \). That is, we can identify \( W_t(ω) \) with the value \( ω(t) \) at time \( t \) and \( ω ∈ 𝒞_0 \) as \( W_t(ω) = ω(t) \).
+
+
+\subsection{The derivative operator}
+For \( h ∈ L^2[0, 1] \), let \( I_W(h) = ∫_0^1 h(t) \dif t \) denote the Wiener integral. Therefore, \( W_t = I_W(𝟙_{[0, t]}) \) for any \( t \). Let \( C^∞_p(ℝ^n) \) be the set of all infinitely continuously differentiable functions \( f: ℝ^n → ℝ \) such that \( f \) and all of its partial derivatives have polynomial growth. Let \( 𝒮 \) denote the class of \emph{smooth random variables} such that a random variable \( F ∈ 𝒮 \) has the form
+\[ F = f\br{I_W(h_1), \dotsc, I_W(h_n)} , \]
+where \( f ∈ C^∞_p(ℝ^n) \), and \( h_1, \dotsc, h_n ∈ L^2[0, 1] \) for any natural number \( n \).
+
+The \emph{stochastic derivative}\index{stochastic derivative} of a smooth random variable \( F ∈ 𝒮 \) is given by
+\[ \Dif F = \Dif[⋅] F = ∑_{i = 1}^n \frac{∂ f}{∂ x_i}\br{I_W(h_1), \dotsc, I_W(h_n)} h_i . \]
+For example, \( \Dif I_W(h) = h \), \( \Dif \br{I_W(h)}^2 = 2 I_W(h) ~ h \), and \( \Dif W_{t_1} = \Dif I_W(𝟙_{[0, t_1]}) = 𝟙_{[0, t_1]} \). Note that \( \Dif F ∈ L^2\br{[0, 1] × Ω} ≃ L^2\br{Ω; L^2[0, 1]} \). So \( \Dif \) is an unbounded linear operator from \( 𝒮 ⊂ L^2(Ω) \) into \( L^2\br{Ω; L^2[0, 1]} \).
+
+We can interpret the stochastic derivative as the directional derivative in a direction \( ∫_0^⋅ h(t) \dif t \) of the Cameron–Martin space, since for any \( h ∈ L^2[0, 1] \), we get
+\begin{align*}
+    \ba{\Dif F, h}
+    & =  ∑_{i = 1}^n \frac{∂ f}{∂ x_i}\br{I_W(𝟙_{[0, t_1]}), \dotsc, I_W(𝟙_{[0, t_n]})} \ba{𝟙_{[0, t_i]}, h}  \\
+    & =  ∑_{i = 1}^n \frac{∂ f}{∂ x_i}\br{I_W(𝟙_{[0, t_1]}), \dotsc, I_W(𝟙_{[0, t_n]})} ∫_0^{t_i} h(s) \dif s  \\
+    & = \left. \frac{\dif}{\dif ϵ} \bs{F\br{ω + ϵ ∫_0^⋅ h(s) \dif s}} \right|_{ϵ = 0} ,
+\end{align*}
+where all inner products are in \( {L^2[0, 1]} \).
+
+For example, if \( F = W_{t_1} \), then
+\[ F\br{ω + ϵ ∫_0^⋅ h(s) \dif s} = ω(t_1) + ϵ ∫_0^{t_1} h(s) \dif s , \]
+giving \( \ba{\Dif F, h} = ∫_0^⋅ h(s) \dif s = ∫_0^1 𝟙_{[0, t_1]} h(s) \dif s \), so \( \Dif F = 𝟙_{[0, t_1]} \).
+
+Now we state the integration-by-parts formula.
+\begin{lemma}[{\cite[lemma 1.2.1]{Nualart2006}}]
+    Suppose \( F \) is a smooth functional and \( h ∈ L^2[0, 1] \). Then
+    \[ \E\br{\ba{\Dif F, h}} = \E\br{F I_W(h)} . \]
+\end{lemma}
+
+Applying the previous result to a product \( FG \), we get the following consequence.
+\begin{lemma}[{\cite[lemma 1.2.2]{Nualart2006}}]  \label{thm:Malliavin_integration_by_parts}
+    Suppose \( F \) and \( G \) are smooth functionals and \( h ∈ L^2[0, 1] \). Then
+    \[ \E\br{G \ba{\Dif F, h}} = \E\br{-F \ba{\Dif G, h}} + \E\br{F G I_W(h)} . \]
+\end{lemma}
+
+As a consequence of the last lemma, \( \Dif \) is closable as an operator from \( L^p(Ω) \) to \( L^p\br{Ω; L^2[0, 1]} \) for any \( p ≥ 1 \). Denote the domain of \( \Dif \) in \( L^p(Ω) \) by \( 𝔻^{1, p} \), which represents the closure of \( 𝒮 \) with respect to the norm
+\[ \norm{F}_{1, p} = \bs{\E\br{\abs{F}^p} + \E\br{\norm{\Dif F}_2^2}}^{\frac1p} . \]
+For \( p = 2 \), the space \( 𝔻^{1, 2} \) is a Hilbert space with the inner product
+\[ \ba{F, G}_{1, 2} = \E\br{F G} + \E\br{\ba{\Dif F, \Dif G}_2} . \]
+Note that \( 𝔻^{1, 2} \) is dense in \( L^2(Ω) \).
+
+This abstract formulation, though general, is difficult to use in computations. However, if we have a homogeneous chaos decomposition of \( F \), we can compute the stochastic derivative explicitly. This is the content of the following theorem.
+\begin{theorem}[{\cite[proposition 1.2.1]{Nualart2006}}]
+    Suppose \( F \) is an square integrable random variable admitting a homogeneous chaos decomposition of the form
+    \[ F = ∑_{n = 0}^∞ I_n(f_n) ,  \quad f_n ∈ L^2_{sym}\br{[a, b]^n} . \]
+    Then \( F ∈ 𝔻^{1, 2} \) if and only if
+    \[ ∑_{n = 1}^∞ n ~ n! \norm{f_n}^2 < ∞ . \]
+    In that case, we have
+    \[ \Dif[t] F = ∑_{n = 1}^∞ n I_{n-1}(f_n(⋅, t)) , \]
+    and
+    \[ \norm{\Dif F}_2^2 = ∑_{n = 1}^∞ n ~ n! \norm{f_n}^2 < ∞ . \]
+\end{theorem}
+
+
+\subsection{The Hitsuda–Skorokhod integral}
+The \emph{Hitsuda–Skorokhod stochastic integral}\index{integral!Hitsuda–Skorokhod} or \emph{divergence operator}\index{divergence operator} \( δ \) is defined as the \( L^2(Ω) \)-adjoint of the stochastic derivative operator \( \Dif \).
+\begin{definition}[{\cite[definition 1.3.1]{Nualart2006}}]
+    Let \( δ \) denote the adjoint of \( \Dif \). That means \( δ \) is an unbounded operator on \( L^2\br{[0, 1] × Ω} \) with values in \( L^2(Ω) \) such that the following hold:
+    \begin{enumerate}
+        \item  The domain of \( δ \), denoted by \( \operatorname{dom}(δ) \), is the set of processes \( u ∈ L^2\br{[0, 1] × Ω} \) such that
+        \[ \E\br{\ba{\Dif F, u}} ≤ C_u \norm{F}_2 \]
+        for all \( F ∈ 𝔻^{1, 2} \), where \( C_u \) is some constant depending on \( u \).
+
+        \item If \( u ∈ \operatorname{dom}(δ) \), then \( δ(u) \) is the element of \( L^2(Ω) \) characterized by
+        \[ \E\br{F δ(u)} = \E\br{\ba{\Dif F, u}} \]
+        for any \( F ∈ 𝔻^{1, 2} \).
+    \end{enumerate}
+\end{definition}
+
+We look at the action of the Hitsuda–Skorokhod integral on homogeneous chaos expansions. First we state a lemma.
+\begin{lemma}[{\cite[lemma 1.3.1]{Nualart2006}}]
+    Let \( u ∈ L^2\br{[0, 1] × Ω} \). There exists a family of deterministic, measurable, and square integrable kernels \( f_n(t_1, \dotsc, t_n, t) \) with \( n ∈ ℕ_0 \), such that every \( f_n \) is symmetric in the first \( n \) variables, and
+    \[ u(t) = ∑_{n = 0}^∞ I_n(f_n(⋅, t)) , \]
+    where the convergence is in \( L^2\br{[0, 1] × Ω} \). Moreover,
+    \[ \norm{u}^2 = ∑_{n = 0}^∞ n! \norm{f_n}_{L^2[0, 1]^{n + 1}}^2 . \]
+    In this case, \( u ∈ \operatorname{dom}(δ) \) if an only if the series
+    \[ δ(u) = ∑_{n = 0}^∞ n! I_{n + 1}(f_n) \]
+    converges in \( L^2(Ω) \).
+\end{lemma}
+
+Recall that the stochastic derivative was first defined on the class of smooth random variables because it gave us simple expressions. Similarly, the Hitsuda–Skorokhod integral has a simple expression for \emph{smooth elementary processes}. A smooth elementary processes is a process of the form
+\[ u(t) = ∑_{i = 1}^n F_i ~ h_i(t) , \]
+where \( F_i ∈ 𝒮 \) and \( h_i ∈ L^2[0, 1] \) for all \( i ∈ [n] \). By the integration-by-parts formula in \cref{thm:Malliavin_integration_by_parts} above, we see that \( u \) is Skorokhod integrable, and
+\[ δ(u) = ∑_{i = 1}^n F_i ~ I_W\br{h_i(t)} - ∑_{i = 1}^n (\Dif[t] F_i) ~ h_i(t) \dif t . \]
+
+The reason the adjoint of the derivative is called an \textquote{integral} is because it reduces to Itô's integral for \( u ∈ L^2_{\text{ad}}\br{[0, 1] × Ω} \).
+\begin{theorem}[{\cite[proposition 1.3.4]{Nualart2006}}]
+    The space \( L^2_{\text{ad}}\br{[0, 1] × Ω} \) is contained in \( \operatorname{dom}(δ) \), and for any \( u ∈ L^2_{\text{ad}}\br{[0, 1] × Ω} \), we have
+    \[ δ(u) = ∫_0^1 u_t \dif W_t , \]
+    where the right hand integral is in the sense of Itô.
+\end{theorem}
+
+We shall see applications of these ideas in \cref{sec:SDE_drift_Skorokhod}.

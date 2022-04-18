@@ -1,0 +1,165 @@
+% !TeX root = ../dissertation.tex
+
+Being a new approach to anticipating stochastic integrals, there are various avenues of research for the Ayed–Kuo stochastic calculus. In this chapter, we look at the current state of research and highlight some open problems. Unless specified otherwise, we take \( t ∈ [a, b] \) for \( 0 ≤ a ≤ b < ∞ \).
+
+
+
+\section{Definition and domain of the integral}
+One of the most important questions is to identify the largest class of stochastic processes for which the Ayed–Kuo integral exists. In \cref{chp:isometry}, whe showed that for \( Θ(x, y) ∈ C^1(ℝ^2) \), the integral \( ∫_a^b Θ(W_t, W_b - W_t) \dif W_t \) exists if
+\[ Θ(W_t, W_b - W_t), ~ Θ_x(W_t, W_b - W_t), ~ Θ_y(W_t, W_b - W_t) ∈ L^2([a, b] × Ω) . \]
+However, it is unknown whether a general stochastic process can be integrated.
+
+Note that it was shown in \cite[theorem 2.3]{PeterParczewski2017} that the Ayed–Kuo integral and the Hitsuda–Skorokhod integral\index{integral!Hitsuda–Skorokhod} are equivalent if the definition of the Ayed–Kuo integral uses \( L^2(Ω) \) convergence. However, since the original definition of the Ayed–Kuo integral uses convergence in probability, its domain is a strict superset of the domain of the Hitsuda–Skorokhod integral.
+
+This is closely related to finding a decomposition result for general anticipating processes. For example, while calculating examples for the Ayed–Kuo integral, we used the decomposition \( W_b = W_t + (W_b - W_t) \) of the anticipating integrand \( W_b \) into the adapted integrand \( W_t \) and the instantly-independent integrand \( W_b - W_t \). Is it possible to decompose any stochastic process into adapted and anticipating parts (or their sums of products thereof)? If not, can we determine a class for which such a decomposition can be guaranteed? Such a result would greatly expand upon the class of integrands.
+
+Another open problem is to generalize the extension of Itô's isometry to products of the form \( X_t Y^t \), where \( X_t \) is adapted and \( Y^t \) is instantly-independent. This probably requires the definition of an equivalent of the white noise derivative operator.
+
+
+
+\section{Near-martingales}
+First, we highlight some results that have already been shown for near-martingales.
+\begin{enumerate}
+    \item  In \cref{thm:Ayed–Kuo_integral_near-martingale}, we showed that Ayed–Kuo integrals are near-martingales.
+    \item  \Cref{thm:near-martingale_martingale} shows that process is a near-submartingale if and only if its conditioned process is a martingale.
+    \item  \Cref{thm:martingale_instantlyindependent_product} shows that the product of a submartingale and an instantly-independent process is a near-submartingale if and only if the instantly-independent process has constant mean.
+    \item  In \cref{thm:near-martingale_stopped}, we proved that stopped near-martingales are near-martingales.
+    \item  In \cref{thm:optional_stopping_near-martingale_continuous}, we established a near-martingale optional stopping theorem.
+    \item  A Doob–Mayer's decomposition for near-submartingales in the lines of \cref{thm:Doob–Meyer_decomposition_submartingales} was shown in \cite[section 3]{HwangKuoSaitôZhai2017}.
+    \begin{theorem}
+        Let \( X \) be a continuous near-submartingale. Then \( X \) has a unique decomposition
+        \[ X(t) = N(t) + A_t , \]
+        where \( N \) is a continuous near-martingale, and \( A \) is a continuous adapted process starting at \( 0 \) that is increasing in \( t \) almost surely.
+    \end{theorem}
+\end{enumerate}
+
+There are a lot of open problems in this area. We look at some results that exist for martingales that we do not currently have near-martingale equivalents of.
+\begin{enumerate}
+    \item  Doob's upcrossing inequality
+    \begin{theorem}[{\cite[theorem 3.3.2]{KallianpurSundar2014}}]
+        Let \( X_n \) be a discrete-time submartingale. Denote the number of time \( X \) crosses over \( [p, q] \) (starting below \( p \) and going above \( q \)) by \( U_{[p, q]} \). Then
+        \[ \E\br{U_{[p, q]}} ≤ \sup_n \frac{\E\br{X_n - p}^+}{q - p} . \]
+    \end{theorem}
+
+    \item  Doob's martingale convergence theorem
+    \begin{theorem}[{\cite[theorem 3.3.4]{KallianpurSundar2014}}]
+        Let \( X \) be an \( L^1 \)-bounded submartingale with right-continuous paths. Then there exists an integrable random variable \( X_∞ \) such that \( X_n → X_∞ \) almost surely as \( t → ∞ \).
+    \end{theorem}
+    
+    \item  Doob's martingale inequalities
+    \begin{theorem}[{\cite[theorem 3.3.9]{KallianpurSundar2014}}]
+        Let \( X \) be a right-continuous submartingale for \( t ∈ [a, b] \), and \( X^* = \sup_t X_t \). Then the following hold:
+        \begin{enumerate}
+            \item  For any \( λ > 0 \), we have
+            \[ \Pr\br{X^* > λ} ≤ \frac{\E\br{X_b^+}}{λ} . \]
+            \item  If \( X_b ∈ L^p \) for some \( p ∈ (1, ∞) \), then
+            \[ \norm{X^*}_p ≤ \frac{p}{p-1} \norm{X_b}_p . \]
+        \end{enumerate}
+    \end{theorem}
+    
+    \item  Burkhölder–Davis–Gundy inequality
+    \begin{theorem}[{\cite[theorem 5.6.3]{KallianpurSundar2014}}]
+        Suppose \( M \) is a continuous locally square integrable martingale. Let \( M^* = \sup_t M_t \) and \( \ba{M} \) denote the quadratic variation process of \( M \). Then, for any \( p ∈ (0, ∞) \), there exists universal constants \( c_p \) and \( C_p \) such that
+        \[ c_p \E\bs{\ba{M}_t^p}  ≤  \E\bs{\br{M^*_t}^{2p}}  ≤  C_p \E\bs{\ba{M}_t^p} . \]
+    \end{theorem}
+\end{enumerate}
+
+
+
+\section{Girsanov's theorem}
+Recall that Girsanov's theorem (\cref{thm:Girsanov}) tells us that if a Wiener process is can be translated in certain directions to obtain another Wiener process with respect to an equivalent probability measure. Special cases of Girsanov's theorem for the new stochastic integral was given in \cite{KuoPengSzozda2013Girsanov}.
+
+\begin{theorem}[{\cite[theorems 5.1 and 5.2]{KuoPengSzozda2013Girsanov}}]
+    Let \( X \) and \( Y \) be continuous square-integrable processes on \( [0, T] \) such that \( X \) is adapted and \( Y \) is instantly-independent. Let
+    \begin{equation*}
+        \widetilde{W}_t  =  W_t + ∫_0^t \br{X_s + Y^s} \dif s ,  \qquad \text{and} \qquad
+        \widehat{W}_t  =  W_T - W_t + ∫_t^T \br{X_s + Y^s} \dif s .
+    \end{equation*}
+    Then the stochastic processes \( \widetilde{W}_t \) and \( \widehat{W}_t^2 - (T - t) \) are near-martingales with respect to the probability measure \( ℚ \) defined by the Radon–Nikodym derivative \( \frac{\dif ℚ}{\dif \Pr} = ℰ^{(X + Y)}_T \).
+\end{theorem}
+
+We do not currently have a Girsanov's theorem where the translation is a product of adapted and instantly-independent processes, or other functions of them.
+
+This raises another interesting question. Let \( (i, H, B) \) be an abstract Wiener space with the standard Gaussian measure \( μ \) on \( B \), and \( T: B → B \) a nonlinear transformation such that \( μ ∘ \inv{T} \) is absolutely continuous with respect to \( μ \). Since the Radon-Nikodym derivative \( \frac{\dif \br{μ ∘ \inv{T}}}{\dif μ} \) is related to the exponential process in Girsanov's theorem, can use the translation formula for an abstract Wiener space to derive the exponential process required for a general Girsanov's theorem?
+
+
+
+\section{Near-Markov property}
+It is well known that the solutions of stochastic differential equations in Itô's theory are Markov processes.
+\begin{theorem}[{\cite[theorem 10.6.1]{Kuo2006}}]
+    Suppose \( m(t, x), σ(t, x): [a, b] × ℝ → ℝ \) are adapted and satisfy the Lipschitz and linear growth conditions on \( x \). Let \( ξ \) be a \( ℱ_a \)-measurable square-integrable random variable. Then the unique solution \( X \) of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  m(t, X_t) \dif t + σ(t, X_t) \dif W_t  \\
+                    X_0  & =  ξ
+        \end{aligned}
+        \right.
+    \end{equation*}
+    is a Markov process. That is, for any \( s ≤ t \), we have \( \Pr\br{X_t ∈ A \given ℱ_s} = \Pr\br{X_t ∈ A \given X_s} \).
+\end{theorem}
+In fact, the martingale property and the Markov properties were Itô's original motivations behind the definition of Itô's integral.
+
+However, it is not true that solutions of stochastic differential equations with anticipating initial conditions are Markov processes. Therefore, we would like to know if there is an analogue of Markov processes that are satisfied by solutions of stochastic differential equations in the Ayed–Kuo theory, on the lines of how we defined near-martingales from martingales.
+
+A follow-up question concerns Wiener martingales. An Wiener process \( X \) is called a \emph{Wiener martingale}\index{martingale!Wiener} with respect to a filtration \( ℱ \) if it is \( ℱ \)-adapted and \( X_t - X_s \) is independent of \( ℱ_s \) for any \( s ≤ t \). We know that Wiener martingales have the strong Markov property, as shown in the following theorem.
+\begin{theorem}[{\cite[theorem 3.2.3]{KallianpurSundar2014}}]
+    Let \( X \) be a Wiener martingale with respect to the filtration \( ℱ \), and let \( τ \) be a finite \( ℱ \)-stopping time. Then
+    \begin{enumerate}
+        \item  the process \( Y_t = X_{τ + t} - X_τ \) for \( t ≥ 0 \) is a Wiener process, and
+        \item  the σ-algebra \( σ\bc{Y_t \given t ≥ 0} \) is independent of \( ℱ_τ \).
+    \end{enumerate}
+\end{theorem}
+Therefore, it is natural to ask if we can get a similar \textquote{near-Markov} result for \textquote{Wiener near-martingales}. This would establish a relationship between near-martingales and the \textquote{near-Markov} property.
+
+
+
+\section{Exponential processes.}
+Exponential processes are very important in Itô's theory of stochastic integration and has numerous applications in mathematical finance. In Itô calculus, there are three major ways to think of the map \( \exp\br{∫_0^t h(s) \dif W_s} ↦ ℰ^{(h)}_t \) (see also \cite[section 1]{HwangKuoSaitô2019}). For this idea, we will consider \( t ∈ [0, 1] \).
+\begin{enumerate}
+    \item  \emph{Multiplicative renormalization.}
+    For a random variable \( X \) with non-zero expectation, the \emph{multiplicative renormalization}\index{multiplicative renormalization} of \( X \) is the random variable \( X / \E\br{X} \). For any \( h ∈ L^2[0, 1] \), the Wiener integral \( ∫_0^t h(s) \dif W_s \) is a Gaussian random variable with mean \( 0 \) and variance \( ∫_0^t h(s)^2 \dif s \). Using the idea of moment generating functions, we get
+    \[ \E\bs{\exp\br{∫_0^t h(s) \dif W_s}} = \exp\br{\frac12 ∫_0^t h(s)^2 \dif s} . \]
+    Therefore, \( ℰ^{(h)}_t \) is the multiplicative renormalization of \( \exp\br{∫_0^t h(s) \dif W_s} \).
+
+    \item  \emph{Martingales.}
+    Under the condition \( \E\exp\br{\frac12 ∫_0^1 h(s)^2 \dif s} < ∞ \) (Novikov), \( ℰ^{(h)} \) is a martingale. Therefore, for any deterministic \( h \), the exponential process \( ℰ^{(h)} \) is necessarily a martingale since the Novikov condition is trivially satisfied.
+
+    \item  \emph{Stochastic differential equations.}
+    From \cref{rem:exponential_SDE}, we can say that \( ℰ^{(h)} \) is the solution of the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif ℰ^{(h)}_t  & =  σ_t ℰ^{(h)}_t \dif W_t  \\
+                 ℰ^{(h)}_a  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{enumerate}
+These ideas coincide even when \( h \) is adapted. Therefore, a natural question is whether these ideas concur when \( h \) is anticipating.
+
+The non-trivial nature of the stochastic exponential for anticipating processes is demonstrated by the following example.
+\begin{example}[{\cite[Item 5 of][section 4.6]{Kuo2014}}]
+    Suppose we consider the near-martingale property to define the exponential process. Then for any \( θ ∈ C^2(ℝ) \), we can use the differential formula to derive the exponential process associated with \( θ(W_1) \) as
+    \begin{equation*}
+        X_t = \exp
+        \bc{
+            ∫_0^t θ(W_1) \dif W_s
+            -  ∫_0^t \bs{\frac12 θ(W_1)^2 + \br{θ'(W_1) W_s - θ''(W_1) s} θ(W_1)} \dif s
+        } .
+    \end{equation*}
+\end{example}
+
+
+
+\section{LSDEs and conditioned processes}
+We covered linear stochastic differential equations with anticipation arising from three areas: (1) initial condition, (2) drift coefficient, and (3) diffusion coefficient. We have mostly focused on special classes for each type. Therefore, there is immense potential of expanding the scope of the individual classes, and show general results that cover combinations of different causes of anticipation. There is also a great scope of understanding probabilistic behavior for such equations, over and above the large deviations results we derived in \cref{chp:probabilistic_behavior}. Non-linear stochastic differential equations with anticipation is another exciting field of research.
+
+We also extensively studied the conditioned processes and its stochastic differential equation in \cref{chp:solving_ALSDEs} for linear stochastic differential equations with anticipating initial conditions. We can perform similar studies for linear stochastic differential equations with anticipating coefficients in both the diffusion and the drift terms.
+
+
+
+\section{Applications}
+The most well-known application of anticipating integrals is in modeling insider trading in the field of mathematical finance. This idea can also be extended to model prices of assets determined by initial public offerings, where information is asymmetric by nature. Similar is the case of venture capital investments, which are typically closed-off to retail investors. An extension of the Black–Scholes–Merton model was obtained by Zhai\cite[chapter 5]{JiayuZhai2018} under restrictive conditions of deterministic coefficients for the asset dynamics. The author showed the completeness of the market, and derived call option pricing and hedging formulas in the presence of initial conditions that are functions of \( W_1 \). There remains much room to generalize these results.
+
+Mathematical finance is not the only application area of anticipating integrands. These tools apply to any situation where there is an asymmetry of information about the future. As a hypothetical use case, consider a global logistics company that has access to information about the geopolitics of a particular region. Using this information, the organization can constantly update its delivery systems. Consider another hypothetical use case, where an environmental agency plans to release a certain amount of genetically modified mosquitoes into an environment one year down the line. However, it does not want to disclose its plans to the public ahead of time since it expects negative public perceptions of such a step. In this situation, anticipating calculus may be used to model the population dynamics of mosquitoes. Of course, the exact modeling procedure and application of anticipating stochastic calculus would depend on the specifics of the given problem.

@@ -1,0 +1,347 @@
+% !TeX root = ../dissertation.tex
+
+\section{Motivation}
+\footnotetextonly{This chapter previously appeared in the following open-access journal article: \fullcite{KuoShresthaSinha2021conditional}.}
+
+Given an anticipating stochastic process \( Z ∈ L^2([a, b] × Ω) \), its conditional expectation\index{conditional expectation} with respect to the σ-algebra \( ℱ_t \) projects it to the space of adapted functions. That is, \( \E\br{⋅ \given ℱ_t}: L^2([a, b] × Ω) → L^2_\text{ad}([a, b] × Ω) \) is a projection operator. This is particularly interesting since it prunes a general stochastic process and brings it within the realm of Itô's theory. We call the process \( X_t = \E\br{Z(t) \given ℱ_t} \) as the \emph{conditioned process of \( Z \)}\index{conditioned process}.
+
+Some questions arise immediately. Suppose \( Z \) is a solution of anticipating stochastic differential equation\index{stochastic differential equation}. Then is it true that the conditioned process \( X \) is the solution of adapted stochastic differential equation, where the coefficients and initial condition are also projected using the conditional expectation? What is the relationship between \( Z \) and \( X \) in general? We try to answer these questions in this chapter. We assume \( t ∈ [a, b] \) throughout this chapter.
+
+
+
+\section{Conditional expectation of solutions of LSDEs}
+
+% \begin{theorem}  \label{thm:condition_expectation_SDE}
+%     Assume \( α ∈ L^2_\text{ad}([a, b] × Ω) \), \( β ∈ L^1_\text{ad}([a, b] × Ω) \) are stochastic processes. Suppose \( h ∈ L^2[a, b] \) and \( ψ \) is an analytic function on the reals. Furthermore, let \( Z(t) \) and \( \widetilde{Z}(t) \) be the solutions of the linear stochastic differential equations
+%     \begin{equation}  \label{eqn:Z_SDE_1}
+%         \left\{
+%         \begin{aligned}
+%             \dif Z(t)  & =  α_t ~ Z(t) \dif W_t + β_t ~ Z(t) \dif t , \\
+%             Z(a)  & =  ψ \Big( ∫_a^b h(s) \dif W_s \Big) ,
+%         \end{aligned}
+%         \right.
+%     \end{equation}
+%     and
+%     \begin{equation}  \label{eqn:Z_SDE_2}
+%         \left\{
+%         \begin{aligned}
+%             \dif \widetilde{Z}(t)  & =  α_t ~ \widetilde{Z}(t) \dif W_t + β_t ~ \widetilde{Z}(t) \dif t , \\
+%             \widetilde{Z}(a)  & =  ψ' \Big( ∫_a^b h(s) \dif W_s \Big) ,
+%         \end{aligned}
+%         \right.
+%     \end{equation}
+%     respectively, where \( ψ' \) denotes the derivative of \( ψ \).
+%     If \( X_t = \E\br{Z(t) \given ℱ_t} \) and \( \widetilde{X}_t = \E\br{\widetilde{Z}(t) \given ℱ_t} \), then \( X \) satisfies the stochastic differential equation
+%     \begin{equation}  \label{eqn:X_SDE_1}
+%         \left\{
+%         \begin{aligned}
+%             \dif X_t  & =  α_t ~ X_t \dif W_t + β_t ~ X_t \dif t + h(t) ~ \widetilde{X}_t \dif W_t , \\
+%             X_a  & =  \E\bigg[ψ \Big( ∫_a^b h(s) \dif W_s \Big)\bigg] .
+%         \end{aligned}
+%         \right.
+%     \end{equation}
+% \end{theorem}
+
+\begin{theorem}  \label{thm:condition_expectation_SDE}
+    Assume \( α ∈ L^2_\text{ad}([a, b] × Ω) \), \( β ∈ L^1_\text{ad}([a, b] × Ω) \) are stochastic processes. Suppose \( h ∈ L^2[a, b] \) and \( ψ \) is an analytic function on the reals with derivative \( ψ' \). Furthermore, let \( Z(t) \) be the solution of the linear stochastic differential equations
+    \begin{equation}  \label{eqn:Z_SDE_1}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  α_t ~ Z(t) \dif W_t + β_t ~ Z(t) \dif t  \\
+            Z(a)  & =  ψ \Big( ∫_a^b h(s) \dif W_s \Big) ,
+        \end{aligned}
+        \right.
+    \end{equation}
+    and \( X_t = \E\br{Z(t) \given ℱ_t} \) is the conditioned process. Then \( X \) satisfies the linear stochastic differential equation
+    \begin{equation}  \label{eqn:X_SDE_1}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  α_t ~ X_t \dif W_t + β_t ~ X_t \dif t + h(t) ~ \widetilde{X}_t \dif W_t  \\
+            X_a  & =  \E\bigg[ψ \Big( ∫_a^b h(s) \dif W_s \Big)\bigg] ,
+        \end{aligned}
+        \right.
+    \end{equation}
+    where \( \widetilde{X}_t = \E\br{\widetilde{Z}(t) \given ℱ_t} \), and \( \widetilde{Z} \) is the solution of the linear stochastic differential equation
+    \begin{equation}  \label{eqn:Z_SDE_2}
+        \left\{
+        \begin{aligned}
+            \dif \widetilde{Z}(t)  & =  α_t ~ \widetilde{Z}(t) \dif W_t + β_t ~ \widetilde{Z}(t) \dif t  \\
+            \widetilde{Z}(a)  & =  ψ' \Big( ∫_a^b h(s) \dif W_s \Big) .
+        \end{aligned}
+        \right.
+    \end{equation}
+\end{theorem}
+
+\begin{remark}
+    In \cite[theorem 4.1]{KuoSinhaZhai2018}, we proved a similar result for the special case where \( α \) is deterministic, \( β \) is adapted, and \( h ≡ 1 \).
+\end{remark}
+
+\begin{proof}
+    By the assumption and \cref{thm:general_SDE_IC}, the solution processes \( Z(t) \) can be written as
+    \begin{align*}
+        Z(t)  & =  ℰ^{(α, β)}_t ⋅ ψ \br{\Big(∫_a^t h(s) \dif W_s - ∫_a^t h(s) α_s \dif s \Big) + ∫_t^b h(s) \dif W_s}  \\
+        & =  ℰ^{(α, β)}_t ⋅ ∑_{k = 0}^∞ \frac{1}{k!} ψ^{(k)} \Big(∫_a^t h(s) \dif W_s - ∫_a^t h(s) α_s \dif s \Big) \Big( ∫_t^b h(s) \dif W_s \Big)^k ,
+    \end{align*}
+    where \( ψ^{(k)} \) denotes the \( k \)th derivative of \( ψ \).
+
+    For brevity, we henceforth denote
+    \begin{equation}  \label{eqn:def_ψ}
+        ψ^{(k)}_t = ψ^{(k)} \Big(∫_a^t h(s) \dif W_s - ∫_a^t h(s) α_s \dif s \Big) .
+    \end{equation}
+    In this notation, the expression for \( Z(t) \) becomes
+    \begin{equation*}
+        Z(t) = ℰ^{(α, β)}_t ⋅ ∑_{k = 0}^∞ \frac{1}{k!} ψ^{(k)}_t ⋅ \Big( ∫_t^b h(s) \dif W_s \Big)^k .
+    \end{equation*}
+
+    Note that \( ℰ^{(α, β)}_t \) and \( ψ^{(k)}_t \) are adapted for all \( k \). Moreover, since \( h \) is deterministic, \( ∫_t^b h(s) \dif W_s \) is a Wiener integral, and therefore, \( ∫_t^b h(s) \dif W_s \) has the Gaussian distribution with mean \( 0 \) and variance
+    \begin{equation}  \label{eqn:def_V}
+    V_t = ∫_t^b h(s)^2 \dif s .
+    \end{equation}
+    Therefore, for any \( k \), we have \( \E\bs{\Big( ∫_t^b h(s) \dif W_s \Big)^{2k + 1}} = 0 \) and
+    \[ \E\bs{\Big( ∫_t^b h(s) \dif W_s \Big)^{2k}} = V_t^k (2k - 1)!!, \]
+    where \( !! \) denotes the double factorial defined as
+    \[ n!! = \prod_{k = 0}^{\ceil{\frac{n}{2}}} (n - 2k) \]
+    for any natural number \( n \).
+
+    Moreover, \( ∫_t^b h(s) \dif W_s \) is independent of \( ℱ_t \) for every \( t \). Using all of these information, we get
+    \begin{align}
+        X_t
+        & =  ℰ^{(α, β)}_t  ⋅ ∑_{k = 0}^∞ \frac{1}{(2k)!} ψ^{(2k)}_t \ \E\bs{\Big( ∫_t^b h(s) \dif W_s \Big)^{2k}}  \nonumber \\
+        & =  ℰ^{(α, β)}_t  ⋅ ∑_{k = 0}^∞ \frac{1}{(2k)!} ψ^{(2k)}_t V_t^k (2k - 1)!!  \nonumber \\
+        & =  ℰ^{(α, β)}_t  ⋅  ∑_{k = 0}^∞ \frac{1}{(2k)!!} ψ^{(2k)}_t V_t^k ,  \label{eqn:def_X1}
+    \end{align}
+    and similarly,
+    \begin{equation}  \label{eqn:def_X2}
+        \widetilde{X}_t  =  ℰ^{(α, β)}_t  ⋅ ∑_{k = 0}^∞ \frac{1}{(2k)!!} ψ^{(2k+1)}_t V_t^k ,
+    \end{equation}
+
+    Now we look at the differentials. From \cref{eqn:def_ψ} and \cref{eqn:def_V}, we get
+    \[ \dif \br{V_t^k}  =  k V_t^{k-1} \, (- h(t)^2 \dif t) , \] and
+    \begin{align*}
+        \dif \br{ψ^{(2k)}_t}
+        & =  ψ^{(2k+1)}_t ⋅ \br{h(t) \dif W_t - h(t) α_t \dif t}  +  \frac12 ψ^{(2k+2)}_t ⋅ \br{h(t)^2 \dif t}  \\
+        & =  ψ^{(2k+1)}_t h(t) \, \dif W_t
+        +  \br{\frac12 ψ^{(2k+2)}_t h(t)^2 - ψ^{(2k+1)}_t h(t) α_t} \dif t .
+    \end{align*}
+
+    Using the expressions for \( \dif \br{V_t^k} \)
+    and \( \dif ψ^{(2k)}_t \), and \cref{rem:exponential_SDE}, we get
+    \begin{align*}
+        & \dif \br{ℰ^{(α, β)}_t ψ^{(2k)}_t V_t^k}  \\
+        & =  ψ^{(2k)}_t V_t^k \dif ℰ^{(α, β)}_t
+        +  ℰ^{(α, β)}_t V_t^k \dif ψ^{(2k)}_t
+        +  ℰ^{(α, β)}_t ψ^{(2k)}_t (\dif V_t)^k  \\
+        & \quad +  ℰ^{(α, β)}_t \dif ψ^{(2k)}_t ⋅ (\dif V_t)^k
+        +  ψ^{(2k)}_t \dif ℰ^{(α, β)}_t ⋅ (\dif V_t)^k
+        +  V_t^k \dif ℰ^{(α, β)}_t ⋅ \dif ψ^{(2k)}_t  \\
+        & =  ψ^{(2k)}_t V_t^k
+        \br{α_t ℰ^{(α, β)}_t \dif W_ t+ β_t ℰ_{α, β}(t) \dif t}  \\
+        & \quad +  ℰ^{(α, β)}_t V_t^k
+        \br{ψ^{(2k+1)}_t h(t) \dif W_t + \Big(\frac12 ψ^{(2k+2)}_t h(t)^2 - \cancel{ψ^{(2k+1)}_t h(t) α_t} \Big) d t}  \\
+        & \quad +  ℰ^{(α, β)}_t ψ^{(2k)}_t \br{- k V_t^{k-1} h(t)^2 \dif t}  \\
+        & \quad +  0  +  0
+        +  V_t^k \br{\cancel{ℰ^{(α, β)}_t ψ^{(2k+1)}_t α_t h(t)}} \dif t  \\
+        & =  ℰ^{(α, β)}_t V_t^k \br{ψ^{(2k)}_t α_t + ψ^{(2k+1)}_t h(t)} \dif W_t \\
+        & \quad +  ℰ^{(α, β)}_t V_t^{k-1} \Big(ψ^{(2k)}_t V_t β_t + \frac12 ψ^{(2k+2)}_t V_t h(t)^2 - k ψ^{(2k)}_t h(t)^2 \Big) \dif t .
+    \end{align*}
+
+    At this point, we note that
+    \begin{align}
+        ∑_{k = 0}^∞ \frac{1}{(2k)!!} k ψ^{(2k)}_t
+        & =  ∑_{k = 1}^∞ \frac{1}{(2k)(2k - 2)!!} k ψ^{(2k)}_t  \nonumber \\
+        & =  \frac12 ∑_{k - 1 = 0}^∞ \frac{1}{(2(k - 1))!!} ψ^{(2(k-1)+2)}_t  \nonumber \\
+        & =  \frac12 ∑_{k = 0}^∞ \frac{1}{(2k)!!} ψ^{(2k+2)}_t . \label{eqn:equality_of_sums}
+    \end{align}
+
+    Now, since \( X_t  =  ∑_{k = 0}^∞ \frac{1}{(2k)!!} ℰ^{(α, β)}_t ψ^{(2k)}_t V_t^k \) (see \cref{eqn:def_X1}), we get
+    \begin{align*}
+        \dif X_t  &=  ∑_{k = 0}^∞ \frac{1}{(2k)!!} \dif \br{ℰ^{(α, β)}_t ψ^{(2k)}_t V_t^k}  \\
+        & =  ∑_{k = 0}^∞ \frac{1}{(2k)!!} ℰ^{(α, β)}_t V_t^k ψ^{(2k)}_t α_t \dif W_t \\
+        & \quad +  ∑_{k = 0}^∞ \frac{1}{(2k)!!} ℰ^{(α, β)}_t V_t^k ψ^{(2k+1)}_t h(t) \dif W_t \\
+        & \quad +  ∑_{k = 0}^∞ \frac{1}{(2k)!!} ℰ^{(α, β)}_t V_t^k ψ^{(2k)}_t β_t \dif t  \\
+        & \quad +  \cancel{∑_{k = 0}^∞ \frac{1}{(2k)!!} \frac12 ℰ^{(α, β)}_t V_t^k ψ^{(2k+2)}_t h(t)^2 \dif t}  \\
+        & \quad -  \cancel{∑_{k = 0}^∞ \frac{1}{(2k)!!} k ℰ^{(α, β)}_t V_t^{k-1} ψ^{(2k)}_t h(t)^2 \dif t}  \\
+        & =  α_t X_t \dif W_t + h(t) \widetilde{X}_t \dif W_t + β_t X_t \dif W_t ,
+    \end{align*}
+    where, in the second step, we used the result of \cref{eqn:equality_of_sums}. This completes the proof of the theorem.
+\end{proof}
+
+The presence of the extra term in the conditional stochastic differential equation in \cref{eqn:X_SDE_1} poses an interesting question. Note that the stochastic differential equation for \( X_t \) is defined via \( \widetilde{X}_t \). However, \( \widetilde{X}_t \) is defined in \cref{eqn:def_X2} as an infinite series and a closed form is not guaranteed. It is important to note that \( \widetilde{X}_t \) arose from taking the first derivative of \( ψ \) as the initial condition. Similarly, we can use the second derivative of \( ψ \) as the initial condition to arrive at the next step, ad infinitum. Therefore, a closed form solution is elusive in this method. Nevertheless, since we know that the derivative of the exponential function is itself, we have the following corollary.
+
+\begin{corollary}  \label{thm:condition_expectation_SDE_exponential}
+    Let \( α, β, h \) be as in \cref{thm:condition_expectation_SDE}. Then
+    \begin{equation*}
+        X_t = ℰ^{(α, β)}_t\exp \Big( ∫_a^t h(s) \dif W_s - ∫_a^t h(s) ~ α_s \dif s \Big)
+    \end{equation*}
+    satisfies the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  (α_t + h(t)) ~ X_t \dif W_t + β_t ~ X_t \dif t,  \\
+                 X_a  & =  1.
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{corollary}
+
+\begin{proof}
+    If \( ψ(x) = e^x \), then \( ψ ≡ ψ' \). Therefore \( Z(t) ≡ \widetilde{Z}(t) \), and consequently \( X_t = \widetilde{X}_t \). Then the result follows from \cref{thm:condition_expectation_SDE}.
+\end{proof}
+
+
+
+\section{Extending to a larger space}
+
+In general, the absence of a closed form for the associated conditional process does not pose significant problems. Recall that the scaled Hermite polynomials\index{Hermite polynomials} \( \bc{\frac{1}{\sqrt{n! ρ^n}} H_n(x; ρ)} \) form an orthonormal basis for the space \( L^2(ℝ, γ) \), where \( γ \) is the Gaussian measure with mean \( 0 \) and variance \( ρ \). Therefore, if we are able to arrive at a closed form reformulation of \cref{thm:condition_expectation_SDE} for Hermite polynomials, we can use this to state the result for conditional expectation of the solution when the initial condition is any \( L^2(ℝ, γ) \)-function of a Wiener integral.
+
+Recall that the Hermite polynomial of degree \( n \) with parameter \( ρ \) defined by
+\begin{equation*}
+    H_n(x; ρ) = (- ρ)^n e^\frac{x^2}{2 ρ} \operatorname{D}_x^n e^{- \frac{x^2}{2 ρ}} ,
+\end{equation*}
+where \( \operatorname{D}_x \) is the differentiation operator with respect to the variable \( x \). From \cite[page 334]{Kuo1996}, we state the following identities:
+\begin{align}
+    \Dif[x] H_n(x; ρ)  & =  n H_{n-1}(x; ρ)  \label{eqn:Hermite_Dx} \\
+    \Dif[ρ] H_n(x; ρ)  & =  -\frac12 \operatorname{D}_x^2 H_n(x; ρ)  \label{eqn:Hermite_Dρ} \\
+    H_n(x + y; ρ)  & =  ∑_{k = 0}^n \binom{n}{k} H_{n-k}(x; ρ) y^k  \label{eqn:Hermite_sum}
+\end{align}
+
+We use these facts to prove the following lemma.
+\begin{lemma}  \label{thm:Hermite_martingale}
+    The stochastic process \( X_t = H_n \Big( ∫_a^t h(s) \dif W_s; ∫_a^t h(s)^2 \dif s \Big) \) with \( h ∈ L^2[a, b] \) is a martingale with respect to the filtration generated by the Wiener process \( W_t \) and
+    \begin{equation}  \label{eqn:Hermite_differential}
+    \dif X_t = n H_{n-1} \Big( ∫_a^t h(s) \dif W_s; ∫_a^t h(s)^2 \dif s \Big) h(t) \, \dif W_t
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Here \( x = ∫_a^t h(s) \dif W_s \) and \( ρ = ∫_a^t h(s)^2 \dif s \). So we have \( \dif x = h(t) \dif W_t \) and \( \dif ρ = h(t)^2 \dif t \), and \( (\dif x)^2 = \dif ρ \). Using Itô's formula, we get
+    \begin{align*}
+        \dif X_t  & =  \Dif[x] H_n(x; ρ) \dif x + \cancel{\frac12 \operatorname{D}_x^2 H_n(x; ρ) (\dif x)^2} + \cancel{\Dif[ρ] H_n(x; ρ) \dif ρ}  \\
+        & =  n H_{n-1} \Big( ∫_a^t h(s) \dif W_s; ∫_a^t h(s)^2 \dif s \Big) h(t) \dif W_t ,
+    \end{align*}
+    where we used \cref{eqn:Hermite_Dρ} for the cancellation and \cref{eqn:Hermite_Dx} to get the final term.
+\end{proof}
+
+This leads to the following result.
+
+\begin{theorem}  \label{thm:SDE_conditional_Hermite}
+    Assume \( α ∈ L^2_\text{ad}([a, b] × Ω) \), \( β ∈ L^1_\text{ad}([a, b] × Ω) \) are stochastic processes and \( h ∈ L^2[a, b] \) is a deterministic function. For a fixed \( n ∈ ℕ \), suppose \( Z \) is the solution of the linear stochastic differential equation
+    \begin{equation}  \label{eqn:Z_SDE}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  α_t Z(t) \dif W_t + β_t Z(t) \dif t , \\
+            Z(a)  & =  H_n \Big( ∫_a^b h(s) \dif W_s; ∫_a^b h(s)^2 \dif s \Big).
+        \end{aligned}
+        \right.
+    \end{equation}
+    Then \( X_t = \E\br{Z(t) \given ℱ_t} \) is given by
+    \begin{equation}  \label{eqn:X_solution}
+        X_t = H_n \Big( ∫_a^t h(s) \dif W_s - ∫_a^t h(s) ~ α_s \dif s; ∫_a^t h(s)^2 \dif s \Big) ~ ℰ^{(α, β)}_t , \quad t ∈ [a, b] .
+    \end{equation}
+    Moreover, \( X_t \) satisfies the following stochastic differential equation
+    \begin{equation}  \label{eqn:X_SDE}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  α_t X_t \dif W_t + β_t X_t \dif t  \\
+            + & \ n H_{n-1} \Big( ∫_a^t h(s) \dif W_s - ∫_a^t h(s) ~ α_s \dif s; ∫_a^t h(s)^2 \dif s \Big) ~ ℰ^{(α, β)}_t ~ h(t) \dif W_t \\
+            X_a  & =  0 .
+        \end{aligned}
+        \right.
+    \end{equation}
+\end{theorem}
+
+\begin{remark}
+    For any \( x \) and \( ρ \), we have \( H_0(x; ρ) = 1 \). Hence the stochastic differential \cref{eqn:Z_SDE} is identically the one in \cref{rem:exponential_SDE}.
+\end{remark}
+
+\begin{proof}
+    We first prove \cref{eqn:X_solution}. Using \cref{thm:general_SDE_IC} and \cref{eqn:Hermite_sum}, we can write
+
+    \begin{align*}
+        Z(t)  & =  ℰ^{(α, β)}_t H_n \br{∫_a^b h(s) \dif W_s - ∫_a^t h(s) α_s \dif s; ∫_a^b h(s)^2 \dif s}  \\
+        & =  ℰ^{(α, β)}_t ∑_{k = 0}^n \binom{n}{k} H_{n-k} \br{∫_a^b h(s) \dif W_s; ∫_a^b h(s)^2 \dif s} \br{- ∫_a^t h(s) α_s \dif s}^k  \\
+        & =  ℰ^{(α, β)}_t ∑_{k = 0}^n \binom{n}{k} J_{n-k}(b) \br{- ∫_a^t h(s) α_s \dif s}^k ,
+    \end{align*}
+    where we used the notation
+    \begin{equation*}
+        J_n(t) = H_n \Big( ∫_a^t h(s) \dif W_s; ∫_a^t h(s)^2 \dif s \Big) .
+    \end{equation*}
+
+    Using \cref{thm:Hermite_martingale}, we get \( \E\br{J_{n-k}(b) \given ℱ_t}  =   J_{n-k}(t) \).
+    Taking the conditional expectation with the knowledge that \( ℰ^{(α, β)}_t \) is adapted and that stochastic integrals of adapted processes are adapted,
+    \begin{align*}
+        X_t  & =  ℰ^{(α, β)}_t ∑_{k = 0}^n \binom{n}{k} \E\br{J_{n-k}(b) \given ℱ_t} \br{- ∫_a^t h(s) α_s \dif s}^k  \\
+        & =  ℰ^{(α, β)}_t ∑_{k = 0}^n \binom{n}{k} J_{n-k}(t) \br{- ∫_a^t h(s) α_s \dif s}^k  \\
+        & =  ℰ^{(α, β)}_t H_n \br{∫_a^t h(s) \dif W_s - ∫_a^t h(s) α_s \dif s; ∫_a^t h(s)^2 \dif s} ,
+    \end{align*}
+    which proves \cref{eqn:X_solution}.
+
+    Since \( H_n(0; 0) = 0 \), we see that \( X_a = 0 \). Using Itô's formula and \cref{eqn:Hermite_differential},
+    \begin{align*}
+        \dif H_n  & =  \dif H_n \br{∫_a^t h(s) \dif W_s - ∫_a^t h(s) α_s \dif s; ∫_a^t h(s)^2 \dif s}  \\
+        & =  \Dif[x] H_n ⋅ (h(t) \dif W_t - h(t) α_t \dif t)  \\
+        & \qquad +  \cancel{\frac12 \Dif[x]^2 H_n ⋅ (h(t)^2 \dif t)} + \cancel{\Dif[ρ] H_n ⋅ (h(t)^2 \dif t)}  \\
+        & = n H_{n - 1} ⋅ h(t) (\dif W_t - α_t \dif t) .
+    \end{align*}
+
+    Finally, using \cref{eqn:X_solution}, we get
+    \begin{align*}
+        \dif X_t  & =  H_n \, ℰ^{(α, β)}_t + ℰ^{(α, β)}_t \, \dif H_n + d ℰ^{(α, β)}_t ⋅ \dif H_n  \\
+        & =  H_n ℰ^{(α, β)}_t (α_t \dif W_t + β_t \dif t)  \\
+        & \quad +  ℰ^{(α, β)}_t n H_{n - 1} ⋅ h(t) (\dif W_t - \cancel{α_t} \dif t)  +  \cancel{ℰ^{(α, β)}_t α_t n H_{n - 1} h(t)} \dif t . \\
+        & =  α_t X_t \dif W_t + β_t X_t \dif t  +  n H_{n - 1} h(t) ℰ^{(α, β)}_t \dif W_t ,
+    \end{align*}
+    which gives us \cref{eqn:X_SDE}.
+\end{proof}
+
+In \cref{eqn:X_SDE}, we specify an explicit form of the extra term in the stochastic differential equation for the conditioned process. We use this result in the following examples.
+
+\begin{example}
+    Consider the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  W_t Z(t) \dif W_t ,  &  t ∈ [0, 1],  \\
+            Z_0  & =  W_1.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    Here \( α_t = W_t \), \( β_t ≡ 0 \), \( h ≡ 1 \), and \( W_1 = H_1(W_1 ; 1) \). From \cref{thm:SDE_conditional_Hermite},
+    \begin{equation*}
+        X_t = \E\br{Z(t) \given ℱ_t} = \left( W_t - ∫_0^t W_s\dif s \right) \exp \left[ \frac12 \left( W_t^2 -t - ∫_0^t W_s^2 \dif s \right)\right]
+    \end{equation*}
+    and \( X_t \) satisfies the following stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  \bigg\{ W_t X_t + \exp \left[ \frac12 \left( W_t^2 -t - ∫_0^t W_s^2 \dif s \right)\right] \bigg\} \dif W_t  ,  &  t ∈ [0, 1],  \\
+            X_0  & =  0.
+        \end{aligned}
+        \right.
+    \end{equation*}
+
+\end{example}
+
+\begin{example}
+    Consider the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif Z(t)  & =  W_t Z(t) \dif W_t ,  &  t ∈ [0, 1],  \\
+            Z_0  & =  W_1^2 - 1.
+        \end{aligned}
+        \right.
+    \end{equation*}
+    From \cref{thm:SDE_conditional_Hermite},
+    \begin{equation*}
+        X_t = \bs{\br{W_t - ∫_0^t W_s \dif s}^2 - t} \exp \bs{\frac12 \br{W_t^2 - t - ∫_0^t W_s^2 \dif s}} ,
+    \end{equation*}
+    and for \( t ∈ [0, 1] \), \( X_t \) satisfies the following stochastic differential equation.
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  \bc{W_t  X_t + 2 \exp \bs{\frac12 \br{W_t^2 - t - ∫_0^t W_s^2 \dif s}}} \dif W_t ,  \\
+            X_0  & =  0.
+        \end{aligned}
+        \right.
+    \end{equation*}
+\end{example}

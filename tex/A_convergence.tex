@@ -1,0 +1,32 @@
+% !TeX root = ../dissertation.tex
+
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzcd}[row sep=huge, column sep=huge]
+        \text{unif}
+            \arrow[r, ForestGreen]
+            \arrow[d, ForestGreen]
+        &  L^∞
+            \arrow[r, ForestGreen]
+            \arrow[d, ForestGreen]
+        &  L^2
+            \arrow[r, ForestGreen]
+            \arrow[dl, densely dotted, red, swap, near start, "\text{†}" description]
+        &  L^1
+            \arrow[r, ForestGreen]
+        &  \Pr
+            \arrow[r, ForestGreen]
+            \arrow[dlll, bend left, dash dot, magenta, "∀ \text{ subseq } ∃ \text{ subsubseq }"]
+            \arrow[l, bend right, densely dotted, red, swap, "\text{UI}"]
+        &  d
+            \arrow[l, bend right, swap, densely dotted, red, "\text{const}"]  \\
+        \text{sure}
+            \arrow[r, ForestGreen]
+        &  \text{a.s.}
+            \arrow[urrr, ForestGreen]
+            \arrow[urr, densely dotted, red, near end, "\text{LDCT}" description]
+    \end{tikzcd}
+    \caption[Modes of convergence]{Relationship between modes of convergence. Green solid arrows signify automatic implication. Red dotted arrows require additional conditions mentioned on the arrow. Magenta dot-dashed lines cover all other cases.}
+    \label{fig:convergence_modes}
+\end{figure}

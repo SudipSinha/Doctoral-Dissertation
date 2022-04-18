@@ -1,0 +1,564 @@
+% !TeX root = ../dissertation.tex
+
+In 1827, while examining pollen grains suspended in water under a microscope, the British botanist Robert Brown observed that minute particles ejected from the pollens executed a continuous jittery motion\cite{Brown1828}. Since he observed the same kind of motion in inanimate objects like dust particles, he concluded that the motion was not related to life. He did not provide a theory to explain the phenomenon. However, this seemingly random motion came to be known as Brownian motion.
+
+Surprisingly, Brownian motion did not get a lot of attention for more than half a century. In 1900, Louis Bachelier used Brownian motion in his PhD thesis \textquote{The theory of speculation}\cite{Bachelier1900}, where he presented a stochastic analysis of stock and option markets. The phenomenon gained a lot of attention again in 1905 when Albert Einstein presented an indirect method to verify the existence of atoms and molecules in one of his papers\cite{Einstein1905}. Around the same time, in 1902, Henri Lebesgue laid the foundation of measure theory and abstract integration theory\cite{Lebesgue1902}.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[domain=0:10]
+        % https://tex.stackexchange.com/questions/59926/how-to-draw-brownian-motions-in-tikz-pgf
+        \pgfmathsetseed{2}
+        \tikzset{help lines/.style={very thin,color=Linen}}
+        \newcommand{\BrownianPath}[5]{% points, advance, rand factor, options, end label
+            \draw[#4] (0,0)
+            \foreach \x in {1,...,#1} {
+                -- ++(#2,rand*#3)
+            }
+            node[right] {#5};
+        }
+
+        \draw[help lines] (0,-2.5) grid (9.5,2.5);
+
+        \BrownianPath{1000}{0.01}{0.1}{PaleVioletRed}{\( W_⋅(ω_1) \)};
+        \BrownianPath{1000}{0.01}{0.1}{DarkSlateBlue}{\( W_⋅(ω_2) \)};
+        \BrownianPath{1000}{0.01}{0.1}{YellowGreen}{\( W_⋅(ω_3) \)};
+        \BrownianPath{1000}{0.01}{0.1}{DarkSalmon}{\( W_⋅(ω_4) \)};
+        \BrownianPath{1000}{0.01}{0.1}{Crimson}{\( W_⋅(ω_5) \)};
+        \BrownianPath{1000}{0.01}{0.1}{Fuchsia}{\( W_⋅(ω_6) \)};
+        \BrownianPath{1000}{0.01}{0.1}{Coral}{\( W_⋅(ω_7) \)};
+
+        \draw[->] (0, 0) -- (10, 0) node[right] {\( t \)};
+        \draw[->] (0, -3) -- (0, 3) node[right] {\( x \)};
+    \end{tikzpicture}
+    \caption{Some paths of a Wiener process.}
+    \label{fig:Wiener_process_paths}
+\end{figure}
+
+However, there was no mathematical description of this phenomenon until this point. In 1923, the American mathematician Norbert Wiener showed how Brownian motions can be constructed in a mathematical sense by putting an appropriate measure on the space of continuous functions\cite{Wiener1923}, which is arguably the first really significant application of abstract measure theory. Note that this was a decade before Andreĭ Nikolaevich Kolmogorov laid the rigorous foundations of probability theory\cite{Kolmogorov1933}. Therefore, the stochastic process corresponding to Brownian motion process is popularly known as Wiener process in mathematics. Wiener also constructed an integral with respect to Wiener processes. We shall explore this idea in \cref{sec:Wiener_integral}.
+
+Wiener's integral allowed only integration of deterministic functions. In 1944, Kiyosi Itô published his seminal paper \textquote{Stochastic Integral}\cite{Itô1944SI}, in which he demonstrated how to integrate adapted stochastic processes. In layperson's terms, adapted processes are processes that can utilize information only until the present. Itô calculus forms the counterpart to the Leibniz–Newton calculus for random processes. Itô combined the ideas of the Riemann–Stieltjes integral (referring to the integrator) and the Lebesgue integral (referring to the integrand). This will be the focus of much of \cref{chp:introduction}, starting from \cref{sec:Itô_integral}.
+
+Since its inception, Itô's theory has been used in numerous scientific pursuits. One of the biggest achievements is the Black–Scholes–Merton model\cite{BS1973,Merton1974}, which is an application of Itô's calculus to model the dynamics of financial markets. Merton and Scholes received the 1997 Nobel Memorial Prize in Economic Sciences. Due to his death in 1995, Black was mentioned as a contributor but was not named as an awardee.
+
+Itô's theory, even though quite general and useful, is not applicable to certain circumstances. For example, one cannot integrate \textquote{anticipating} processes, or processes that can have access to the future. Therefore, one cannot model insider trading using Itô's calculus. Similarly, if one knows the probability distribution of a road network being repaired at a certain future date and wants to model the logistics of delivering goods, the resulting model would fall outside the scope of Itô's theory.
+
+There have been many attempts at enlarging the space of integrable stochastic processes. Some classic approaches are (1) enlargement of filtration due to Itô himself, (2) the Skorokhod integral and Malliavin calculus, (3) white noise distribution theory, and (4) the more recent Ayed–Kuo integral. In this dissertation, we mainly focus on the Ayed–Kuo integral. We look at the current state of research in this area. We also prove large deviation principles for anticipating linear stochastic differential equations defined in the Ayed–Kuo sense.
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzcd}[row sep=huge, column sep=huge, math mode=false, crossing over clearance=0.5ex]
+        & & \ref{chp:introduction}
+        \arrow[d  , bend right, ForestGreen]
+        \arrow[dd , bend left , ForestGreen]
+        \\
+        & &
+        \ref{chp:extensions}
+        \arrow[d  , bend right, ForestGreen]
+        \arrow[ddr, bend right=6,  densely dotted, IndianRed]
+        \\
+        & &
+        \ref{chp:Ayed–Kuo_integral}
+        \arrow[dll, crossing over, bend right=15 , ForestGreen]
+        \arrow[dl , crossing over, bend right=6  , ForestGreen]
+        \arrow[d  , crossing over, ForestGreen]
+        \arrow[dr , bend left=6  , ForestGreen]
+        \arrow[drr, bend left=15 , ForestGreen]
+        \\
+        \ref{chp:isometry}
+        &
+        \ref{chp:near-martingales}
+        &
+        \ref{chp:conditional}
+        &
+        \ref{chp:solving_ALSDEs}
+        \arrow[r  , bend left=6  , densely dotted , IndianRed]
+        &
+        \ref{chp:probabilistic_behavior}
+    \end{tikzcd}
+    \caption{Chapter dependency graph. Dotted lines represent partial dependency.}
+    \label{fig:chapter_dependency_graph}
+\end{figure}
+
+This document is organized as follows. \Cref{chp:introduction} introduces elementary ideas, martingales, stochastic integration, and stochastic differential equations. \Cref{chp:extensions} discusses some mathematical motivations to extend Itô's calculus to a anticipating integrands, and a brief overview of the various approaches that have been taken in this direction. \Cref{chp:Ayed–Kuo_integral} introduces the Ayed–Kuo integral, the central theme of this dissertation. In \cref{chp:isometry}, we prove an extension of Itô's isometry for Ayed–Kuo integrals. In \cref{chp:near-martingales}, we introduce near-martingales, and prove an optional stopping theorem that we use in \cref{chp:probabilistic_behavior}. In \cref{chp:conditional}, we discuss how conditionals of solutions of stochastic differential equations behave. In \cref{chp:solving_ALSDEs}, we focus on a particular class of stochastic differential equations and contrast different techniques to solve them. We also discuss existence and uniqueness results. In \cref{chp:probabilistic_behavior}, we derive Freidlin–Wentzell type large deviation principles for the class of stochastic differential equations discussed in \cref{chp:solving_ALSDEs}. Finally, in \cref{chp:epilogue}, we conclude by looking at useful examples and open problems that need to be addressed.
+
+In general, the document is designed to be read linearly. \Cref{chp:extensions} can be skipped for the Ayed–Kuo part starting on \cref{chp:Ayed–Kuo_integral}. However, the ideas of enlargement of filtration and Skorokhod integral (\cref{sec:Malliavin_calculus}) of \cref{chp:extensions} are required for the corresponding sections in \cref{chp:solving_ALSDEs}. \Cref{chp:isometry,chp:near-martingales,chp:conditional} are independent and can be read after \cref{chp:Ayed–Kuo_integral}. The dependency graph of the chapters is shown in \cref{fig:chapter_dependency_graph}. \Cref{chp:probabilistic_behavior} uses results from \cref{chp:solving_ALSDEs}, but is independent in essence. \Cref{chp:epilogue} is independent in spirit, though it refers to various results shown in the other chapters for context. See \cref{fig:chapter_dependency_graph} for a dependency graph.
+
+
+
+\section{Elementary ideas and notation}
+A \emph{probability space}\index{probability space} is a triple \( (Ω, Σ, \Pr ) \) such that
+\begin{enumerate}
+    \item  \( Ω \) is a set.
+    \item  \( Σ \) is a \emph{σ-algebra}\index{sigma@σ-algebra} on \( Ω \). This means \( Σ ⊆ 2^Ω \) such that
+        \begin{enumerate}
+            \item  \( ∅ ∈ Σ \),
+            \item  \( E ∈ Σ \) implies \( E^∁ ∈ Σ \), and
+            \item  for every countable family of sets \( \br{E_n}_{n = 1}^∞ \) in \( Σ \), the union \( ⋃ E_n ∈ Σ \).
+        \end{enumerate}
+    \item   \( \Pr: Σ → [0, 1] \) is a \emph{probability measure}\index{probability measure}, that is
+        \begin{enumerate}
+            \item  \( \Pr\br{Ω} = 1 \), and
+            \item  if \( \br{E_n}_{n = 1}^∞ ⊆ Σ \) is a mutually disjoint collection of sets, then \( \Pr\br{⨆ E_n} = ∑ \Pr\br{E_n} \).
+        \end{enumerate}
+\end{enumerate}
+
+We usually think of a σ-algebra as the available information regarding the system of concern. A σ-algebra is called \emph{complete}\index{sigma@σ-algebra!complete} if all subsets of zero-measure sets are also measurable. In this document, we assume that all σ-algebras are complete. The σ-algebra generated by a topology is called \emph{Borel σ-algebra}\index{sigma@σ-algebra!Borel}. Sometimes we suppress the filtration and write the probability space as \( (Ω, \Pr) \) if the σ-algebra is the Borel σ-algebra. Elements of \( Σ \) are called \emph{events}\index{events}. We say that an event \( E \) occurs \emph{almost surely}\index{almost surely} if \( \Pr\br{E} = 1 \).
+
+A \emph{random variable}\index{random variable} \( X \) is a \emph{measurable}\index{measurable} function from a probability space \( (Ω, Σ, \Pr) \) to the reals embedded with the Borel σ-algebra. That is, for every \( B ∈ ℬ \), the set \( \bc{X ∈ B} = X^{-1}(B) ∈ Σ \). A random variable is called \emph{integrable}\index{random variable!integrable} if \( ∫ \abs{X} \dif \Pr < ∞ \). The \emph{expectation}\index{expectation} of an integrable random variable \( X \) is defined as the integral \( \E\br{X} = ∫_Ω X \dif \Pr \).
+
+In order to model random phenomenon evolving in time, we define stochastic processes.
+A \emph{stochastic process}\index{stochastic process} is a function \( X: 𝕋 × Ω → ℝ \) such that
+\begin{enumerate}
+    \item  \( X(t, ⋅): Ω → ℝ \) is a random variable for each \( t ∈ 𝕋 \), and
+    \item  \( X(⋅, ω): 𝕋 → ℝ \) is measurable for each \( ω ∈ Ω \).
+\end{enumerate}
+Stochastic processes are essentially families of random variables indexed by \( t ∈ 𝕋 \). We think of the parameter \( t \) as representing time. We usually suppress the dependence on \( ω ∈ Ω \) and simply write \( X(t) \) or \( X_t \). The space \( (ℝ, ℬ) \) is called the \emph{state space} and \( 𝕋 \) the \emph{index set}. For a fixed \( ω \), the function \( X(⋅, ω): 𝕋 → ℝ \) is called a \emph{path} of the process. We only consider the case where the \( 𝕋 = [a, b] \), where \( a, b ∈ ℝ \) and \( a < b \). A stochastic process \( X \) is said to be \emph{integrable}\index{stochastic process!integrable} if the random variable \( X_t \) is integrable for each \( t \).
+
+We now present an axiomatic definition of a Wiener process — which shall be the focal point of this document.
+\begin{definition}  \label{def:Wiener_process}  \index{Wiener process}  \index{Brownian motion}
+    A stochastic process \( W = \br{W_t}_{t ≥ 0} \) is called a \emph{Wiener process} or \emph{Brownian motion} if
+    \begin{enumerate}
+        \item  \( W_0 = 0 \) a.s.
+        \item  \( W \) has independent increments: for every \( 0 ≤ t_1 ≤ \dotsb ≤ t_n \), the random variables \( W_{t_1}, W_{t_2} - W_{t_1}, \dotsc, W_{t_n} - W_{t_{n - 1}} \) are independent.
+        \item  \( W \) has Gaussian increments: \( W_t - W_s ∼ N(0, \abs{t - s}) \) for any \( s \) and \( t \).
+        \item  The paths of \( W \) are almost surely continuous in \( t \).
+    \end{enumerate}
+\end{definition}
+
+\begin{theorem}[{\cite[theorem 2.2.5]{KallianpurSundar2014}}]  \label{thm:Wiener_process_nowhere_differentiable}
+    The paths of a Wiener process are almost surely nowhere differentiable.
+\end{theorem}
+
+
+Often, we want to know the expected value of a process given restricted information. This is achieved by using conditional expectation. Suppose \( ℱ ⊆ Σ \) is a sub-σ-algebra, and \( X \) is an integrable random variable. Then the \emph{conditional expectation}\index{conditional expectation} of \( X \) given \( ℱ \), denoted \( \E\br{X \given ℱ} \) is a \( ℱ \)-measurable random variable \( Y \) such that \( ∫_E Y \dif \Pr = ∫_E X \dif \Pr \) for any \( E ∈ ℱ \).
+
+\begin{theorem}[properties of conditional expectation]  \label{thm:conditional_expectation_properties}
+    Let \( X, Y \) be random variables, \( a, b \) scalars, and \( 𝒢 ⊆ ℱ ⊆ Σ \) σ-algebras. Then under suitable integrability conditions, the following hold almost surely.
+    \begin{enumerate}
+        \item  Mean-preserving: \( \E\br{\E\br{X \given ℱ}} = \E\br{X} \).
+        \item  Linearity: \( \E\br{a X + b Y \given ℱ} = a \E\br{X \given ℱ} + b \E\br{Y \given ℱ} \).
+        \item  Monotonicity: If \( X ≥ 0 \), then \( \E\br{X \given ℱ} ≥ 0 \).
+        \item  Taking out the known: If \( Y \) is \( ℱ \)-measurable, then \( \E\br{X Y \given ℱ} = Y \E\br{X \given ℱ} \).
+        \item  Independence: If \( 𝒢 \) is independent of \( σ\bc{σ(X), ℱ} \), then \( \E\br{X \given σ(ℱ, 𝒢)} = \E\br{X \given ℱ} \). In particular, if \( X \) is independent of \( ℋ \), then \( \E\br{X \given 𝒢} = \E\br{X} \).
+        \item  Tower property: \( \E\br{\E\br{X \given ℱ} \given 𝒢} = \E\br{X \given 𝒢} \).
+    \end{enumerate}
+\end{theorem}
+For the proof of the above, see \cite[section 9.7]{Williams1991}.
+
+
+An non-decreasing indexed family of σ-algebras \( ℱ = (ℱ_t)_{t ∈ 𝕋} \), is called a \emph{filtration}\index{filtration}. A probability space embedded with a filtration is called a \emph{filtered probability space}\index{filtered probability space} and is denoted by \( (Ω, Σ, ℱ, \Pr) \). A filtration is said to be \emph{right-continuous}\index{filtration!right-continuous} if \( ℱ_{t^+} = ℱ_t \), where \(ℱ_{t^+} = ⋂_{u > t} ℱ_u \). A filtered probability space is said to satisfy the \emph{usual conditions}\index{filtered probability space!usual conditions} if the associated filtration is complete and right-continuous. In the information interpretation, a filtered probability space represents the temporal evolution of knowledge about the system. We refer to the filtration generated by the relevant Wiener process as the \emph{natural filtration}\index{natural filtration}.
+
+\begin{definition}  \index{adapted}
+    A stochastic process \( A \) is called \emph{\( ℱ \)-adapted} if \( A_t \) is \( ℱ_t \)-measurable for every \( t \). If the σ-algebra is obvious, we simply say \emph{adapted}.
+\end{definition}
+
+A Wiener process is trivially adapted to its natural filtration.
+
+Now, we define stopping times.
+\begin{definition}
+    A stochastic process \( τ \) is called a \emph{stopping time}\index{stopping time} if \( \bc{τ ≤ t} ∈ ℱ_t \) for every \( t \). The σ-algebra at a stopping time \( τ \)\index{sigma@σ-algebra!stopped} is defined as
+    \[ ℱ_τ = \bc{E ∈ Σ \given E ∩ \bc{τ ≤ t} ∈ ℱ_t \text{ for all } t} . \]
+\end{definition}
+
+A process \textquote{stopped} using a stopping time has a constant value after it is stopped.
+\begin{definition}
+    Suppose \( X \) is a stochastic process and \( τ \) is a stopping time. Then the \emph{stopped process}\index{stopped process} \( X^τ \) is defined by
+    \[ X^τ_t(ω) = X_{τ(ω) ∧ t}(ω) , \]
+    where we use the notation \( a ∧ b = \min\bc{a, b} \).
+\end{definition}
+
+\paragraph{Conventions}
+In this document, unless specified, we fix the following.
+\begin{enumerate}
+    \item  An underlying filtered space \( (Ω, Σ, ℱ, \Pr) \) satisfying the usual conditions.
+    \item  The interval of interest of the parameter \( t \) is \( 𝕋 = [a, b] \), where \( 0 ≤ a ≤ b < ∞ \).
+    \item  A Wiener process \( W = \br{W_t}_{t ≥ 0} \).
+    \item  The natural filtration as the reference filtration.
+\end{enumerate}
+
+
+
+
+\section{Martingales}  \label{sec:martingales}
+
+\begin{definition}  \index{martingale}  \index{submartingale}  \index{supermartingale}
+    An integrable adapted stochastic process \( M \) is called a \emph{martingale} if \( \E\br{M_t \given ℱ_s} = M_s \) for every \( s ≤ t \). It is called a \emph{submartingale} if we replace the condition with \( \E\br{M_t \given ℱ_s} ≥ M_s \), and is called a \emph{supermartingale} when \( \E\br{M_t \given ℱ_s} ≤ M_s \).
+\end{definition}
+
+From a modeling perspective, the best predictor of the future value of a martingale is its present value. Therefore, martingales are used to model fair games and find numerous application in pricing financial products.
+
+A process that is both a submartingale and a supermartingale is necessarily a martingale. Moreover, any result that is true for a submartingale can be suitably modified for a supermartingale, and subsequently for a martingale. Therefore, in what follows, we only show results for submartingales.
+
+Let us look at some examples of martingales.
+\begin{enumerate}
+    \item  Suppose \( \br{X_n}_{n = 1}^∞ \) is a sequence of integrable independent zero-mean random variables. Let \( S_n = ∑_{i = 1}^n X_i \). Then \( S \) is a martingale.
+    \item  Suppose \( \br{X_n}_{n = 1}^∞ \) is a sequence of integrable, independent and identically distributed (i.i.d.) random variables with zero mean and unit variance, and \( S_n = ∑_{i = 1}^n X_i \). Then \( S_n^2 - n \) is a martingale.
+    \item  If \( ξ \) is integrable, then the process \( M_t = \E\br{ξ \given ℱ_t} \) is a martingale.
+    \item  A Wiener process \( W \) is a martingale.
+        \begin{proof}
+            Suppose \( s ≤ t \). We write \( W_t = W_s + (W_t - W_s) \). By independence of increments, we know \( W_t - W_s \) is independent of \( ℱ_s \). Moreover, \( \E\br{W_t - W_s} = 0 \). Using \cref{thm:conditional_expectation_properties}, we get
+            \( \E\br{W_t \given ℱ_s}
+                =  \E\br{W_s \given ℱ_s} + \E\br{W_t - W_s \given ℱ_s}
+                =  W_s + \cancelto{0}{\E\br{W_t - W_s}}
+                =  W_s \).
+        \end{proof}
+    \item  The processes \( W_t^2 - t \) and \( W_t^3 - 3t W_t \) are martingales.
+    \item  \( \exp\br{W_t^2 - \frac12 t} \) is a martingale.
+\end{enumerate}
+
+Since the expected value of a submartingale increases, it is natural to ask if we can decompose it into a martingale and an increasing process. The following theorem answers this question.
+\begin{theorem}[Doob–Meyer decomposition]  \index{Doob–Meyer decomposition}
+    Suppose \( X \) is a integrable adapted process. Then there is a unique decomposition
+    \begin{equation*}
+        X_t = M_t + A_t \quad \text{for all } t ,
+    \end{equation*}
+where \( M \) is a martingale and \( A \) is a adapted integrable process.
+\end{theorem}
+
+\begin{theorem}[Doob–Meyer decomposition for submartingales]  \label{thm:Doob–Meyer_decomposition_submartingales}  \index{Doob–Meyer decomposition!submartingales}
+    Suppose \( X \) is a submartingale. Then there is a unique decomposition
+    \begin{equation*}
+        X_t = M_t + A_t \quad \text{for all } t ,
+    \end{equation*}
+where \( M \) is a martingale and \( A \) is a adapted integrable increasing process starting at \( 0 \).
+\end{theorem}
+
+
+The power of martingales come from martingale transforms. We think of this as follows. Imagine a discrete-time game of chance, where the difference \( X_n - X_{n-1} \) is our winning per unit stake at time \( n ≥ 1 \). At time \( 0 \), we place a random stake \( A_0 \) using our prior intuition. Our winning at time \( 1 \) is then \( A_0 (X_1 - X_0) \). At time \( 1 \), we update our prior to the present and place stake \( A_1 \) to get a winning of \( A_1 (X_2 - X_1) \) at time \( 2 \). Therefore, the net gain until time \( 2 \) is \( ∑_{i = 1}^2 A_{n-1} (X_n - X_{n-1}) \). In general, at time \( n \), our portfolio value would be \( ∑_{i = 1}^n A_{n-1} (X_n - X_{n-1}) \). This is the motivation behind the following definition.
+
+\begin{definition}  \index{martingale transform}
+    Let \( \br{A_n}_{n = 0}^∞ \) be an adapted process and \( \br{X_n}_{n = 0}^∞ \) a submartingale. Then the processes \( \br{Y_n}_{n = 0}^∞ \), where \( Y_0 = 0 \) and
+    \begin{equation*}
+        Y_n = (A ∙ X)_n = ∑_{i = 1}^n A_{n-1} (X_n - X_{n-1})
+    \end{equation*}
+    is called the \emph{martingale transform} of \( X \) by \( A \).
+\end{definition}
+
+Note that we required \( A \) to be adapted so that the bets are fair in the sense that one does not know the result of the lottery at any future time. Since we have no information of the future, if the underlying game is fair (martingale), no matter how we bet, we should neither win nor lose in expectation. This is what we now show.
+
+\begin{proposition}  \label{thm:martingale_transform}
+    \begin{enumerate}
+        \item \label{itm:martingale_transform_bounded_positive}  If \( X \) is a submartingale and \( A \) is a bounded non-negative adapted process, then \( (A ∙ X) \) is a submartingale.
+        \item \label{itm:martingale_transform_bounded}  If \( X \) is a martingale and \( A \) is a bounded adapted process, then \( (A ∙ X) \) is a martingale.
+        \item  If \( X \) and \( A \) are both square integrable, then we do not require the boundedness condition in \cref{itm:martingale_transform_bounded_positive,itm:martingale_transform_bounded}.
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    We only prove \cref{itm:martingale_transform_bounded_positive} because the others follow the same process. Let \( X \) be a submartingale and \( Y = (A ∙ X) \). Suppose \( n \) is an arbitrary time. Note that \( Y_n - Y_{n-1} = A_{n-1} (X_n - X_{n-1}) \), which is integrable since \( A \) is bounded. Using the adaptedness of \( A \), we get
+    \begin{equation*}
+        \E\br{Y_n - Y_{n-1} \given ℱ_{n-1}}
+        =  \E\br{A_{n-1} (X_n - X_{n-1}) \given ℱ_{n-1}}
+        =  A_{n-1} \E\br{X_n - X_{n-1} \given ℱ_{n-1}}
+        ≥  0 ,
+    \end{equation*}
+    where the last inequality holds since \( A \) is non-negative.
+\end{proof}
+
+Given a martingale, one can expect that the martingale property is preserved when sampling on stopping times. This always holds \cite[for the discrete case, see][page 99]{Williams1991}. However, it is not always true that the expected value of the stopped process is the same as the expected value at the initial time. For example, let \( X \) be a simple random walk on the natural numbers (including \( 0 \)) starting at \( 0 \) and let \( τ = \inf\bc{X_n = 1} \). Then \( X \) is a martingale and it is well-known that \( ℙ(T < ∞) = 1 \). However, even though \( \E\br{X_{τ ∧ n}} = \E\br{X_0} \) for every \( n \), we have \( 1 = \E\br{X_τ} ≠ \E\br{X_0} = 0 \). Doob's optional stopping theorem\index{optional stopping theorem!martingale} states that this is true under reasonable conditions. 
+\begin{theorem}[{\cite[theorem 3.3.1]{KallianpurSundar2014}}]  \label{thm:optional_stopping_Doob}
+    Let \( M \) be a uniformly integrable submartingale with right-continuous sample paths. Suppose \( σ \) and \( τ \) are two bounded stopping times with \( σ ≤ τ \). Then \( M_σ \) and \( M_τ \) are integrable, and \( \E\br{X_τ \given ℱ_σ} ≥ X_σ \) almost surely.
+\end{theorem}
+
+
+
+\section{Naively approaching stochastic integration}
+Our goal in this section is to define integrals with respect to Wiener processes. That is, we want to define \( ∫_a^b f(t) \dif W_t \). Can we do so in the usual Riemann–Stieltjes sense?
+
+A set \( Π_n = \bc{t_0, t_1, \dotsc, t_n} \), is called a \emph{partition}\index{partition} of \( [a, b] \) if \( a = t_0 < t_1 < \dotsb < t_n = b \). We define the norm of a partition as \( \norm{Π_n} = \sup \bc{t_i - t_{i-1} \given i ∈ [n]} \). In this document, we always assume \( \norm{Π_n} → 0 \) as \( n → ∞ \).
+
+We first introduce the idea of variations of a real-valued function \( f \). 
+\begin{definition}
+    The \emph{linear variation}\index{variation!linear} of a function \( f: [a, b] → ℝ \) is the quantity
+    \[ L_a^b(f) = \sup_{Π_n} ∑_{i = 0}^n \abs{f(x_i) - f(x_{i - 1})} , \]
+    where the supremum is taken over all partitions of \( [a, b] \).
+
+    Similarly, the \emph{quadratic variation}\index{variation!quadratic} of a function \( f: [a, b] → ℝ \) is the quantity
+    \[ Q_a^b(f) = \sup_{Π_n} ∑_{i = 0}^n \abs{f(x_i) - f(x_{i - 1})}^2 . \]
+\end{definition}
+
+It can easily be checked that the quadratic variation of a Wiener process is given by
+\begin{equation}  \label{eqn:quadratic_variation_W}
+    Q_a^b(W) = b - a ,
+\end{equation}
+which we symbolically denote by \( \br{\Del W_i}^2 ≃ \Del t_i \).
+
+Now, suppose \( \norm{Π_n} → 0 \) as \( n → ∞ \). Then the Riemann–Stieltjes integral for \( f \) with respect to \( g \) is defined as
+\[ ∫_a^b f(t) \dif g(t)  =  \lim_{n → ∞} ∑_{i = 1}^n f(t_i^*) \br{g(t_i) - g(t_{i-1})} , \]
+where \( t_i^* ∈ [t_{i-1}, t_i] \) for \( i ∈ [n] = \bc{1, 2, \dotsc, n} \).
+It can be shown that continuous functions are Riemann–Stieltjes integrable with respect to any function of finite linear variation.
+
+Can we use this idea to define \( ∫_a^b f(t) \dif W_t \) for a continuous function \( f \)? Since the linear variation of a Wiener process over any interval is infinite, we cannot define path-wise a stochastic integral of the form \( ∫_a^b f(t) \dif W_t( ω) \). In other words, naive integration with respect to a Wiener process is not possible.
+
+
+
+\section{Wiener's integral}  \label{sec:Wiener_integral}
+As we remarked in \cref{eqn:quadratic_variation_W}, Wiener processes have finite quadratic variations. Can we exploit this fact to define an integral with respect to Wiener processes?
+
+Wiener\cite{Wiener1923} did exactly this for square-integrable deterministic functions \( f ∈ L^2[a, b] \). His approach was to first define the integral on \emph{step functions}\index{step function}. In particular, for \( f(t) = ∑_{i = 1}^n a_i 𝟙_{[t_{i-1}, t_i)}(t) \), define the \emph{Wiener integral}\index{integral!Wiener} as
+\[ I_W(f) = ∑_{i = 1}^n a_i \Del W_i , \]
+where \( \Del W_i = W_{t_i} - W_{t_{i-1}} \).
+In order to extend this idea to \( L^2[a, b] \), we note that step functions are dense in the space of square integrable functions. Therefore, for any \( f ∈ L^2[a, b] \), we can find a sequence of functions \( \br{f^{(n)}}_{n = 1}^∞ \) such that \( f^{(n)} → f \) in \( L^2[a, b] \) as \( n → ∞ \). It can be shown that \( \br{I(X^{(n)})}_{n = 1}^∞ \) is a Cauchy sequence in \( L^2(Ω) \). Since \( L^2(Ω) \) is a Hilbert space, the sequence \( \br{I(f^{(n)})}_{n = 1}^∞ \) converges in \( L^2(Ω) \). We call this limit as the Wiener integral of \( f \), and write
+\[ I_W(f) = ∫_a^b f(t) \dif W_t = \lim_{n → ∞} ∫_a^b f^{(n)}(t) \dif W_t . \]
+
+The Wiener integral is linear and retains the Gaussian nature of Wiener processes. In particular,
+\[ I_W(f) ∼ N\br{0, \norm{f}} , \]
+where \( \norm{f}^2 = ∫_a^b f(t)^2 \dif t \) is the canonical norm on \( L^2[a, b] \). Moreover, the process \( X \) defined by \( X_t = ∫_a^t f(s) \dif W_s \) is a continuous martingale.
+
+
+
+\section{Itô's integral}  \label{sec:Itô_integral}  \index{integral!Itô}
+Itô generalized Wiener's integral to allow integrands to be adapted stochastic processes, thus expanding the class of integrable functions significantly \cite{Itô1944SI}. Itô's original motivation was to construct diffusion processes associated with infinitesimal operators directly in a probabilistic manner. However, we take a martingale viewpoint in this dissertation. To understand a motivation of his definition, we first try to compute the integral of a Wiener process with respect to itself. Writing as limits of Riemann sums,
+\[ ∫_0^t W_s \dif W_s = \lim_{n → ∞} ∑_{i = 1}^n W_{t_i^*} \Del W_i , \]
+where \( t_i^* ∈ [t_{i - 1}, t_i] \).
+
+Now, define the following Riemann sums by taking the evaluation points as the left and right endpoints, respectively, of each subinterval:
+\[ L_n = ∑_{i = 1}^n W_{t_{i-1}} \Del W_i  \qquad  R_n = ∑_{i = 1}^n W_{t_i} \Del W_i . \]
+Then we can easily see that
+\begin{align*}
+    R_n + L_n  & =  W_t^2 , \qquad \text{and} \\
+    R_n - L_n  & =  ∑_{i = 1}^n \br{W_{t_{i-1}} - W_{t_i}}^2 . \\
+\end{align*}
+Using the quadratic variation of Wiener processes and taking limit \( n → ∞ \) in \( L^2(Ω) \), we get
+\begin{align*}
+    L_n  & =  \frac12 \br{W_t^2 - ∑_{i = 1}^n \br{W_{t_{i-1}} - W_{t_i}}^2}  →  \frac12 \br{W_t^2 - t} , \text{ and} \\
+    R_n  & =  \frac12 \br{W_t^2 + ∑_{i = 1}^n \br{W_{t_{i-1}} - W_{t_i}}^2}  →  \frac12 \br{W_t^2 + t} .
+\end{align*}
+Therefore, we see that different choices for \( t_i^* \) give us different values of the integral. In \cref{tab:W_integral_endpoints}, we show the results of taking three representatives — the left, right, and midpoints.
+
+\begin{table}[ht]
+    \caption{Choice of endpoints for \( ∫_0^t W_s \dif W_s \)}
+    \label{tab:W_integral_endpoints}
+    \centering
+    \rowcolors{1}{}{MidnightBlue!2}
+    \begin{tabular}{clcccl}
+        \toprule
+        \( t_j^* \)  &  \( ∫_0^t W_s \dif W_s \)  &  Intuitive?  &  \( \E \)  &  Martingale?  &  Theory  \\
+        \midrule
+        left   &  \( \frac12 \br{W_t^2 - t} \)  &  \( × \)  &  \( 0 \)  &  \( ✓ \)  &  Itô \\
+        mid    &  \( \frac12 \br{W_t^2} \)      &  \( ✓ \)  &  \( t \)  &  \( × \)  &  Stratonovich \\
+        right  &  \( \frac12 \br{W_t^2 + t} \)  &  \( × \)  &  \( t \)  &  \( × \)  &    \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Clearly, there is no single optimal choice. Therefore, one must choose according to one's convenience. There are two noticeable advantages of choosing the left-endpoint. First, if one thinks of the interval as time, then taking the left-endpoint signifies that the integrand does not \textquote{know} of the future behavior of the integrator. Therefore, it is expected that the left-endpoint approximation will give us a martingale, which it does. Therefore, Itô's integral can be thought of as a continuous martingale transform. Keeping this in mind, we give the formal definition of Itô's integral.
+
+Just like Wiener's definition of the integral, Itô defines the stochastic integral in steps. First, consider \emph{step processes}\index{step process} of the form \( X_t(ω) = ∑_{i = 1}^n ξ_{i - 1}(ω) 𝟙_{[t_{i-1}, t_i)}(t) \), where \( ξ_{i-1} \) is \( ℱ_{t_{i-1}} \)-measurable for each \( i \). The Itô integral for \( f \) is given by
+\[ I(X) = ∑_{i = 1}^n ξ_{i - 1} \Del W_i . \]
+
+Let \( L^2_\text{ad}([a, b] × Ω) \) denote the space of square-integrable adapted stochastic processes, that is
+\begin{equation*}
+    L^2_\text{ad}([a, b] × Ω) = \bc{X \given ∫_a^b \E\br{\abs{X_t}^2} \dif t < ∞} .
+\end{equation*}
+Note that \( L^2_\text{ad}([a, b] × Ω) \) is a Hilbert space with the inner product \( \ba{X, Y} = ∫_a^b \E\br{X_t Y_t} \dif t \).
+Similarly, define
+\begin{equation*}
+    L^1_\text{ad}([a, b] × Ω) = \bc{X \given ∫_a^b \E\abs{X_t} \dif t < ∞} .
+\end{equation*}
+Again, \( L^1_\text{ad}([a, b] × Ω) \) is a Banach space with the norm \( \norm{X} = ∫_a^b \E\abs{X_t} \dif t \).
+
+It can be shown that the set of step processes is dense in the set \( L^2_\text{ad}([a, b] × Ω) \). Therefore, for every \( X ∈ L^2_\text{ad}([a, b] × Ω) \), there is a sequence of step processes \( \br{X^{(n)}}_{n = 1}^∞ \) such that \( X^{(n)} → X \) in \( L^2_\text{ad}([a, b] × Ω) \) as \( n → ∞ \). It can be shown that \( \br{I(X^{(n)})}_{n = 1}^∞ \) is a Cauchy sequence in \( L^2(Ω) \). From the completeness of \( L^2(Ω) \), we are assured the convergence of \( \br{I(X^{(n)})}_{n = 1}^∞ \) in \( L^2(Ω) \). We call this limit as the Itô integral of \( X \), and write
+\[ I(X) = ∫_a^b X_t \dif W_t = \lim_{n → ∞} ∫_a^b X^{(n)}_t \dif W_t . \]
+
+The salient idea that made this process work is the isometry between \( L^2_\text{ad}([a, b] × Ω) \) and \( L^2(Ω) \).
+\begin{theorem}[Itô's isometry]
+    For every \( X ∈ L^2_\text{ad}([a, b] × Ω) \), we have \( \E\br{∫_a^b X_t \dif W_t} = 0 \), and
+    \begin{equation*}
+        \E\bs{\br{∫_a^b X_t \dif W_t}^2}  =  ∫_a^b \E\br{X_t^2} \dif t .
+    \end{equation*}
+\end{theorem}
+
+The Itô integral is linear. Moreover, the process \( Y \) defined by \( Y_t = ∫_a^t X_s \dif W_s \) is a continuous martingale.
+
+
+An \emph{Itô process}\index{stochastic process!Itô} is an adapted stochastic process that can be expressed as the sum of an integral with respect to time (called the \emph{drift}\index{stochastic process!drift}) and an Itô integral (called the \emph{diffusion}\index{stochastic process!diffusion}). That is, a process \( X \) is an Itô process if and only if there exists an \( ℱ_0 \)-measurable random variable \( X_0 \) and stochastic processes \( m ∈ L^1_\text{ad}([a, b] × Ω) \) and \( σ ∈ L^2_\text{ad}([a, b] × Ω) \) such that
+\[ X_t = X_0 + ∫_a^t m_s \dif s + ∫_a^t σ_s \dif W_s . \]
+It is customary to write this in the symbolic differential form
+\[ \dif X_t = m_t \dif t + σ_t \dif W_t . \]
+
+\emph{Itô's lemma}\index{Itô's lemma}, also known as \emph{Itô's formula}\index{Itô's formula}, gives a method to obtain Itô processes from existing Itô processes.
+\begin{theorem}[Itô's formula]  \label{thm:Itô_lemma}  \index{differential formula!Itô}
+    Suppose \( X \) be an Itô process. Let \( f(t, x): [a, b] × ℝ → ℝ \) be \( C^1 \) in the \( t \)-coordinate and \( C^2 \) in the \( x \)-coordinate with partial derivatives \( f_t \), \( f_x \), and \( f_{xx} \). Then
+    \[ Y_t = f(t, X_t) \]
+    is also an Itô process, and in the symbolic differential form, we have
+    \[ \dif Y_t  =  f_t \dif t + f_x \dif X_t + \frac12 f_{xx} \br{\dif X_t}^2 . \]
+    where \( \br{\dif X_t}^2 = \dif X_t ⋅ \dif X_t \) is calculated using the rules
+    \[ \dif W_t ⋅ \dif W_t = \dif t,  \text{ and }  \dif t ⋅ \dif t = \dif t ⋅ \dif W_t = \dif W_t ⋅ \dif t = 0 . \]
+\end{theorem}
+
+\begin{example}  \label{eg:integral_Wt}
+    Towards the beginning of this section, we saw a special case of the Itô integral
+    \[ ∫_a^t W_s \dif W_s = \frac12 \br{(W_t^2 - W_a^2) - (t - a)} . \]
+    Here we show another method of deriving this using \cref{thm:Itô_lemma}.
+
+    Recall that ordinary calculus gives \( ∫_a^t x \dif x = x^2 - a^2 \). Therefore, we expect the Itô integral to give a similar term. So we guess \( f(x) = x^2 \), which means \( f'(x) = 2 x \) and \( f''(x) = 2 \). Using \cref{thm:Itô_lemma} on \( f(W_t) \), we get
+    \begin{align*}
+        \dif \br{W_t^2}
+        & =  2 W_t \dif W_t  +  \frac12 ⋅ 2 \br{\dif W_t}^2  \\
+        & =  2 W_t \dif W_t  +  \dif t .
+    \end{align*}
+    Rearranging and writing the integral form, we get
+    \begin{align*}
+        ∫_a^t W_s \dif W_s  =  \frac12 \br{(W_t^2 - W_a^2) - (t - a)} ,
+    \end{align*}
+    which is exactly what we expected.
+\end{example}
+
+
+
+\section{Stochastic differential equations}
+Ordinary differential equations are ubiquitous in mathematical modeling of physical phenomena. For example, suppose we want to model the value \( S \) of a fixed-return asset (such as a bond) whose growth rate is proportional to its value at any time \( t \). We can write this as
+\begin{equation*}
+    \frac{\dif S_t}{\dif t} = p_t S_t .
+\end{equation*}
+
+If we try to do the same thing for a variable-return asset (such as a stock), we have to incorporate randomness into the equation. We can do this by adding a \emph{noise} term \( \dot{W}_t \) in the coefficient. That is, we can write
+\begin{equation*}
+    p_t = m_t + \dot{W}_t
+\end{equation*}
+We only know the probabilistic behavior of the noise term, not its exact behavior.
+
+In general, we would like to solve equations of the form
+\begin{equation}  \label{eqn:SDE_noise}
+    \frac{\dif X_t}{\dif t} = m(t, X_t) + σ(t, X_t) \dot{W}_t .
+\end{equation}
+
+Based on our experience of physical phenomenon, we expect \( \dot{W} \) to have the following properties:
+\begin{enumerate}
+    \item  \( \dot{W}_{t_1} \) and \( \dot{W}_{t_2} \) are independent if \( t_1 ≠ t_2 \).
+    \item  \( \dot{W} \) is stationary, that is the joint distribution of \( \bc{\dot{W}_{t_1 + t}, \dotsc, \dot{W}_{t_k + t}} \) does not depend on \( t \) for any \( k ∈ ℕ \).
+    \item  \( \E\br{\dot{W}_t} = 0 \) for all \( t \).
+\end{enumerate}
+However, it is well-known that there does not exist a stochastic process satisfying the above properties in the usual sense. It is possible to represent \( \dot{W} \) as a \emph{generalized} stochastic process called a \emph{white noise process}\index{white noise process}. This means that it can be constructed as a probability measure on the larger space \( 𝒮' \) of tempered distributions on \( [0, ∞) \). Compare this to the usual stochastic processes for which the probability measure is on the smaller space \( ℝ^{[0, ∞)} \). This construction is mathematically involved and we refer the reader to \cite{Kuo1996} for more details.
+
+So we are left with the question of whether we can still give a meaning to \cref{eqn:SDE_noise} in our usual framework. Now, the properties of \( \dot{W} \) are similar to what we would expect the derivative of a Wiener process to be. But we know from \cref{thm:Wiener_process_nowhere_differentiable} that the paths of Wiener processes are almost surely nowhere differentiable. Nevertheless, this gives us an idea of how to move forward.
+
+Note that if we \textquote{multiply} both sides of the \cref{eqn:SDE_noise} by \( \dif t \), we get
+\begin{equation*}
+    \dif X_t  =  m(t, X_t) \dif t + σ(t, X_t) \br{\dot{W}_t \dif t} .
+\end{equation*}
+Now, if we replace \( \dot{W}_t \dif t \) with \( \dif W_t \), where \( W \) is the usual Wiener process, we get the \emph{stochastic differential equation}\index{stochastic differential equation} (SDE)
+\begin{equation}  \label{eqn:SDE_generic}
+    \dif X_t  =  m(t, X_t) \dif t + σ(t, X_t) \dif W_t
+\end{equation}
+Note that \( \dif W_t \) itself is meaningless since the paths of Wiener processes are almost surely nowhere differentiable. However, if we write the integral version of this, we can interpret the last term as the usual Itô's integral. Therefore, we have the \emph{stochastic integral equation}\index{stochastic integral equation}
+\begin{equation}  \label{eqn:SIE_generic}
+    X_t  =  X_0 + ∫_a^t m(s, X_s) \dif s + ∫_a^t σ(s, X_s) \dif W_s ,
+\end{equation}
+which is meaningful. Since \cref{eqn:SDE_generic} is easier to read than \cref{eqn:SIE_generic}, we define \cref{eqn:SDE_generic} to be a symbolic representation of \cref{eqn:SIE_generic}. Whenever we write a stochastic differential equation, we shall keep in mind that we are referring to the associated stochastic integral equation.
+
+A stochastic differential equation is called linear\index{stochastic differential equation!linear} if in \cref{eqn:SDE_generic}, we have \( m(t, X_t) = γ_t X_t + ρ_t \) and \( σ(t, X_t) = α_t X_t + β_t \) for some adapted processes \( γ, ρ, α, β \). In this document, we shall only look at linear SDEs (LSDEs).
+
+Let us now look at a two classic examples of linear stochastic differential equations and their solutions.
+
+\begin{example}  \label{eg:Ornstein–Uhlenbeck_process}
+    Given \( t ∈ [0, ∞) \), consider the equation \( \frac{\dif X_t}{\dif t} = - θ X_t + σ \dot{W}_t \), where \( θ, σ > 0 \). This is known as the \emph{Langevin equation}\index{Langevin equation} in physics. Since \( \dot{W} \) does not exist, this equation is strictly symbolic. However, it can be made meaningful by writing
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  - θ X_t \dif t + σ \dif W_t , \\
+                 X_0  & =  x_0 ∈ ℝ .
+        \end{aligned}
+        \right.
+    \end{equation*}
+
+    To solve this, we use Itô's formula along with integration by parts. The integrating factor is \( e^{∫_0^t θ \dif s} = e^{θ t} \). Therefore, let \( f(t, x) = e^{θ t} x \). Then the derivatives are \( f_t(t, x) = θ e^{θ t} x = θ f(t, x) \), \( f_x(t, x) = e^{θ t} \), and \( f_{xx}(t, x) = 0 \). By Itô's formula
+    \begin{align*}
+        \dif \br{e^{θ t} X_t}
+        & =  θ e^{θ t} X_t \dif t + e^{θ t} \dif X_t  \\
+        & =  \cancel{θ e^{θ t} X_t \dif t} + e^{θ t} \br{\cancel{- θ X_t \dif t} + σ \dif W_t}  \\
+        & =  e^{θ t} σ \dif W_t .
+    \end{align*}
+    Using this, the stochastic differential equation now becomes
+    \[ \dif \br{e^{θ t} X_t} = e^{θ t} σ \dif W_t . \]
+    Converting into the integral form, we get
+    \[ e^{θ t} X_t - x_0  =  ∫_0^t e^{θ s} σ \dif W_s , \]
+    which gives us
+    \[ X_t  =  e^{-θ t} x_0  +  σ ∫_0^t e^{- θ (t - s)} \dif W_s . \]
+
+    The solution is known as the \emph{Ornstein–Uhlenbeck process}\index{stochastic process!Ornstein–Uhlenbeck}. A minor variation of this is known as the \emph{Vasicek model}\index{Vasicek model} in mathematical finance and is used to model the evolution of interest rates.
+\end{example}
+
+\begin{example}  \label{eg:exponential_SDE}
+    Given \( t ∈ [a, b] \), consider the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif X_t  & =  m(t) X_t \dif t + σ(t) X_t \dif W_t  \\
+                 X_a  & =  1 ,
+        \end{aligned}
+        \right.
+    \end{equation*}
+    where \( m \) and \( σ \) are deterministic functions.
+
+    To solve this, we let \( θ(x) = \log(x) \), so \( θ'(x) = \frac1x \) and \( θ''(x) = -\frac{1}{x^2} \). Using Itô's formula, we get
+    \[ \dif \br{\log X_t} = \frac{1}{X_t} \dif X_t - \frac12 \frac{1}{X_t^2} \br{\dif X_t}^2 . \]
+    Now, \( \br{\dif X_t}^2 = σ(t)^2 X_t^2 \dif t \) since \( \br{\dif W_t}^2 = \dif t \), the rest of the terms being zero. Therefore,
+    \begin{align*}
+        \dif \br{\log X_t}
+        & =  \frac{1}{\cancel{X_t}} \br{m(t) \cancel{X_t} \dif t + σ(t) \cancel{X_t} \dif W_t} - \frac12 \frac{1}{\bcancel{X_t^2}} σ(t)^2 \bcancel{X_t^2} \dif t  \\
+        & =  \br{m(t) - \frac12 σ(t)^2} \dif t + σ(t) \dif W_t .
+    \end{align*}
+    Integrating from \( a \) to \( t \), we get
+    \[ \log X_t - \log X_a  =  ∫_a^t \br{m(t) - \frac12 σ(t)^2} \dif t + ∫_a^t σ(t) \dif W_t . \]
+    Since \( \log X_a = \log 1 = 0 \), we get
+    \[ X_t  =  \exp\br{∫_a^t \br{m(t) - \frac12 σ(t)^2} \dif t + ∫_a^t σ(t) \dif W_t} . \]
+\end{example}
+
+\Cref{eg:exponential_SDE} is an example of an important class of processes called exponential processes.
+\begin{definition}  \label{def:exponential_process}
+    The \emph{exponential process}\index{exponential process} associated with adapted stochastic processes \( m \) and \( σ \) is defined as
+    \begin{equation*}
+        ℰ^{(σ, m)}_t = \exp\br{∫_a^t σ_s \dif W_s + ∫_a^t \br{m_s - \frac12 σ_s^2} \dif s } .
+    \end{equation*}
+    If \( m ≡ 0 \), then we write
+    \begin{equation*}
+    ℰ^{(σ)}_t = \exp\br{∫_a^t σ_s \dif W_s - \frac12 ∫_a^t σ_s^2 \dif s} .
+    \end{equation*}
+\end{definition}
+
+\begin{remark}  \label{rem:exponential_SDE}
+    The exponential process \( ℰ^{(σ, m)} \) is an Itô process satisfying the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif ℰ^{(σ, m)}_t  & =  σ_t ℰ^{(σ, m)}_t \dif W_t + m_t ℰ^{(σ, m)}_t \dif t , \\
+                 ℰ^{(σ, m)}_a  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+
+    Similarly, the exponential process \( ℰ^{(σ)} \) is an Itô process satisfying the stochastic differential equation
+    \begin{equation*}
+        \left\{
+        \begin{aligned}
+            \dif ℰ^{(σ)}_t  & =  σ_t ℰ^{(σ)}_t \dif W_t , \\
+                 ℰ^{(σ)}_a  & =  1 .
+        \end{aligned}
+        \right.
+    \end{equation*}
+    The proof of the result follows from a direct application of Itô's formula.
+\end{remark}
+
+
+The following theorem states the existence\index{stochastic differential equation!existence} and uniqueness\index{stochastic differential equation!uniqueness} of the solution for stochastic differential equations.
+\begin{theorem}[{\cite[section 10.3]{Kuo2006}}]
+    Let \( m(t, x) \) and \( σ(t, x) \) be real-valued measurable functions on \( [a, b] × ℝ \) such that there is a \( M > 0 \) for which the following conditions are satisfied:
+    \begin{enumerate}
+        \item  (linear growth in \( x \)) \( \abs{m(t, x)} + \abs{σ(t, x)} ≤ M (1 + \abs{x}) \),
+        \item  (Lipschitz condition in \( x \)) \( \abs{m(t, x) - m(t, y)} + \abs{σ(t, x) - σ(t, y)} ≤ M \abs{x - y} \).
+    \end{enumerate}
+    Suppose also that the initial condition is a square-integrable \( ℱ_a \)-measurable random variable. Then the stochastic differential \cref{eqn:SDE_generic} has a unique continuous solution.
+\end{theorem}
+
+
+\paragraph{Girsanov's theorem}
+Girsanov's theorem\index{Girsanov's theorem} tells us that if a Wiener process is translated in certain directions (in the functional space), the resultant process is also a Wiener process with respect to an equivalent probability measure.
+\begin{theorem}[\cite{Girsanov1960}]  \label{thm:Girsanov}
+    Let \( X ∈ L^2_\text{ad}[0, T] \) for some \( T ∈ [0, \infty) \) such that \( \E_{\Pr}\br{ℰ^{(X)}_t} = 1 \) for all \( t ∈ [0, T] \). Then the stochastic process \( \widetilde{W} \) given by
+    \begin{equation*}
+        \widetilde{W}_t = W_t - ∫_0^T X_s \dif s , \quad t ∈ [0, T],
+    \end{equation*}
+    is a Wiener process with respect to the probability measure \( ℚ \) defined by the Radon–Nikodym derivative \( \frac{\dif ℚ}{\dif \Pr} = ℰ^{(X)}_T \).
+\end{theorem}

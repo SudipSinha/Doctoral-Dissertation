@@ -1,0 +1,499 @@
+% !TeX root = ../dissertation.tex
+
+\section{Motivation}
+\footnotetextonly{This chapter previously appeared in the following open-access journal article: \fullcite{KuoShresthaSinha2021isometry}.}
+
+We remarked in \cref{sec:Itô_integral} that Itô's isometry\index{isometry!Itô} forms the backbone of Itô's integral. Therefore, for any theory that extends Itô's theory, it is important to know if the isometry holds. The focus of this chapter will be to derive an identity in Ayed–Kuo theory that reduces to Itô isometry for adapted processes.
+
+Should we expect Itô's isometry to hold identically for the Ayed–Kuo integral? From white noise distribution theory\index{white noise distribution theory}, we expect otherwise. We take a brief detour to explore this idea.
+
+Recall that the white nose approach to anticipating stochastic integral is given by the Hitsuda–Skorokhod integral\index{integral!Hitsuda–Skorokhod}
+\[ ∫_a^b ∂_t^* Z(t) \dif t , \]
+where \( Z \) is a Wiener functional and \( ∂_t^* \) is the adjoint of the white noise differential operator \( ∂_t \) \cite[see][page 107]{Kuo1996}. (For a detailed description of the Hitsuda–Skorokhod integral, see \cite[chapter 5]{Kuo1996}.) Essentially, \cite[theorem 13.16]{Kuo1996} asserts that under certain conditions on \( Z \), the white noise integral \( ∫_a^b ∂_t^* Z(t) \dif t \) is a Hitsuda–Skorokhod integral, and we have
+\begin{equation}  \label{eqn:Hitsuda–Skorokhod_identity}
+    \E\bs{\br{∫_a^b ∂_t^* Z(t) \dif t}^2}
+    = ∫_a^b \E\bs{Z(t)^2} \dif t
+    +  ∫_a^b ∫_a^b \E\bs{∂_t Z(s) ~ ∂_s Z(t)} \dif s \dif t .
+\end{equation}
+
+Moreover, from white noise analysis, we have the symbolic expression
+\begin{equation}  \label{eqn:white_noise_derivative_W}
+    ∂_t W_s = 𝟙_{\bc{t < s}} .
+\end{equation}
+We can verify this expression using the last line on \cite[page 103]{Kuo1996} and the representation of Wiener process in \cite[page 254]{Kuo1996}.
+
+Now, let \( f \) and \( ϕ \) be \( C^1 \)-functions on \( ℝ \) and consider the Wiener functional
+\begin{equation} \label{eqn:Z_special_form}
+    Z(t) = f(W_t) ~ ϕ (W_b - W_t),  \quad  t ∈ [a, b]
+\end{equation}
+Suppose \( s < t \). Then by the chain rule and \cref{eqn:white_noise_derivative_W}, we have
+\begin{align}  \label{eqn:∂t_Zs}
+    ∂_t Z(s)
+    & =  f'(W_s) ~ \br{∂_t W_s} ~ ϕ(W_b - W_s)
+        +  f(W_s) ~ ϕ'(W_b - W_s) ~ \br{∂_t (W_b - W_s)}  \nonumber \\
+    & =  f(W_s) ~ ϕ'(W_b - W_s) .
+\end{align}
+Similarly,
+\begin{equation}  \label{eqn:∂s_Zt}
+    ∂_s Z(t)  =  f(W_t) ~ ϕ'(W_b - W_t) .
+\end{equation}
+
+Putting \cref{eqn:Hitsuda–Skorokhod_identity,eqn:Z_special_form,eqn:∂t_Zs,eqn:∂s_Zt} together, we get
+\begin{align}  \label{eqn:identity_white_noise}
+    &  \E\bs{ \br{∫_a^b ∂_t^*\br{f(W_t) ~ ϕ(W_b - W_t)} \dif t}^2}  =  ∫_a^b \E\bs{ f(W_t)^2 ~ ϕ(W_b - W_t)^2 } \dif t  \nonumber \\
+    &  \quad +  2 ∫_a^b ∫_a^t \E\bs{ f(W_s) ~ ϕ'(W_b - W_s) ~ f'(W_t) ~ ϕ(W_b - W_t) } \dif s \dif t .
+\end{align}
+But for a Wiener functional \( Z(t) = f(W_t) ~ ϕ(W_b - W_t) \), its Hitsuda–Skorokhod integral turns out to be the same as the Ayed–Kuo integral, namely
+\begin{equation}\label{eqn:Hitsuda–Skorokhod_equals_Ayed–Kuo}
+    \int_a^b ∂_t^*\br{f(W_t) ~ ϕ(W_b - W_t)} \dif t
+    =  \int_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t.
+\end{equation}
+Therefore, \cref{eqn:identity_white_noise,eqn:Hitsuda–Skorokhod_equals_Ayed–Kuo}) yields the following identity
+\begin{align}  \label{eqn:identity}
+    &  \E\bs{ \br{∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t}^2}  =  ∫_a^b \E\bs{ f(W_t)^2 ~ ϕ(W_b - W_t)^2 } \dif t  \nonumber \\
+    &  \quad +  2 ∫_a^b ∫_a^t \E\bs{ f(W_s) ~ ϕ'(W_b - W_s) ~ f'(W_t) ~ ϕ(W_b - W_t) } \dif s \dif t .
+\end{align}
+which is what we expect for the Ayed–Kuo integral.
+
+
+
+\section{Previous attempts}
+It is important to note that this is not the first attempt to formulate such a result. In fact, in \cite[theorem 3.1]{KuoSaeTangSzozda2013}, the authors demonstrated that \cref{eqn:identity} holds under strong assumptions of \( f \) and \( ϕ \) being analytic on the entire real line and having bounded derivatives.
+
+However, the earlier result had significant drawbacks. First, the assumptions on \( f \) and \( ϕ \) are quite restrictive as noted. Second, the proof of the result is quite lengthy, and involves tedious computations using binomial expansion of the function \( f \) and \( ϕ \). Third, the proof did not utilize the core idea of the Ayed–Kuo integral, that is, to evaluate adapted integrands at the left-endpoints and the instantly-independent processes at the right-endpoints of the intervals. Our new proof exploits this nature of the integral and resolves the stated shortcomings. We also do not imposing any restrictions on \( f \) and \( ϕ \) outside of what is required for \cref{eqn:identity} to be well-defined.
+
+
+
+\section{Identity for the simple case}  \label{sec:isometry_product}
+
+In the proof of \cref{thm:isometry_extension_product} below, for \( a ≤ s ≤ t ≤ b \), we shall use the σ-algebras
+\begin{align*}
+    ℱ_s  & =  σ\bc{W_u \given a ≤ u ≤ s} , \\
+    𝒢^t  & =  σ\bc{W_b - W_v | t ≤ v ≤ b} , \text{ and} \\
+    ℋ_s^t  & =  σ\br{ℱ_s ∪ 𝒢^t} .
+\end{align*}
+We call \( \{ ℱ_s: s ∈ [a, b] \} \) the \emph{forward}-filtration\index{filtration!forward} and \( \{ 𝒢^t: t ∈ [a, b] \} \) the \emph{backward}\index{filtration!backward} or \emph{counter}-filtration\index{filtration!counter} generated by the Wiener process. Taking conditional expectation judiciously with respect to the \emph{separation σ-algebra}\index{sigma@σ-algebra!separation} \( ℋ_s^t \) plays a crucial part in the proof of the following theorem.
+
+
+\begin{theorem}  \label{thm:isometry_extension_product}
+    Suppose \( f, ϕ ∈ C^1(ℝ) \) such that \( f(W_t) ~ ϕ(W_b - W_t), f(W_t) ~ ϕ'(W_b - W_t), f'(W_t) ~ ϕ(W_b - W_t) ∈ L^2([a, b] × Ω) \). Moreover, assume the stronger condition of convergence in \( L^2(Ω) \) instead of a convergence in probability for the definition of the Ayed–Kuo integral. Then \( \E\bs{ ∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t } = 0 \), and
+    \begin{align}
+        &  \E\bs{ \br{∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t}^2}  =  ∫_a^b \E\bs{ f(W_t)^2 ~ ϕ(W_b - W_t)^2 } \dif t  \nonumber \\
+        &  \quad +  2 ∫_a^b ∫_a^t \E\bs{ f(W_s) ~ ϕ'(W_b - W_s) ~ f'(W_t) ~ ϕ(W_b - W_t) } \dif s \dif t . \label{eqn:isometry_extension_product}
+    \end{align}
+\end{theorem}
+
+\begin{remark}
+    For the right-hand side of \cref{eqn:isometry_extension_product} to be well-defined, we need the two integrals to be individually well-defined.
+
+    For the first integral, we directly see that the integral is well-defined if \( f(W_t) ~ ϕ(W_b - W_t) ∈ L^2([a, b] × Ω) \). For conciseness, we write \( f_t = f(W_t) \), \( ϕ_t = ϕ(W_b - W_t) \), and similarly their corresponding derivatives. Using this notation, for the second integral, we can use Cauchy–Schwarz inequality to get
+    \begin{align*}
+        & ∫_a^b ∫_a^t \E\bs{ f_s ~ ϕ_s' ~ f_t' ~ ϕ_t} \dif s \dif t  \\
+        & ≤  ∫_a^b ∫_a^t \br{ \E\bs{ \abs{f_s ~ ϕ_s'}^2 }}^\frac12 \br{ \E\bs{ \abs{f_t' ~ ϕ_t}^2 }}^\frac12 \dif s \dif t  \\
+        & ≤  ∫_a^b \br{ \E\bs{ \abs{f_s ~ ϕ_s'}^2 }}^\frac12 \dif s ∫_a^b \br{ \E\bs{ \abs{f_t' ~ ϕ_t}^2 }}^\frac12 \dif t  \\
+        & ≤  (b - a) \br{ ∫_a^b \E\bs{ \abs{f_s ~ ϕ_s'}^2 } \dif s }^\frac12
+        \br{ ∫_a^b \E\bs{ \abs{f_t' ~ ϕ_t}^2 } \dif t }^\frac12 ,
+    \end{align*}
+    where we used the Schwarz's inequality in the last step.
+
+    Combining these results, we see that a sufficient condition for the second integral to exist is \( f(W_t) ~ ϕ(W_b - W_t), f(W_t) ~ ϕ'(W_b - W_t), f'(W_t) ~ ϕ(W_b - W_t) ∈ L^2([a, b] × Ω) \).
+\end{remark}
+
+\begin{remark}
+    In the proof of Itô's isometry, one typically takes conditional expectation with respect to the σ-algebra \( ℱ_s \) in a simple way. On the other hand, our proof requires conditioning with respect to the σ-algebra \( ℋ_s^t \) in a very specific manner.
+\end{remark}
+
+\begin{proof}
+    For notational convenience, let
+    \begin{align*}
+        \Del W_k   & =  W_{t_k} - W_{t_{k-1}} , \\
+        \Del t_k   & =  t_k - t_{k - 1} , \\
+        f_{k - 1}  & =  f(W_{t_{k-1}}) , \text{and}  \\
+               ϕ_k & =  ϕ(W_b - W_{t_k}) .
+    \end{align*}
+    Note that in this proof, we use \( ϕ_k \) (subscript \( k \)) to represent the time even though \( ϕ \) is instantly-independent. We use superscripts only for powers. We also assume that \( \norm{Π_n} → 0 \) as \( n → 0 \) as usual.
+
+    By the definition of the anticipating stochastic integral, we get
+    \begin{equation*}
+        ∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t
+        = \lim_{n → ∞} ∑_{i = 1}^n f_{i-1} ϕ_i \Del W_i ,
+    \end{equation*}
+    where the limit is in \( L^2(Ω) \).
+    Therefore, for the mean, we have
+    \begin{align*}
+        \E\bs{ ∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t }
+        & =  \lim_{n → ∞} ∑_{i = 1}^n \E\bs{ f_{i-1} ~ ϕ_i \Del W_i }  \\
+        & =  \lim_{n → ∞} ∑_{i = 1}^n \E\bs{ \E\br{ f_{i-1} ~ ϕ_i \Del W_i \given ℋ_{t_{j-1}}^{t_j} } }  \\
+        & =  \lim_{n → ∞} ∑_{i = 1}^n \E\bs{ f_{i-1} ~ ϕ_i ~ \cancelto{0}{\E\br{\Del W_i}} }  \\
+        & =  0 ,
+    \end{align*}
+    where we used the fact that \( f_{i-1} \) and \( ϕ_i \) are \( ℋ_{t_{j-1}}^{t_j} \)-measurable, and \( \Del W_i \) is independent of \( ℋ_{t_{j-1}}^{t_j} \).
+
+    For the variance,
+    \begin{align*}
+        &  \E\bs{ \br{∫_a^b f(W_t) ~ ϕ(W_b - W_t) \dif W_t}^2}  \\
+        &  =  \lim_{n → ∞} ∑_{i = 1}^n ∑_{j = 1}^n \E\bs{ f_{i-1} ~ ϕ_i f_{j-1} ~ ϕ_j \Del W_i \Del W_j}  \\
+        &  =  \lim_{n → ∞} ∑_{i = 1}^n \E\bs{ f_{i-1}^2 ~ ϕ_i^2 \br{\Del W_i}^2}  +  2 \lim_{n → ∞} ∑_{j = 1}^n ∑_{i = 1}^j \E\bs{ f_{i-1} ~ ϕ_i f_{j-1} ~ ϕ_j \Del W_i \Del W_j}  \\
+        &  =:  D_0 + 2 D_1 ,
+    \end{align*}
+    where we separated the sum into diagonal and off-diagonal elements in the penultimate step and used the symmetry of \( i < j \) and \( i > j \).
+
+    First we focus on the diagonal elements. Note that \( \Del W_i \) is independent of both \( ℱ_{t_{i-1}} \) and \( 𝒢^{t_i} \). Moreover, \( f_{i-1} \) is \( ℱ_{t_{i-1}} \)-measurable and independent of \( 𝒢^{t_i} \). Similarly \( ϕ_i \) is \( 𝒢^{t_i} \)-measurable and independent of \( ℱ_{t_{i-1}} \). Therefore, by taking conditional expectation with respect to \( ℱ_{t_{i-1}} \), we get
+    \begin{align*}
+        \E\bs{ f_{i-1}^2 ~ ϕ_i^2 \br{\Del W_i}^2}
+        &=  \E\bs{  \E\br{ f_{i-1}^2 ~ ϕ_i^2 \br{\Del W_i}^2 \given ℱ_{t_{i-1}} }}  \\
+        &=  \E\bs{ f_{i-1}^2 ~ \E\br{ ϕ_i^2 \br{\Del W_i}^2 \given  ℱ_{t_{i-1}} }}  \\
+        &=  \E\bs{ f_{i-1}^2 } ~ \E\bs{ ϕ_i^2 \br{\Del W_i}^2 } .
+    \end{align*}
+    Similarly, taking conditional expectation with respect to \( 𝒢^{t_i} \) gives us
+    \begin{align*}
+        \E\bs{ ϕ_i^2 \br{\Del W_i}^2 }
+        &=  \E\bs{  \E\br{ ϕ_i^2 \br{\Del W_i}^2 \given 𝒢^{t_i} }}  \\
+        &=  \E\bs{ ϕ_i^2 ~ \E\br{ \br{\Del W_i}^2 \given  𝒢^{t_i} }}  \\
+        &=  \E\bs{ ϕ_i^2 } ~ \E\bs{ \br{\Del W_i}^2 } .
+    \end{align*}
+    Putting it all together along with the fact that \( \E\bs{ \br{\Del W_i}^2 } = \Del t_i \), we get
+    \begin{equation*}
+        \E\bs{ f_{i-1}^2 ~ ϕ_i^2 \br{\Del W_i}^2}  =  \E\bs{ f_{i-1}^2 } \E\bs{ ϕ_i^2 } \Del t_i  =  \E\bs{ f(W_t)^2 ϕ(W_b - W_t)^2} \Del t_i ,
+    \end{equation*}
+    where we used the independence of increments of Wiener process in the last equality. Summing over \( i \) and taking limit of \( n → ∞ \), we get the first term on the right side of \cref{eqn:isometry_extension_product} as
+    \begin{equation*}
+        D_0 = ∫_a^b \E\bs{ f(W_t)^2 ~ ϕ(W_b - W_t)^2} \dif t .
+    \end{equation*}
+
+    The method for the off-diagonal elements is not as direct, and we highlight the key tricks.
+    \begin{description}[leftmargin=0cm]
+        \item[Trick 1]  Note that \( \Del W_i \) is independent of both \( ℱ_{t_{i-1}} \) and \( 𝒢^{t_i} \), and is therefore independent of \( ℋ_{t_{i-1}}^{t_i} \). So conditioning with respect to \( ℋ_{t_{i-1}}^{t_i} \) gives us
+        \begin{align*}
+            \E\br{ \Del W_i \given ℋ_{t_{i-1}}^{t_i} }  & =  \E\bs{\Del W_i}  =  0 , \text{ and} \\
+            \E\br{ (\Del W_i)^2 \given ℋ_{t_{i-1}}^{t_i} }  & =  \E\bs{(\Del W_i)^2}  =  \Del t_i .
+        \end{align*}
+
+        \item[Trick 2]  Consider \( W_b - W_{t_i} - \Del W_j = (W_b - W_{t_j}) + (W_{t_{j-1}} - W_{t_i}) \). Since \( W_b - W_{t_j} \) is \( 𝒢^{t_j} \)-measurable and \( W_{t_{j-1}} - W_{t_i} \) is \( ℱ_{t_{j-1}} \)-measurable, the sum \( W_b - W_{t_i} - \Del W_j \) is \( ℋ_{t_{j-1}}^{t_j} \)-measurable. By continuity of \( ϕ \), we see that \( ϕ(W_b - W_{t_i} - \Del W_j) \) is also \( ℋ_{t_{j-1}}^{t_j} \)-measurable. This allows us to conclude that
+        \begin{align}
+            & \E\bs{ f_{i-1} ~ ϕ(W_b - W_{t_i} - \Del W_j) ~ f_{j-1} ~ ϕ_j \Del W_i \Del W_j}  \nonumber \\
+            & =  \E\bs{ \E\br{ f_{i-1} ~ ϕ(W_b - W_{t_i} - \Del W_j) ~ f_{j-1} ~ ϕ_j \Del W_i \Del W_j \given ℋ_{t_{j-1}}^{t_j} }}  \nonumber \\
+            & =  \E\bs{ f_{i-1} ~ ϕ(W_b - W_{t_i} - \Del W_j) ~ f_{j-1} ~ ϕ_j \Del W_i ~ \E\br{ \Del W_j \given ℋ_{t_{j-1}}^{t_j} }}  \nonumber \\
+            & =  0 . \label{eqn:ϕ_var_0}
+        \end{align}
+        Therefore, if we subtract the term \( \E\bs{ f_{i-1} ~ ϕ(W_b - W_{t_i} - \Del W_j) ~ f_{j-1} ~ ϕ_j \Del W_i \Del W_j} \) from the expression \( \E\bs{ f_{i-1} ~ ϕ_i f_{j-1} ~ ϕ_j \Del W_i \Del W_j} \), nothing changes. This allows us to remove the dependence of \( ϕ_i \) on \( \bc{W_t: t ∈ (t_{j-1}, t_j)} \). This is illustrated in \cref{fig:isometry_proof} by the dotted region of \( ϕ_i \).
+
+        \item[Trick 3]  Using the assumption \( ϕ ∈ C^1(ℝ) \) and considering the fact that \( W_t \) is continuous and so \( \Del W_j → 0 \) as \( \norm{Π_n} → 0 \), we can approximate
+        \begin{equation*}
+            ϕ(W_b - W_{t_i}) - ϕ(W_b - W_{t_i} - \Del W_j) ≃ ϕ'(W_b - W_{t_i} - \Del W_j) \Del W_j .
+        \end{equation*}
+        For brevity, we write \( Θ = ϕ'(W_b - W_{t_i} - \Del W_j) \). Note that \( Θ \) is \( ℋ_{t_{i-1}}^{t_i} \)-measurable.
+    \end{description}
+
+    \begin{figure}
+        \centering
+        \begin{tikzpicture}
+            % ℋ_{t_{i-1}}^{t_i}
+            \fill [RosyBrown!25] (0,0) rectangle (2,3);
+            \fill [RosyBrown!25] (3,0) rectangle (8,3);
+            \node (separation) at (2.5, 3.5) [RosyBrown] {\( ℋ_{t_{i-1}}^{t_i} \)};
+            \draw [->, thick, color=RosyBrown] (separation.west) to [bend right=10] (  1,2.5);
+            \draw [->, thick, color=RosyBrown] (separation.east) to [bend left=10 ] (5.5,2.5);
+
+            % Main timeline
+            \draw [->, very thick, color=gray] (-2,0) -- (9,0) node[below] {\( t \)};
+            \foreach \x/\xtext in {-1/0, 0/a, 2/t_{i-1}, 3/t_i, 5/t_{j-1}, 6/t_j, 8/b}
+                \draw [ultra thick] (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {$\xtext$};
+
+            % Adapted
+            % f_{i-1}
+            \draw [very thick, color=SeaGreen] (0,1) -- (2,1);
+            \draw [color=SeaGreen] (1,1.3) node {\( f_{i-1} \)};
+            \draw [fill=SeaGreen] (0,1) circle (1.5pt);
+            \draw [fill=SeaGreen] (2,1) circle (1.5pt);
+
+            % f_{j-1}
+            \draw [very thick, color=SeaGreen] (0,2) -- (2,2);
+            \draw [very thick, densely dotted, color=SeaGreen] (2,2) -- (3,2);
+            \draw [very thick, color=SeaGreen] (3,2) -- (5,2);
+            \draw [color=SeaGreen] (2.5,2.3) node {\( f_{j-1} \)};
+            \draw [fill=SeaGreen] (0,2) circle (1.5pt);
+            \draw [fill=SeaGreen] (5,2) circle (1.5pt);
+
+            % Instantly independent
+            % ϕ_i
+            \draw [very thick, color=MidnightBlue] (3,1) -- (5,1);
+            \draw [very thick, densely dotted, color=MidnightBlue] (5,1) -- (6,1);
+            \draw [very thick, color=MidnightBlue] (6,1) -- (8,1);
+            \draw [fill=MidnightBlue] (3,1) circle (1.5pt);
+            \draw [fill=MidnightBlue] (8,1) circle (1.5pt);
+            \draw [color=MidnightBlue] (5.5,1.3) node {\( ϕ_{i} \)};
+
+            % ϕ_j
+            \draw [very thick, color=MidnightBlue] (6,2) -- (8,2);
+            \draw [color=MidnightBlue] (7,2.3) node {\( ϕ_{j} \)};
+            \draw [fill=MidnightBlue] (6,2) circle (1.5pt);
+            \draw [fill=MidnightBlue] (8,2) circle (1.5pt);
+
+            % Setup and bounding box
+            % \clip(-2,-1) rectangle (9,3);
+            % \draw (current bounding box.north east) rectangle (current bounding box.south west);
+        \end{tikzpicture}
+        \caption{A \( t \)-dependence plot of the various processes. The dotted regions are removed.}
+        \label{fig:isometry_proof}
+    \end{figure}
+
+    Putting these together, we see that
+    \begin{align}
+        & \E\bs{ f_{i-1} ϕ_i f_{j-1} ϕ_j \Del W_i \Del W_j }  \nonumber \\
+        & =  \E\bs{ f_{i-1} \br{ϕ(W_b - W_{t_i}) - ϕ(W_b - W_{t_i} - \Del W_j)} f_{j-1} ϕ_j \Del W_i \Del W_j }  \nonumber \\
+        & ≃  \E\bs{ f_{i-1} Θ f_{j-1} ϕ_j \Del W_i (\Del W_j)^2 }  \nonumber \\
+        & =  \E\bs{ \E\br{ f_{i-1} Θ f_{j-1} ϕ_j \Del W_i (\Del W_j)^2 \given ℋ_{t_{j-1}}^{t_j} }}  \nonumber \\
+        & =  \E\bs{ f_{i-1} Θ f_{j-1} ϕ_j \Del W_i ~ \E\br{\Del W_j}^2}  \nonumber \\
+        & =  \E\bs{ f_{i-1} Θ f_{j-1} ϕ_j \Del W_i}  \Del t_j . \label{eqn:proof_step_ϕ}
+    \end{align}
+
+    We repeat Trick 2 on \( f(W_{t_{j-1}} - \Del W_i) \) just as we did for \( ϕ(W_b - W_{t_i} - \Del W_j) \) to derive \cref{eqn:ϕ_var_0}. This allows us to remove the dependence of \( f_{j-1} \) on \( \bc{W_t: t ∈ (t_{i-1}, t_i)} \). This is illustrated in \cref{fig:isometry_proof} by the dotted region of \( f_{j-1} \). Therefore,
+    \begin{equation*}
+        \E\bs{ f_{i-1} Θ f_{j-1} ϕ_j \Del W_i \Del W_j} = 0 ,
+    \end{equation*}
+    where we used the tower property with respect to the σ-algebra \( ℋ_{t_{i-1}}^{t_i} \) in this case. As before, we get
+    \begin{equation*}
+        f(W_{t_{j-1}}) - f(W_{t_{j-1}} - \Del W_i) ≃ f'(W_{t_{j-1}} - \Del W_i) \Del W_i = F \Del W_i ,
+    \end{equation*}
+    where we write \( F = f'(W_{t_{j-1}} - \Del W_i) \) for brevity.
+
+    Continuing from \cref{eqn:proof_step_ϕ},
+    \begin{align}
+        & \E\bs{ f_{i-1} ~ ϕ_i ~ f_{j-1} ~ ϕ_j \Del W_i \Del W_j }  \nonumber \\
+        & =  \E\bs{ f_{i-1} ~ Θ ~ f_{j-1} ~ ϕ_j \Del W_i}  \Del t_j  \nonumber \\
+        & =  \E\bs{ f_{i-1} ~ Θ \br{f(W_{t_{j-1}}) - f(W_{t_{j-1}} - \Del W_i)} ϕ_j \Del W_i}  \Del t_j  \nonumber \\
+        & ≃  \E\bs{ f_{i-1} ~ Θ ~ F ~ ϕ_j (\Del W_i)^2 } \Del t_j  \nonumber \\
+        & =  \E\bs{ \E\br{ f_{i-1} ~ Θ ~ F ϕ_j (\Del W_i)^2 \given ℋ_{t_{i-1}}^{t_i} }} \Del t_j  \nonumber \\
+        & =  \E\bs{ f_{i-1} ~ Θ ~ F ϕ_j ~ \E\br{(\Del W_i)^2 \given ℋ_{t_{i-1}}^{t_i} }} \Del t_j  \nonumber \\
+        & =  \E\bs{ f_{i-1} ~ Θ ~ F ϕ_j } \Del t_i \Del t_j .  \label{eqn:proof-step-f}
+    \end{align}
+
+    By the continuity of \( W_t \), we see that as \( \norm{Π_n} → 0 \), so does \( \Del W_i \) and \( \Del W_j \). Moreover, by the continuity of \( f' \) and \( ϕ' \), we can conclude that as \( \norm{Π_n} → 0 \),
+    \begin{align*}
+        F  & =  f'(W_{t_{i-1}} - \Del W_i)  →  f'(W_{t_{j-1}})  =  f_{j-1}' , \text{ and} \\
+        Θ  & =  ϕ'(W_b - W_{t_i} - \Del W_j)  →  ϕ'(W_b - W_{t_i}) = ϕ_i' .
+    \end{align*}
+
+    Finally, summing \cref{eqn:proof-step-f} over \( i < j \) and taking limit, we get
+    \begin{equation*}
+        D_1 = ∫_a^b ∫_a^t \E\bs{ f(W_s) ~ ϕ'(W_b - W_s) ~ f'(W_t) ~ ϕ(W_b - W_t)} \dif s \dif t .
+    \end{equation*}
+    This concludes the proof.
+\end{proof}
+
+One of the features of \cref{thm:isometry_extension_product} is that the result enables us to evaluate the second moment of these anticipating integrals without having to evaluate the integral itself. This is advantageous as explicitly evaluating the integral via the definition can get very complicated. We demonstrate that particular feature with an example.
+
+\begin{example}
+    Let \( f(x) = x \) and \( ϕ(y) = y \). Then from \cref{thm:isometry_extension_product},
+    \begin{align}
+        &  \E\bs{  \br{ ∫_a^b W_t ~ (W_b - W_t) \dif W_t }^2 }  \nonumber \\
+        & =  ∫_a^b \E\bs{ W_t^2 ~ (W_b - W_t)^2 } \dif t
+        +  2 ∫_a^b ∫_a^t \E\bs{ W_s ~ (W_b - W_t) } \dif s \dif t  \nonumber \\
+        & =  ∫_a^b \E\bs{W_t^2} ~ \E\bs{(W_b - W_t)^2} \dif t
+        +  2 ∫_a^b ∫_a^t \E\bs{W_s} ~ \E\bs{W_b - W_t} \dif s \dif t  \nonumber \\
+        & = ∫_a^b t(b-t) \dif t  \nonumber \\
+        & = \frac16 (b^3 - 3 a^2 b + 2 a^3)  \label{eqn:example_isometry}.
+    \end{align}
+
+    Note that this result can also be obtained by explicitly calculating the integral and then taking the expectation of the square. However, this process is extremely tedious and is impractical since we do not always have a closed-form representation of a stochastic integral. We briefly highlight this route mentioning only the key steps.
+
+    Let \( I = ∫_a^b W_t ~ (W_b - W_t) \dif W_t \). From \cref{eg:integral_Ws_W_b-W_s}, we get
+    \[ I = \frac12 W_b \br{(W_b^2 - W_a^2) - (b - a)} - \frac13 \br{W_b^3 - W_a^3} . \]
+    For brevity, we write \( Δ_W = W_b - W_a \), so \( W_b = (W_b - W_a) + W_a = Δ_W + W_a \). Performing algebraic simplification, we get
+    \[ I = \frac16 \br{Δ_W^3 + 3 W_a Δ_W^2 - 3 (b - a) Δ_W - 3 (b - a) W_a} . \]
+    Note that \( W_a \) and \( Δ_W ~ \) are independent with \( W_a \sim N(0, a) \) and \( Δ_W \sim N(0, (b - a)) \). Therefore, any odd moment of either of \( W_a \) or \( Δ_W \) is zero. Using this, we get
+    \begin{align*}
+        \E [I^2]
+        & =  \frac{1}{36} \
+        \E \left[ Δ_W^6 + 9 W_a^2 Δ_W^4 + 9 (b - a)^2 Δ_W^2 + 9 (b - a)^2 W_a^2 \right. \\
+        &  \qquad \qquad  \left. - 6 (b - a) Δ_W^4 - 18 (b - a) W_a^2 Δ_W^2 \right]  \\
+        & =  \frac16 \br{b^3 - 3 a^2 b + 2 a^3} ,
+    \end{align*}
+    which is exactly what we obtained in \cref{eqn:example_isometry}.
+\end{example}
+
+
+
+\section{Identity for a more general case}
+
+We can use the same arguments as those in the proof of \cref{thm:isometry_extension_product} to get the following general theorem.
+\begin{theorem}  \label{thm:isometry_extension_general}
+    Let \( Θ(x, y) ∈ C^1(ℝ^2) \) and assume that
+    \[ Θ(W_t, W_b - W_t), ~ Θ_x(W_t, W_b - W_t), ~ Θ_y(W_t, W_b - W_t) ∈ L^2([a, b] × Ω) . \]
+    Then \( \E\br{∫_a^b Θ(W_t, W_b - W_t) \dif W_t} = 0 \), and
+    \begin{align}
+        &  \E\bs{ \br{∫_a^b Θ(W_t, W_b - W_t) \dif W_t}^2}  =  ∫_a^b \E\bs{ Θ(W_t, W_b - W_t)^2} \dif t  \nonumber \\
+        &  \quad +  2 ∫_a^b ∫_a^t \E \Big[ Θ_y(W_s, W_b - W_s) ~ Θ_x(W_t, W_b - W_t) \Big] \dif s \dif t . \label{eqn:isometry_extension_general}
+    \end{align}
+\end{theorem}
+
+We can extend this result to the product of two integrals.\index{isometry!Ayed–Kuo}
+\begin{theorem} \label{thm:isometry_extension_inner_product}
+    Let \( Θ(x, y), Λ(x, y) ∈ C^1(ℝ^2) \) and assume that
+    \begin{enumerate}
+        \item  \( Θ(W_t, W_b - W_t), ~ Θ_x(W_t, W_b - W_t), ~ Θ_y(W_t, W_b - W_t) ∈ L^2([a, b] × Ω) \), and
+        \item  \( Λ(W_t, W_b - W_t), ~ Λ_x(W_t, W_b - W_t), ~ Λ_y(W_t, W_b - W_t) ∈ L^2([a, b] × Ω) \).
+    \end{enumerate}
+    Then
+    \begin{align}
+        &  \E\bs{ \br{∫_a^b Θ(W_t, W_b - W_t) \dif W_t} \br{∫_a^b Λ(W_t, W_b - W_t) \dif W_t}}  \nonumber \\
+        &=  ∫_a^b \E\bs{ Θ(W_t, W_b - W_t) ~ Λ(W_t, W_b - W_t)} \dif t  \nonumber \\
+        &  \quad +  ∫_a^b ∫_a^t \E \Big[
+            Θ_y(W_s, W_b - W_s) ~ Λ_x(W_t, W_b - W_t)  \nonumber \\
+        &   \qquad \qquad \qquad  + Θ_x(W_t, W_b - W_t) ~ Λ_y(W_t, W_b - W_t)
+        \Big] \dif s \dif t . \label{eqn:isometry_extension_inner_product}
+    \end{align}
+\end{theorem}
+
+\begin{proof}
+    For this proof, we write \( F(t) = Θ(W_t, W_b - W_t) \), \( G(t) = Λ(W_t, W_b - W_t) \), and let \( H = F + G \). Moreover, for brevity, we write \( F_x(t) = Θ_x(W_t, W_b - W_t) \), \( F_y(t) = Θ_y(W_t, W_b - W_t) \) and corresponding notation for \( G \) and \( H \).
+
+    From the definition of \( H \), we see that
+    \begin{align*}
+        \E\bs{ \br{∫_a^b H(t) \dif W_t}^2}
+        &  = \E\bs{ \br{∫_a^b F(t) \dif W_t + ∫_a^b G(t) \dif W_t}^2}  \\
+        &  = \E\bs{ \br{∫_a^b F(t) \dif W_t}^2 }
+            +  \E\bs{ \br{∫_a^b G(t) \dif W_t}^2 }  \\
+        & \qquad  +2 ~ \E\bs{ \br{∫_a^b F(t) \dif W_t} \br{∫_a^b G(t) \dif W_t} } .
+    \end{align*}
+    Now, applying \cref{thm:isometry_extension_general} for \( F \), we get
+    \[ \E\bs{ \br{∫_a^b F(t) \dif W_t}^2}
+    =  ∫_a^b \E\bs{F(t)^2} \dif t
+    +  2 ∫_a^b ∫_a^t \E\bs{ F_y(s) ~ F_x(t) } \dif s \dif t . \]
+    We can obtain an equivalent result for \( G \).
+    Putting all this together, we get
+    \begin{align}
+        \E\bs{ \br{∫_a^b H(t) \dif W_t}^2}
+        &  =  ∫_a^b \E\bs{F(t)^2} \dif t
+            +2 ∫_a^b ∫_a^t \E\bs{ F_y(s) ~ F_x(t) } \dif s \dif t  \nonumber \\
+        &  \quad + ∫_a^b \E\bs{G(t)^2} \dif t
+            +  2 ∫_a^b ∫_a^t \E\bs{ G_y(s) ~ G_x(t) } \dif s \dif t  \nonumber \\
+        &  \quad +2 ~ \E\bs{ \br{∫_a^b F(t) \dif W_t} \br{∫_a^b G(t) \dif W_t} } . \label{eqn:product-definition-theorem}
+    \end{align}
+
+    On the other hand, first applying \cref{thm:isometry_extension_general} and then using the definition of \( H \), we get
+    \begin{align}
+        &  \E\bs{ \br{∫_a^b H(t) \dif W_t}^2}  \nonumber \\
+        &  = ∫_a^b \E\bs{H(t)^2} \dif t
+            +  2 ∫_a^b ∫_a^t \E\bs{H_y(s) ~ H_x(t)} \dif s \dif t  \nonumber \\
+        &  =   ∫_a^b \E\bs{F(t)^2} \dif t
+            +  ∫_a^b \E\bs{G(t)^2} \dif t
+            +2 ∫_a^b \E\bs{F(t) G(t)} \dif t  \nonumber \\
+        & \quad +  2 ∫_a^b ∫_a^t \E\bs{(F_y(s) + G_y(s)) (F_x(t) + G_x(t))} \dif s \dif t  \nonumber \\
+        &  =   ∫_a^b \E\bs{F(t)^2} \dif t
+            +  ∫_a^b \E\bs{G(t)^2} \dif t
+            +2 ∫_a^b \E\bs{F(t) G(t)} \dif t  \nonumber \\
+        & \quad +  2 ∫_a^b ∫_a^t \E \Big[ F_y(s) F_x(t) + F_y(s) G_x(t) + G_y(s) F_x(t) + G_y(s) G_x(t) \Big] \dif s \dif t . \label{eqn:product-theorem-definition}
+    \end{align}
+
+    Finally, \cref{eqn:product-definition-theorem} and \cref{eqn:product-theorem-definition} imply that
+    \begin{align*}
+        &  \E\bs{ \br{∫_a^b F(t) \dif W_t} \br{∫_a^b G(t) \dif W_t}}  \\
+        &  =  ∫_a^b \E\bs{ F(t) ~ G(t)} \dif t
+            +  ∫_a^b ∫_a^t \E\bs{F_y(s) ~ G_x(t) + G_y(s) ~ F_x(t)} \dif s \dif t ,
+    \end{align*}
+    which is exactly the desired result.
+\end{proof}
+
+If \( Θ(x, y) = f(x) \) and \( Λ(x, y) = ϕ(y) \), we have \( Θ_y \equiv 0 \) and \( Λ_x \equiv 0 \). Therefore, we obtain the following corollary.
+\begin{corollary}  \label{cor:isometry_extension_inner_product}
+Let \( f, ϕ ∈ C^1(ℝ) \) and assume that
+    \begin{enumerate}
+        \item  \(  f(W_t),  ϕ(W_b - W_t) ∈ L^2([a, b] × Ω) \), and
+        \item  \( f'(W_t), ϕ'(W_b - W_t) ∈ L^2([a, b] × Ω) \).
+    \end{enumerate}
+    Then
+    \begin{align*}
+        &\E\bs{\br{∫_a^b  f(W_t) \dif W_t} \br{∫_a^b ϕ(W_b - W_t) \dif W_t}}  \\
+        & =   ∫_a^b \E\bs{ f(W_t) ~ ϕ(W_b - W_t) } \dif t
+        +  ∫_a^b ∫_a^t \E\bs{ϕ'(W_b - W_s) ~ f'(W_t)} \dif s \dif t .
+    \end{align*}
+\end{corollary}
+
+Similar to \cref{thm:isometry_extension_product}, Corollary \cref{cor:isometry_extension_inner_product} enables us to evaluate the covariance between anticipating and adapted integrals without explicitly calculating the integral itself. This is illustrated in the following example.
+\begin{example}
+    Let \( f(x) = x \) and \( ϕ(y) = y \). Using Corollary \cref{cor:isometry_extension_inner_product}, we get
+    \begin{align*}
+        &  \E\bs{\br{∫_a^b W_t \dif W_t} \br{∫_a^b (W_b - W_t) \dif W_t}}  \nonumber \\
+        &=  ∫_a^b \E\br{W_t ~ (W_b - W_t)} \dif t
+        +  ∫_a^b ∫_a^t \E\br{1} \dif s \dif t  \nonumber \\
+        &=  ∫_a^b \E\br{W_t} \E\br{W_b - W_t} \dif t
+        +  ∫_a^b (t - a) \dif t \nonumber \\
+        &=  \frac12 (b - a)^2 .
+    \end{align*}
+\end{example}
+
+% A particular case of the above is the case for a process which is the sum of an adapted process and an instantly-independent process.
+% \begin{corollary}  \label{cor:isometry_extension_sum}
+%     Let \( f, ϕ ∈ C^1(ℝ) \) such that
+%     \begin{enumerate}
+%         \item  \( f(W_t), ϕ(W_b - W_t) ∈ L^2([a, b] × Ω) \), and
+%         \item  \( f'(W_t), ϕ'(W_b - W_t) ∈ L^2([a, b] × Ω) \).
+%     \end{enumerate}
+%     Then
+%     \begin{align}
+%         &  \E\bs{ \br{ ∫_a^b \br{ f(W_t) + ϕ(W_b - W_t) } d W_t }^2}  \nonumber \\
+%         &  =  ∫_a^b \E\bs{f(W_t)^2} \dif t
+%         +  ∫_a^b \E\bs{ϕ(W_b - W_t)^2} \dif t   \nonumber \\
+%         &  \quad + 2  ∫_a^b \E\bs{f(W_t)} \E\bs{ϕ(W_b - W_t)} \dif t  \nonumber \\
+%         &  \quad + 2  ∫_a^b ∫_a^t \E\bs{ ϕ'(W_b - W_s) f'(W_t) } \dif s \dif t .  \label{eqn:isometry_extension_sum}
+%     \end{align}
+% \end{corollary}
+
+% \begin{proof}
+%     Use \( Θ(x, y) = f(x) ϕ(y) \) in \cref{eqn:isometry_extension_general}.
+% \end{proof}
+
+% As an example, we use Corollary \cref{cor:isometry_extension_sum} in calculating the second moment of the anticipatory integral in example \cref{example:antipatoryint}. Namely,
+
+% \begin{example} \label{example:secondmoment}
+% \begin{align*}
+%     \E  \left[ \br{ ∫_a^b W_b \dif W_t }^2\right]  =& \E  \left[\br{ ∫_a^b W_t + (W_b - W_t)  \dif W_t }^2\right] \\
+%     = & ∫_a^b \E \left[ W_t ^2 \right] \dif t + ∫_a^b \E \left[\br{  W_b - W_t }^2 \right] \dif t  \\
+%     & +    ∫_a^b \E \left[W_t\right] \E \left[W_b - W_t\right] \dif t + 2 ∫_a^b ∫_a^t \E [1] \dif s \dif t \\
+%     =& ∫_a^b t ~ dt +  ∫_a^b (b - t) \dif t + 2 ∫_a^b (t-a) \dif t \\
+%     =& ~b( b - a) + ( b - a )^2 \\
+%     =& ~  (2b-a) (b - a)
+% \end{align*}
+
+% \end{example}
+% \begin{example}
+%     Let \( Θ(x, y) = e^x + \sin(y) \). Then by Corollary \cref{cor:isometry_extension_sum}, we have
+%     \begin{align*}
+%         &  \E\bs{  \br{ ∫_a^b \br{e^{W_t} + \sin(W_b - W_t)} \dif W_t }^2 }  \\
+%         &  =  ∫_a^b \E\bs{e^{2 W_t}} \dif t
+%         +  ∫_a^b \E\bs{\sin^2(W_b - W_t)} \dif t   \nonumber \\
+%         &  \quad + 2  ∫_a^b \E\bs{e^{W_t}} \E\bs{\sin(W_b - W_t)} \dif t  \nonumber \\
+%         &  \quad + 2  ∫_a^b ∫_a^t \E\bs{ e^{W_t} \cos(W_b - W_s) } \dif s \dif t .
+%     \end{align*}
+% \end{example}
+
+% We give a simple example of a function for which we need the most general result \cref{eqn:isometry_extension_general}.
+
+% \begin{example}
+%     Let \( Θ(x, y) = \sin(xy) \). Then \( \frac{\partial Θ}{\partial x} = y \cos(xy) \) and \( \frac{\partial Θ}{\partial y} = x \cos(xy) \). Therefore,
+%     \begin{align*}
+%         &  \E\bs{ \br{∫_a^b \sin(W_t (W_b - W_t)) \dif W_t}^2 }
+%         =  ∫_a^b \E\bs{ \sin(W_t (W_b - W_t))^2 } \dif t  \\
+%         &  \quad +  2 ∫_a^b ∫_a^t \E \left[ W_s \cos(W_s (W_b - W_s)) (W_b - W_t) \cos(W_t (W_b - W_t)) \right] \dif s \dif t .
+%     \end{align*}
+% \end{example}
+
+% \begin{example}
+%     Let \( Θ(x, y) = e^{xy} \). Then \( Θ_x = y e^{xy} \) and \( Θ_y = x e^{xy} \). Therefore,
+%     \begin{align*}
+%         &  \E\bs{ \br{∫_a^b e^{W_t (W_b - W_t)} \dif W_t}^2 }
+%         =  ∫_a^b \E\bs{ e^{2W_t (W_b - W_t)} } \dif t  \\
+%         &  \quad +  2 ∫_a^b ∫_a^t \E \left[ W_s e^{W_s (W_b - W_s)} (W_b - W_t) e^{W_t (W_b - W_t)} \right] \dif s \dif t .
+%     \end{align*}
+% \end{example}
+
+
+Finally, we want to point our that the double integral in \cref{eqn:isometry_extension_general} can be regarded as a correction term when we extend Itô's theory to anticipating stochastic integration. This correction term can be positive or negative, as illustrated in the next example.
+
+\begin{example}
+    Consider the case \( Θ(x,y) = px + y \) in \cref{thm:isometry_extension_general}, where \( p ∈ ℝ \). Then \( Θ_x = p \) and \( Θ_y = 1 \). Therefore, we can directly evaluate the double integral in \cref{eqn:isometry_extension_general} as
+    \[ 2 ∫_a^b ∫_a^t \E\bs{Θ_y(W_s, W_b - W_s) ~ Θ_x(W_t, W_b - W_t)} \dif s \dif t  =  2 ∫_a^b ∫_a^t p \dif s \dif t  =  p (b - a)^2 . \]
+    Therefore, the final term will be positive or negative depending on the sign of \( p \).
+\end{example}
